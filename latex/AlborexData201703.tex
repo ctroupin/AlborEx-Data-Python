@@ -133,7 +133,7 @@ Several processing levels are defined for the data files, all of them are provid
 \begin{description}
 \item[Level 0 (L0)]: the level closest to the original measurements, as it contains exactly the same data as the raw files provided by the instruments, but in a single file.
 \item[Level 1 (L1)]: additional variables are derived from the existing ones (e.g., salinity, potential temperature). The attributes corresponding to each variable are stored in the netCDF file, with details of any modifications. Unit conversion are also applied if necessary.
-\item[Level 2 (L2)]: this level is only provided for gliders, as it consists of regular, homogeneous and instantaneous profiles obtained by interpolating the L1 data. The reason for this L2 is mostly for visualization purpose.
+\item[Level 2 (L2)]: this level is only provided for gliders, as it consists of regular, homogeneous and instantaneous profiles obtained by interpolating the L1 data. The reason for this L2 is mostly for visualization and post-processing purposes: specific tools designed to read and display profiler data can then be used the same way for gliders.
 \end{description}
 
 \begin{table*}[h]
@@ -156,9 +156,12 @@ Profiling drifters	& 3						& 2014-05-25	& beyond the experiment & \checkmark 	&
 
 \subsection{Quality control}
 
-The data are applied quality checks to detect possibly wrong or suspect values. 
-Description of the tests and the references.
-
+Most of the data provided by SOCIB are applied quality checks to detect possibly wrong or suspect values. The two main exceptions are:
+\begin{description}
+\item[the gliders:] a set of quality checks have been added to the glider toolbox \citep{Troupin_2015}.
+\item[the CTD profiles:] new checks have been recently added to the processing chain.
+\end{description}
+As the new files will not be available before a full reprocessing of all the historical missions, we decided to provide the data files in their current state. A new version will be uploaded as soon as the processing has been performed.
 
 \conclusions[Conclusions and perspectives]
 
