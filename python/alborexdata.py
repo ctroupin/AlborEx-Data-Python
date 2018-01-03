@@ -2,8 +2,8 @@ import logging
 import numpy as np
 
 
-def configure_logging():
-    """Prepare the logging file
+def configure_logging(logfile="./alborexFig2.log"):
+    """Prepare the logging messages and file
     """
     logger = logging.getLogger("alborex_logger")
     logger.setLevel(logging.DEBUG)
@@ -15,7 +15,7 @@ def configure_logging():
     ch.setFormatter(formatter)
     logger.addHandler(ch)
     # Setup file logging as well
-    fh = logging.FileHandler('/home/ctroupin/logs/alborexdata.log')
+    fh = logging.FileHandler(logfile)
     fh.setLevel(logging.DEBUG)
     fh.setFormatter(formatter)
     logger.addHandler(fh)
