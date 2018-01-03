@@ -1,3 +1,8 @@
+python/.ipynb_checkpoints
+latex/AlborexData201703.bbl
+latex/AlborexData201703.blg
+latex/workplan.md
+python/.idea/
 python/logs
 python/__pycache__
 figures/SST
