@@ -1,5 +1,5 @@
 # Initial ignore
-python/.ipynb_checkpoints
+python/.ipynb_checkpoints/
 latex/AlborexData201703.bbl
 latex/AlborexData201703.blg
 latex/workplan.md
