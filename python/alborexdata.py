@@ -3,6 +3,7 @@ import netCDF4
 import logging
 import datetime
 import numpy as np
+from scipy import interpolate
 
 
 def configure_logging(logfile="./alborexFig2.log"):
@@ -65,6 +66,48 @@ def read_lonlat_coast(filename, valex=999):
                 lat.append(float(line[1]))
             line = f.readline().rsplit()
     return lonall, latall
+
+
+class Front(object):
+
+    def __init__(self, lon=None, lat=None):
+        self.lon = lon
+        self.lat = lat
+
+    def get_from_file(self, filename):
+        """
+        Read the coordinates from a text file (lon, lat)
+        :param filename: file name
+        :type filename: str
+        """
+        self.lon = []
+        self.lat = []
+        if os.path.exists(filename):
+            with open(filename, "r") as df:
+                for lines in df.readlines():
+                    self.lon.append(float(lines.rstrip().split(',')[0]))
+                    self.lat.append(float(lines.rstrip().split(',')[1]))
+
+    def smooth(self, n=4, s=0.01, nest=4):
+        """
+
+        :param N: subsampling factor
+        :param s: smoothness parameter
+        :param nest: estimate of number of knots needed (-1 = maximal)
+        :return:
+        """
+        npoints = len(self.lon)
+        if npoints > 0:
+            if npoints == len(self.lat):
+                t = np.linspace(0, 1, npoints)
+                t2 = np.linspace(0, 1, n * npoints)
+
+                # find the knot points
+                tckp, u = interpolate.splprep([t, self.lon, self.lat], s=s, nest=-1)
+
+                # evaluate spline, including interpolated points
+                xnew, self.lon, self.lat = interpolate.splev(t2, tckp)
+
 
 class Drifter(object):
 
