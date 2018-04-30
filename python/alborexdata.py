@@ -1,6 +1,7 @@
 import os
 import netCDF4
 import logging
+import datetime
 import numpy as np
 
 
@@ -67,7 +68,7 @@ def read_lonlat_coast(filename, valex=999):
 
 class Drifter(object):
 
-    def __ini__(self, lon=None, lat=None, time=None, temperature=None, qclon=None, qclat=None):
+    def __init__(self, lon=None, lat=None, time=None, temperature=None, qclon=None, qclat=None):
         self.lon = lon
         self.lat = lat
         self.time = time
@@ -75,6 +76,7 @@ class Drifter(object):
         self.qclon = qclon
         self.qclat = qclat
         self.timeunits = None
+        self.dates = None
 
     def get_from_netcdf(self, datafile):
         """
@@ -86,6 +88,8 @@ class Drifter(object):
                 self.lat = nc.get_variables_by_attributes(standard_name='latitude')[0][:]
                 self.time = nc.get_variables_by_attributes(standard_name='time')[0][:]
                 self.timeunits = nc.get_variables_by_attributes(standard_name='time')[0].units
+                self.dates = netCDF4.num2date(self.time, self.timeunits)
+
                 try:
                     self.qclat = nc.get_variables_by_attributes(standard_name='latitude status_flag')[0][:]
                 except IndexError:
@@ -121,15 +125,18 @@ class Drifter(object):
 
     def select_dates(self, finaldate, initialdate=None):
         """
-        Mask the time outside the mission period
+        Mask the time outside the selected period
         """
-        dates = netCDF4.num2date(self.time, self.timeunits)
         if initialdate is not None:
-            self.lon = np.ma.masked_where(np.logical_or(dates > finaldate, dates < initialdate))
-            self.lat = np.ma.masked_where(np.logical_or(dates > finaldate, dates < initialdate))
+            self.lon = np.ma.masked_where(np.logical_or(self.dates > finaldate,
+                                                        self.dates < initialdate),
+                                                        self.lon)
+            self.lat = np.ma.masked_where(np.logical_or(self.dates > finaldate,
+                                                        self.dates < initialdate),
+                                                        self.lat)
         else:
-            self.lon = np.ma.masked_where(dates > finaldate, self.lon)
-            self.lat = np.ma.masked_where(dates > finaldate, self.lat)
+            self.lon = np.ma.masked_where(self.dates > finaldate, self.lon)
+            self.lat = np.ma.masked_where(self.dates > finaldate, self.lat)
 
     def scatter_plot(self, m, **kwargs):
         scat = m.scatter(self.lon, self.lat, c=self.temperature, latlon=True, **kwargs)
@@ -140,3 +147,86 @@ class Drifter(object):
 
     def add_initial_position(self, m, **kwargs):
         m.plot(self.lon[0], self.lat[0], latlon=True, linewidth=0, **kwargs)
+
+
+class Glider(Drifter):
+
+    def remove_masked_coords(self):
+        """
+        Remove the masked coordinates (lon, lat, time, dates)
+        """
+        coordmask = np.logical_not(self.lon.mask)
+        self.time = self.time.compress(coordmask)
+        self.dates = self.dates.compress(coordmask)
+        self.lon = self.lon.compressed()
+        self.lat = self.lat.compressed()
+
+    def get_day_indices(self, ndays=1):
+        """
+        Get the time indices corresponding to the start of days,
+        separated by "ndays"
+        """
+        day_indices = []
+        date_list = []
+
+        # Convert the time to datses
+        datestart, dateend = self.dates[0], self.dates[-1]
+        date = datetime.datetime(datestart.year, datestart.month, datestart.day,
+                                 0, 0, 0)
+
+        while date <= dateend:
+            # Increment initial date
+            date += datetime.timedelta(days=ndays)
+            date_list.append(date)
+            # Get corresponding index
+            index = np.argmin(abs(self.time - netCDF4.date2num(date, self.timeunits)))
+            day_indices.append(index)
+
+        return day_indices, date_list
+
+
+class CTD(Glider):
+
+    def __init__(self, lon=None, lat=None, time=None, depth=None,
+                 temperature=None, qclon=None, qclat=None):
+        self.lon = lon
+        self.lat = lat
+        self.time = time
+        self.depth = depth
+        self.temperature = temperature
+        self.qclon = qclon
+        self.qclat = qclat
+        self.timeunits = None
+        self.dates = None
+
+    def get_from_netcdf(self, datafile):
+        """
+        Read the coordinates and the temperature from existing data file
+        """
+        if os.path.exists(datafile):
+            with netCDF4.Dataset(datafile, 'r') as nc:
+                self.lon = nc.get_variables_by_attributes(standard_name='longitude')[0][:]
+                self.lat = nc.get_variables_by_attributes(standard_name='latitude')[0][:]
+                self.depth = nc.get_variables_by_attributes(standard_name='depth')[0][:]
+                self.time = nc.get_variables_by_attributes(standard_name='time')[0][:]
+                self.timeunits = nc.get_variables_by_attributes(standard_name='time')[0].units
+                self.dates = netCDF4.num2date(self.time, self.timeunits)
+
+                try:
+                    self.qclat = nc.get_variables_by_attributes(standard_name='latitude status_flag')[0][:]
+                except IndexError:
+                    self.qclat = None
+
+                try:
+                    self.qclon = nc.get_variables_by_attributes(standard_name='longitude status_flag')[0][:]
+                except IndexError:
+                    self.qclon = None
+                try:
+                    self.temperature = nc.get_variables_by_attributes(standard_name='sea_water_temperature')[:]
+                except IndexError:
+                    self.temperature = None
+
+class Ship(Drifter):
+
+    def plot_track(self, m, **kwargs):
+        m.plot(self.lon, self.lat, latlon=True, linestyle="--", **kwargs)

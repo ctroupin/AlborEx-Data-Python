@@ -266,6 +266,25 @@ def load_sst_l2_old(sstfile):
         sstday = nc.Start_Day
     return lon, lat, sst, sstflag, sstyear, sstday
 
+def plot_sst_leaflet(lon, lat, sst, figname, **kwargs):
+    m = Basemap(llcrnrlon=coordinates[0],
+                llcrnrlat=coordinates[2],
+                 urcrnrlon=coordinates[1],
+                 urcrnrlat=coordinates[3], resolution = 'l', epsg=3857)
+    llon, llat = m(lon, lat)
+    fig = plt.figure(frameon=False)
+    ax = fig.add_axes([0, 0, 1, 1])
+    m.pcolormesh(llon, llat, sst, **kwargs)
+    ax.axis('off')
+    #ax.set_xlim(lon.min(), lon.max())
+    #ax.set_ylim(lat.min(), lat.max())
+    f1 = plt.gca()
+    f1.axes.get_xaxis().set_ticks([])
+    f1.axes.get_yaxis().set_ticks([])
+    plt.savefig(figname, transparent=True,
+                bbox_inches='tight', pad_inches=0)
+    plt.close()
+
 
 def load_ctd(ctdfile):
     """
