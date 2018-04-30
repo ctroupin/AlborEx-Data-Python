@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+	<html>
+		<head>
+			<meta charset="UTF-8"/>
+
+			<meta name="viewport" content="width=device-width, initial-scale=1" />
+			<title>
+				AlborEX mission data
+			</title>
+			<script src ="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/leaflet.js"></script>
+			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/leaflet.css"/>
+			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.fullscreen/1.4.3/Control.FullScreen.css">
+			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+			<style type="text/css">
+				#map { height : 800px; }
+				.info { padding: 10px 20px; font: 20px/22px Arial, Helvetica, sans-serif; background: rgba(255,255,255,0.7);
+			</style>
+		</head>
+		<body>
+
+			<div id="map"></div>
+			<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+			<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/togeojson/0.16.0/togeojson.js"></script>
+			<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.fullscreen/1.4.3/Control.FullScreen.min.js"></script>
+			<script type="text/javascript" src="Leaflet.Coordinates-0.1.5.min.js"></script>
+			<script type="text/javascript" src="data/CTD1.js"></script>
+			<script type="text/javascript" src="data/CTD2.js"></script>
+			<script type="text/javascript" src="data/Glider1.js"></script>
+			<script type="text/javascript" src="data/Glider2.js"></script>
+			<script type="text/javascript" src="data/drifters.js"></script>
+			<script type="text/javascript" src="data/profilers.js"></script>
+			<script>
+
+
+			  var map = L.map('map', {
+				fullscreenControl: true,
+				}).setView([36.9, -0.5], 9);
+
+			  var positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+				attribution: '©OpenStreetMap, ©CartoDB',
+				zIndex: 100
+			  }).addTo(map);
+
+			  var Esri_OceanBasemap = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
+				attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
+				maxZoom: 13
+			  });
+
+
+			  var baseMaps = {
+				"Positron": positron,
+				"Ocean Base map": Esri_OceanBasemap,
+			  };
+			  
+			  var bathymetry = L.tileLayer.wms('http://ows.emodnet-bathymetry.eu/wms', {
+				layers: 'emodnet:mean_atlas_land,coastlines,world:sea_names'
+			  }).addTo(map);
+
+			  //baseMaps.addTo(map);
+			  //baseMaps.bringToBack();
+
+
+			  L.control.coordinates({
+				position:"bottomleft",
+				decimals:3,
+				decimalSeperator:".",
+				labelTemplateLat:"Lat: {y}",
+				labelTemplateLng:"Lon: {x}"
+			  }).addTo(map);
+
+
+			  // define rectangle geographical bounds
+			  var bounds = [[36.65, -1.], [37.25, 0.25]];
+			  var area = L.rectangle(bounds, {
+				color: "#ff7800",
+				weight: 1,
+				fillColor: "#FFFFB3",
+				fillOpacity: 0.1
+				}
+				).addTo(map);
+
+			  // CTD positions
+
+			  var nCTD1 = CTD1list.length;
+			  CTD1 = []
+			  CTD1layer = L.layerGroup();
+			  for (var i = 0; i < nCTD1; i++) {
+				CT1circle = L.circleMarker(CTD1list[i], {radius: 3}).addTo(map);
+				CTD1.push(CT1circle);
+				CTD1layer.addLayer(CT1circle);
+			  }
+			  CTD1layer.addTo(map);
+
+			  var nCTD2 = CTD2list.length;
+			  CTD2 = []
+			  CTD2layer = L.layerGroup();
+			  for (var i = 0; i < nCTD2; i++) {
+				CT2circle = L.circleMarker(CTD2list[i], {radius: 3, color: 'red'});
+				CTD2.push(CT2circle);
+				CTD2layer.addLayer(CT2circle);
+			  }
+			  //CTD2layer = L.layerGroup(CTD2)
+			  CTD2layer.addTo(map);
+
+			  // Glider trajectories
+
+			  var glider1Style = {
+				"color": "#4A4A4A",
+				"weight": 4,
+				"opacity": 1.,
+				"dashArray": '2,4',
+			  };
+
+			  var glider2Style = {
+				"color": "black",
+				"weight": 4,
+				"opacity": .9,
+			  };
+
+			  var drifterStyle = {
+				"color": "black",
+				"weight": .5,
+				"opacity": .9,
+			  };
+
+			  var profilerStyle = {
+				"color": "#959595",
+				"weight": 1.5,
+				"opacity": .9,
+			  };
+
+			  var Glider1 = new L.geoJson(glider1, {
+				style: glider1Style
+			  }).addTo(map);
+
+			  var Glider2 = new L.geoJson(glider2, {
+				style: glider2Style
+			  }).addTo(map);
+
+			  var Drifter = new L.geoJson(drifters, {
+				style: drifterStyle
+			  }).addTo(map);
+
+			  var Profiler = new L.geoJson(profilers, {
+				style: profilerStyle
+			  }).addTo(map);
+
+			  var Layer = L.geoJson(null, {
+				style: function(feature) {
+				  return { color: 'blue' , weight: 3};
+				}
+			  });
+
+			  var imageUrl = 'images/A2014145125000_L2_LAC_SST.png',
+			  imageBounds = [[34.75, -6.75], [40., 3.001]];
+			  SST = L.imageOverlay(imageUrl, imageBounds, {opacity: 1., zIndex: 1}).addTo(map);
+			  //SST.bringToFront()
+			  
+			  map.on('click', 
+					function(e){
+						var coord = e.latlng.toString().split(',');
+						var lat = coord[0].split('(');
+						var lng = coord[1].split(')');
+						console.log(lng[0] + ", " + lat[1]);
+					});
+
+			  var overlayers = {
+				"EMODnet Bathymetry": bathymetry,
+				"Experiment area" : area,
+				"CTD first leg" : CTD1layer,
+				"CTD second leg" : CTD2layer,
+				"Coastal glider": Glider1,
+				"Deep glider": Glider2,
+				"Drifters": Drifter,
+				"Profilers": Profiler,
+				"SST": SST,
+			  };
+
+			  L.control.layers(baseMaps, overlayers, {collapsed:false}).addTo(map);
+
+
+			</script>
+		</body>
+	</html>
+
