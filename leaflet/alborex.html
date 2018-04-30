@@ -13,7 +13,7 @@
 			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 			<style type="text/css">
 				#map { height : 800px; }
-				.info { padding: 10px 20px; font: 20px/22px Arial, Helvetica, sans-serif; background: rgba(255,255,255,0.7);
+				.info { padding: 10px 20px; font: 20px/22px Arial, Helvetica, sans-serif; background: rgba(255,255,255,0.7)};
 			</style>
 		</head>
 		<body>
@@ -22,6 +22,7 @@
 			<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 			<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/togeojson/0.16.0/togeojson.js"></script>
 			<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.fullscreen/1.4.3/Control.FullScreen.min.js"></script>
+			<script type="text/javascript" src="L.Graticule.js"></script>
 			<script type="text/javascript" src="Leaflet.Coordinates-0.1.5.min.js"></script>
 			<script type="text/javascript" src="data/CTD1.js"></script>
 			<script type="text/javascript" src="data/CTD2.js"></script>
@@ -46,15 +47,24 @@
 				maxZoom: 13
 			  });
 
-
 			  var baseMaps = {
 				"Positron": positron,
 				"Ocean Base map": Esri_OceanBasemap,
 			  };
-			  
+
 			  var bathymetry = L.tileLayer.wms('http://ows.emodnet-bathymetry.eu/wms', {
 				layers: 'emodnet:mean_atlas_land,coastlines,world:sea_names'
 			  }).addTo(map);
+
+				// Specify bold red lines instead of thin grey lines
+				L.graticule({
+					interval: 2,
+				  style: {
+			        color: 'black',
+			        weight: 1,
+							alpha: 0.5
+			    }
+				}).addTo(map);
 
 			  //baseMaps.addTo(map);
 			  //baseMaps.bringToBack();
@@ -155,8 +165,8 @@
 			  imageBounds = [[34.75, -6.75], [40., 3.001]];
 			  SST = L.imageOverlay(imageUrl, imageBounds, {opacity: 1., zIndex: 1}).addTo(map);
 			  //SST.bringToFront()
-			  
-			  map.on('click', 
+
+			  map.on('click',
 					function(e){
 						var coord = e.latlng.toString().split(',');
 						var lat = coord[0].split('(');
@@ -182,4 +192,3 @@
 			</script>
 		</body>
 	</html>
-
