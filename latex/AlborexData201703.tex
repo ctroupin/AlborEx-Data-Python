@@ -28,7 +28,7 @@
 \Author[6]{Amala}{Mahadevan}
 \Author[5,2]{Joaqu\'{i}n}{Tintor\'{e}}
 
-\affil[1]{GeoHydrodynamics and Environment Research, Freshwater and OCeanic science Unit of reSearch (FOCUS), University of Li\`{e}ge, Li\`{e}ge, Belgium}
+\affil[1]{GeoHydrodynamics and Environment Research (GHER), Freshwater and OCeanic science Unit of reSearch (FOCUS), University of Li\`{e}ge, Li\`{e}ge, Belgium}
 \affil[2]{Instituto Mediterr\'{a}neo de Estudios Avanzados (IMEDEA, CSIC-UIB), Esporles, Spain}
 \affil[3]{Institute for Coastal Marine Environment-National Research Council (IAMC-CNR) Oristano, Oristano, Italy}
 \affil[4]{Istituto Nazionale di Oceanografia e di Geofisica Sperimentale (OGS), Trieste, Italy}
@@ -100,24 +100,28 @@ The SOCIB R/V was used to sample the area with vertical profiles acquired though
 
 \begin{figure}[t]
 \includegraphics[width=.5\textwidth]{../figures/CTD/ctd_casts.png}
-\caption{The CTD casts were organised in 5 legs that crossed the front and were repeated over 2 periods, at the beginning and the end of the mission.\label{fig2:CTD}}
+\caption{The CTD casts were organised in 5 legs that crossed the front and were repeated over 2 periods, at the beginning and the end of the mission. The front position (broad, dashed line) is overlayed to clarity.\label{fig2:CTD}}
 \end{figure}
 
-In addition to the CTDs, the R/V thermosalinograph continuously acquired temperature and conductivity along the ship track, from which near surface salinity is derived. Direct measurements of currents were performed during the night (from 10~PM UTC to 6~AM UTC) and during the 2 CTD surveys, using an acoustic Doppler current profiler (ADCP). The R/V weather station measured air temperature, pressure, wind speed and direction during the whole duration of the mission.
+In addition to the CTDs, the R/V thermosalinograph continuously acquired temperature and conductivity along the ship track, from which near surface salinity is derived (Fig.~\ref{fig3:thermosal}). Direct measurements of currents were performed during the night (from 10~PM UTC to 6~AM UTC) and during the 2 CTD surveys, using an acoustic Doppler current profiler (ADCP). The R/V weather station measured air temperature, pressure, wind speed and direction during the whole duration of the mission.
 
-%\begin{figure}[t]
-%\includegraphics[width=.5\textwidth]{../figures/CTD/ctd_casts.png}
-%\caption{The CTD casts were organised in 5 legs that crossed the front and were repeated over 2 periods, at the beginning and the end of the mission.\label{fig2:CTD}}
-%\end{figure}
+\begin{figure}[t]
+\includegraphics[width=.5\textwidth]{../figures/thermosal_scatter.png}
+\caption{The near-surface salinity (colored dots) measured by the thermosalinograph evidences the strong horizontal gradients, in agreement with the front position as obtained using the SST (broad, dashed line). The 5 subplots depict the temperature and salinity along select meridional tracks \label{fig3:thermosal}}
+\end{figure}
 
 \subsubsection{Gliders}
 
 To collect measurements addressing the submesoscale, two gliders were deployed on May 25 inside the study area. The coastal glider carried out measurements up to 200~m depth  against 500~m for the deep glider. The horizontal resolution was about 0.5~km for the shallow and 1~km for the deep glider. The initial plan was to have two 50-km meridional tracks, 10 kilometers away one from the other, and to repeat these tracks up to 4 times during the experiment. However, due to the strong eastward currents, different tracks (Fig.~\ref{}) crossing the front several times were made instead.
 
-On May 25, 25 Surface Velocity Program (SVP) drifters were deployed in the frontal area in a tight square pattern (mean distance between drifters around 3~km). Almost all the drifters also provided measurement of the sea water temperature near the surface. On the same day, three Argo floats were programmed to cycle	at intervals ranging from 3 hours to 5 days and to depths up to 2000~m.
+
+\subsubsection{Surface drifters}
+
+On May 25, 25 Surface Velocity Program (SVP) drifters were deployed in the frontal area in a tight square pattern (mean distance between drifters around 3~km). Almost all the drifters also provided measurement of the sea water temperature. On the same day, three Argo floats were programmed to cycle at intervals ranging from 3 hours to 5 days and to depths up to 2000~m.
 
 \begin{figure}[t]
-\includegraphics[width=.45\textwidth]{../figures/drifter_temperature.png}\includegraphics[width=.45\textwidth]{../figures/drifter_temperature_closeup.png}
+\includegraphics[width=.5\textwidth]{../figures/drifter_temperature.png}\\
+\includegraphics[width=.5\textwidth]{../figures/drifter_temperature_closeup.png}
 \caption{Surface drifter trajectories. For the sake of simplicy the temperature, when available, is only shown for the duration of the mission.\label{fig3:drifters}}
 \end{figure}
 
@@ -127,7 +131,7 @@ The AlborEX mission generated a large amount of data in a region scarcely sample
 
 \subsection{File format and organisation}
 
-The original data files (i.e. obtained directly from the sensors) are converted to Network Common Data Form \citep[netCDF,][]{REW90}, an Open Geospatial Consortium (OGC) standard widely adopted in atmospheric and oceanic sciences. Each file contains the measurements acquired by the sensors as well the metadata (mission name, principal investigator, \ldots). The structure of the files follows the Climate and Forecast (CF) conventions \citep{DOMENICO13} and are based on the model of OceanSITES \citep{SEND2010}. 
+The original data files (i.e. obtained directly from the sensors) are converted to Network Common Data Form (netCDF, \doi{(http://doi.org/10.5065/D6H70CW6}), an Open Geospatial Consortium (OGC) standard widely adopted in atmospheric and oceanic sciences. Each file contains the measurements acquired by the sensors as well the metadata (mission name, principal investigator, \ldots). The structure of the files follows the Climate and Forecast (CF) conventions \citep{DOMENICO13} and are based on the model of OceanSITES \citep{SEND2010}. 
 
 \subsection{Data processing levels}
 
@@ -170,6 +174,8 @@ As the new files will not be available before a full reprocessing of all the his
 
 Following SOCIB general policy, the data are made available as netCDF files through the SOCIB Thematic Real-time Environmental Distributed Data Services (THREDDS) Data Server, a standard way to distribute metadata and data using a variety of remote data access protocols such as OPeNDAP (\url{https://www.opendap.org}), Web Map Service (WMS) or direct HTTP access. 
 
+
+
 %Data are also available through the main European portals:
 %\begin{itemize}
 %\item Copernicus Marine Environment Monitoring Service (\url{http://marine.copernicus.eu/}), which  provides reference information on the state of the physical oceans and regional seas using numerical model and in situ observations.
@@ -177,7 +183,6 @@ Following SOCIB general policy, the data are made available as netCDF files thro
 %\end{itemize}
 
 However, none of the aforementioned solution allows users to get the whole data set in a common place. Hence the different files were submitted to the Zenodo research platform (\url{https://zenodo.org/}), which stores research outputs (papers, code, datasets) and assigns them a Digital Object Identifier (DOI) so to have them easily and uniquely citeable.
-
 
 \conclusions[Conclusions and perspectives]
 
