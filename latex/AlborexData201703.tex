@@ -10,7 +10,7 @@
 
 
 %% 2-column papers and discussion papers
-\documentclass[essd]{copernicus}
+\documentclass[essd,discussion]{copernicus}
 
 \begin{document}
 
@@ -64,9 +64,12 @@ In the context of mesoscale and submesoscale interactions, the AlborEx dataset c
 
 \introduction 
 
-The variety of physical and biological processes occurring in the ocean at different spatial and temporal scales requires a combination of tools in order to properly understand the underlying mechanisms. Hydrodynamical models constitute such a tool: they make it possible to design specific numerical experiments or simulate idealised situation that can reproduce some of these processes. Despite the continuous progresses made in modeling (spatial resolution, parameterization, atmospheric coupling, \ldots), in situ observations remain an essential yet challenging ingredient when addressing the complexity of the ocean. 
+The variety of physical and biological processes occurring in the ocean at various spatial and temporal scales requires a combination of tools in order to properly understand the underlying mechanisms. Hydrodynamical models constitute such a tool: they make it possible to design specific numerical experiments or simulate idealised situation that can reproduce some of these processes and assess the impacts of climate change. Despite the continuous progresses made in modeling (spatial resolution, parameterization, atmospheric coupling, \ldots), in situ observations remain an essential yet challenging ingredient when addressing the complexity of the ocean. 
 
 The perfect observational system would consist in dense array of sensors present at many geographical locations, many depths and measuring almost continuously a wide range of parameters. Obviously such a system is not the reality: researchers have to rely on the combination of various platforms during a limited period of time, each platform measuring a given set of variables at different spatial and temporal resolutions, spatial coverage, accuracy and depth levels. We will refer to this as multi-platform experiment, by opposition to experiments articulated only around the observations made using a research vessel. 
+
+The western Mediterranean Sea is a particularly relevant region for multi-platform experiments, thanks to the wide range of processes taking place and intensively studied since the work of \citet{WUST61} on the vertical circulation: influence on climate \citep[e.g.,][]{GIORGI06,GIORGI08,ADLOFF15,GUIOT16,RAHMSTORF98} and sea-level change \citep[e.g.,][]{TSIMPLIS02, BONADUCE16,WOLFF18}, thermohaline circulation \citep[e.g.,]{BERGAMASCO10 MILLOT87,MILLOT91,MILLOT99,SKLIRIS14,ROBINSON01, water mass formation and convection process \citep[e.g.,]{STOMMEL72,SEND1999,MACIAS18}, mesoscale \citep[e.g.,][]{PUJOL05,SANCHEZROMAN17} and submesoscale processes.
+
 
 The AlborEx multi-platform experiment was performed in the Alboran Sea from from May 25 to 31, 2014, with the objective of capturing meso and submesoscale processes taking place in this area and evaluating the interactions between the two scales, with a specific focus on the vertical velocities. The data set made up of the observations provided by all the platforms during that period, described in the next Section, is particularly rich data set due to the variety of sensors and measured variables concentrated on a relatively small area.
 
@@ -94,11 +97,19 @@ While the remote sensing data represented a meaningful source of information abo
 
 \subsubsection{Research vessel}
 
-The SOCIB R/V was used to sample the area with vertical profiles acquired though the CTD. Two distinct CTD surveys were performed on a 10~km $\times$ 5~km regular grid. The first survey was run from May 26 to 27 and consisted of 34 casts along 5 meridional legs (Fig.~\ref{}). The second survey took place from May 29 to 30 and was made up of 28 casts. These casts were performed at almost similar locations as those of the first survey in order to allow for detecting changes between the two periods. 
+The SOCIB R/V was used to sample the area with vertical profiles acquired though the CTD. Two distinct CTD surveys were performed on a 10~km $\times$ 5~km regular grid. The first survey was run from May 26 to 27 and consisted of 34 casts along 5 meridional legs (Fig.~\ref{fig2:CTD}). The second survey took place from May 29 to 30 and was made up of 28 casts. These casts were performed at almost similar locations as those of the first survey in order to allow for detecting changes between the two periods. 
+
+\begin{figure}[t]
+\includegraphics[width=.5\textwidth]{../figures/CTD/ctd_casts.png}
+\caption{The CTD casts were organised in 5 legs that crossed the front and were repeated over 2 periods, at the beginning and the end of the mission.\label{fig2:CTD}}
+\end{figure}
 
 In addition to the CTDs, the R/V thermosalinograph continuously acquired temperature and conductivity along the ship track, from which near surface salinity is derived. Direct measurements of currents were performed during the night (from 10~PM UTC to 6~AM UTC) and during the 2 CTD surveys, using an acoustic Doppler current profiler (ADCP). The R/V weather station measured air temperature, pressure, wind speed and direction during the whole duration of the mission.
 
-
+\begin{figure}[t]
+\includegraphics[width=.5\textwidth]{../figures/CTD/ctd_casts.png}
+\caption{The CTD casts were organised in 5 legs that crossed the front and were repeated over 2 periods, at the beginning and the end of the mission.\label{fig2:CTD}}
+\end{figure}
 
 \subsubsection{Gliders}
 
