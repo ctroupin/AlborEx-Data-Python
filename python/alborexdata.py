@@ -272,4 +272,4 @@ class CTD(Glider):
 class Ship(Drifter):
 
     def plot_track(self, m, **kwargs):
-        m.plot(self.lon, self.lat, latlon=True, linestyle="--", **kwargs)
+        m.plot(self.lon, self.lat, latlon=True, **kwargs)
