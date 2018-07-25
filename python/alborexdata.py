@@ -3,10 +3,10 @@ import netCDF4
 import logging
 import datetime
 import numpy as np
+import seawater
 from scipy import interpolate
 import matplotlib.pyplot as plt
 from mpl_toolkits.basemap import Basemap
-
 import matplotlib.patches as patches
 from matplotlib.path import Path
 
@@ -217,6 +217,9 @@ class Drifter(object):
     def select_dates(self, finaldate, initialdate=None):
         """
         Mask the time outside the selected period
+
+        finaldate and initialdate are `datetime` obects
+        for example: finaldate=datatime.datetime(2017, 5, 3, 18, 30, 0)
         """
         if initialdate is not None:
             self.lon = np.ma.masked_where(np.logical_or(self.dates > finaldate,
@@ -278,15 +281,20 @@ class Glider(Drifter):
 
 class CTD(Glider):
 
-    def __init__(self, lon=None, lat=None, time=None, depth=None,
-                 temperature=None, qclon=None, qclat=None):
+    def __init__(self, lon=None, lat=None, time=None, depth=None, pressure=None,
+                 temperature=None, salinity=None, qclon=None, qclat=None,
+                 qctemp=None, qcsal=None):
         self.lon = lon
         self.lat = lat
         self.time = time
         self.depth = depth
+        self.pressure = pressure
         self.temperature = temperature
+        self.salinity = salinity
         self.qclon = qclon
         self.qclat = qclat
+        self.qctemp = qctemp
+        self.qcsal = qcsal
         self.timeunits = None
         self.dates = None
 
@@ -296,6 +304,7 @@ class CTD(Glider):
         """
         if os.path.exists(datafile):
             with netCDF4.Dataset(datafile, 'r') as nc:
+                self.pressure =  nc.get_variables_by_attributes(standard_name='sea_water_pressure')[0][:]
                 self.lon = nc.get_variables_by_attributes(standard_name='longitude')[0][:]
                 self.lat = nc.get_variables_by_attributes(standard_name='latitude')[0][:]
                 self.depth = nc.get_variables_by_attributes(standard_name='depth')[0][:]
@@ -312,10 +321,39 @@ class CTD(Glider):
                     self.qclon = nc.get_variables_by_attributes(standard_name='longitude status_flag')[0][:]
                 except IndexError:
                     self.qclon = None
+
+                # Get salinity
                 try:
-                    self.temperature = nc.get_variables_by_attributes(standard_name='sea_water_temperature')[:]
+                    salinityvar = nc.get_variables_by_attributes(standard_name='sea_water_salinity')[0]
+                    salinityqcvar = salinityvar.ancillary_variables
+                    self.salinity = salinityvar[:]
+                    self.qcsal = nc.variables[salinityqcvar][:]
                 except IndexError:
-                    self.temperature = None
+                    self.salinity = None
+                    self.qcsal = None
+
+                # Get (potential) temperature and convert if necessary
+                try:
+                    tempvar = nc.get_variables_by_attributes(standard_name='sea_water_temperature')[0]
+                    self.temperature = tempvar[:]
+
+                except IndexError:
+                    try:
+                        tempvar = nc.get_variables_by_attributes(standard_name='sea_water_potential_temperature')[0]
+                        potentialtemp = tempvar[:]
+                        self.temperature = seawater.temp(self.salinity, potentialtemp, self.pressure)
+
+                    except IndexError:
+                        self.temperature = None
+                        self.qctemp = None
+
+                tempqcvar = tempvar.ancillary_variables
+                self.qctemp = nc.variables[tempqcvar][:]
+
+
+
+class Profiler(CTD):
+    pass
 
 class Ship(Drifter):
 
