@@ -17,27 +17,7 @@ from matplotlib.offsetbox import AnnotationBbox, OffsetImage
 from matplotlib._png import read_png
 
 
-def prepare_map(coordinates, res='i', proj='merc'):
-    """Return a fig, m and ax objects
-    given a set of coordinates defining a bounding box
-    :param coordinates: list of coordinates (lonmin, lonmax, latmin, latmax)
-    :param res: resolution in the projection ; 'i' by default (intermediate)
-    :return: fig
-    :type fig: Figure object
-    :return m
-    :type m: Basemap object
-    :return ax
-    :type ax: AxesSubplot object
-    """
-    m = Basemap(projection=proj,
-                llcrnrlon=coordinates[0], llcrnrlat=coordinates[2],
-                urcrnrlon=coordinates[1], urcrnrlat=coordinates[3],
-                lat_ts=0.5 * (coordinates[2] + coordinates[3]), resolution=res)
 
-    fig = plt.figure()
-    ax = plt.subplot(111)
-    m.ax = ax
-    return fig, m, ax
 
 
 def add_logo(imagepath, ax, position, zoom, zorder):

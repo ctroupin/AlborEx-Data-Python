@@ -4,7 +4,55 @@ import logging
 import datetime
 import numpy as np
 from scipy import interpolate
+import matplotlib.pyplot as plt
+from mpl_toolkits.basemap import Basemap
 
+import matplotlib.patches as patches
+from matplotlib.path import Path
+
+import warnings
+import matplotlib.cbook
+warnings.filterwarnings("ignore",category=matplotlib.cbook.mplDeprecation)
+
+def prepare_map(coordinates, res='i', proj='merc'):
+    """Return a fig, m and ax objects
+    given a set of coordinates defining a bounding box
+    :param coordinates: list of coordinates (lonmin, lonmax, latmin, latmax)
+    :param res: resolution in the projection ; 'i' by default (intermediate)
+    :return: fig
+    :type fig: Figure object
+    :return m
+    :type m: Basemap object
+    :return ax
+    :type ax: AxesSubplot object
+    """
+    m = Basemap(projection=proj,
+                llcrnrlon=coordinates[0], llcrnrlat=coordinates[2],
+                urcrnrlon=coordinates[1], urcrnrlat=coordinates[3],
+                lat_ts=0.5 * (coordinates[2] + coordinates[3]), resolution=res)
+
+    fig = plt.figure()
+    ax = plt.subplot(111)
+    m.ax = ax
+    return fig, m, ax
+
+def create_rect_patch(coordinates, m, **kwargs):
+    """
+    Create a rectangular patch to add on the map
+    :param coordinates:
+    :param m: Basemap object
+    :return: patch
+    """
+    xr1, yr1 = m(coordinates[0], coordinates[2])
+    xr2, yr2 = m(coordinates[0], coordinates[3])
+    xr3, yr3 = m(coordinates[1], coordinates[3])
+    xr4, yr4 = m(coordinates[1], coordinates[2])
+    verts = [(xr1, yr1), (xr2, yr2), (xr3, yr3), (xr4, yr4), (xr1, yr1), ]
+    codes = [Path.MOVETO, Path.LINETO, Path.LINETO,
+             Path.LINETO, Path.CLOSEPOLY, ]
+    path = Path(verts, codes)
+    patch = patches.PathPatch(path, **kwargs)
+    return patch
 
 def configure_logging(logfile="./alborexFig2.log"):
     """Prepare the logging messages and file
@@ -270,6 +318,15 @@ class CTD(Glider):
                     self.temperature = None
 
 class Ship(Drifter):
+
+    def apply_qc(self, qflag=1):
+        """
+        Mask the coordinates with a quality flag different from the specified value
+        1 = good data
+        """
+        badcoords = np.logical_or(self.qclon != 1, self.qclat !=1)
+        self.lon = np.ma.masked_where(badcoords, self.lon)
+        self.lat = np.ma.masked_where(badcoords, self.lat)
 
     def plot_track(self, m, **kwargs):
         m.plot(self.lon, self.lat, latlon=True, **kwargs)
