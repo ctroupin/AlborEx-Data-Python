@@ -1,0 +1,27 @@
+{
+    "datafiles":{
+        "ctd": "/home/ctroupin/Data/Alborex/CTD/dep0007_socib-rv_scb-sbe9002_L1_2014-05-25.nc",
+        "ctdlegs": ["/home/ctroupin/Data/Alborex/CTD/ctd_positions_Leg1.txt",
+                    "/home/ctroupin/Data/Alborex/CTD/ctd_positions_Leg2.txt"],
+        "gliders": ["/home/ctroupin/Data/Alborex/Gliders/dep0005_icoast00_ime-slcost000_L1_2014-05-25_data_dt.nc",
+                    "/home/ctroupin/Data/Alborex/Gliders/dep0012_ideep00_ime-sldeep000_L1_2014-05-25_data_dt.nc"],
+        "coast": "/home/ctroupin/Data/Alborex/Coastline/coastline_cartex_f3.txt",
+        "rv": "/home/ctroupin/Data/Alborex/RV/dep0015_socib-rv_scb-pos001_L1_2014-05-25.nc",
+        "altimetry": "/home/ctroupin/DataOceano/AVISO/MedSea/Aviso_gridded/Alborex/dt_med_allsat_madt_uv_20140523_20141010.nc",
+        "coast": "/home/ctroupin/Data/Alborex/Coastline/coastline_f.dat",
+        "adcp": "/home/ctroupin/Data/Alborex/ADCP/dep0009_socib-rv_scb-rdi001_L1_2014-05.nc"
+    },
+    "datadirs":{
+        "sst": "/home/ctroupin/Data/Alborex/SST/",
+        "drifters": "/home/ctroupin/Data/Alborex/Drifters",
+        "profilers": "/home/ctroupin/Data/Alborex/Profilers"
+    },
+    "figdir": "/home/ctroupin/Publis/201703_AlborexData/figures",
+    "domain":{
+        "coordinates1": [-6.75, 3.001, 34.75, 40.0],
+        "coordinates2": [-1.0, -0.25, 36.65, 37.25],
+        "coordinates3": [-6.0, -5.25, 35.8, 36.2],
+        "resolution1": [1.0, 1.0],
+        "resolution2": [0.25, 0.25]
+    }
+}
