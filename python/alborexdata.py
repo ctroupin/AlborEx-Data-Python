@@ -237,7 +237,7 @@ class Drifter(object):
         return scat
 
     def point_plot(self, m, **kwargs):
-        m.plot(self.lon, self.lat, latlon=True, linewidth=0, **kwargs)
+        m.plot(self.lon, self.lat, latlon=True, **kwargs)
 
     def add_initial_position(self, m, **kwargs):
         m.plot(self.lon[0], self.lat[0], latlon=True, linewidth=0, **kwargs)
@@ -368,3 +368,52 @@ class Ship(Drifter):
 
     def plot_track(self, m, **kwargs):
         m.plot(self.lon, self.lat, latlon=True, **kwargs)
+
+
+class SST(object):
+    """
+    Sea surface temperature field
+    """
+
+    def __init__(self, lon=None, lat=None, field=None, qflag=None,
+                 year=None, dayofyear=None):
+        self.lon = lon
+        self.lat = lat
+        self.field = field
+        self.qflag = qflag
+        self.timeunits = year
+        self.year = year
+        self.dayofyear = dayofyear
+
+    def read_from_oceancolorL2(self, filename):
+        """
+        Load the SST from netCDF L2 file obtained from
+        https://oceancolor.gsfc.nasa.gov
+        :param filename: name of the netCDF file
+        :return: lon, lat, field, qflag, year, dayofyear
+        """
+
+        if os.path.exists(filename):
+            with netCDF4.Dataset(filename) as nc:
+                # Read platform
+                sat = nc.platform
+                # Read time information
+                # Assume all the measurements made the same day (and same year)
+                self.year = nc.groups['scan_line_attributes'].variables['year'][0]
+                self.dayofyear = nc.groups['scan_line_attributes'].variables['day'][0]
+                # Read coordinates
+                self.lon = nc.groups['navigation_data'].variables['longitude'][:]
+                self.lat = nc.groups['navigation_data'].variables['latitude'][:]
+                # Read geophysical variables
+                try:
+                    self.field = nc.groups['geophysical_data'].variables['sst'][:]
+                    self.qflag = nc.groups['geophysical_data'].variables['qual_sst'][:]
+                except KeyError:
+                    self.field = nc.groups['geophysical_data'].variables['sst4'][:]
+                    self.qflag = nc.groups['geophysical_data'].variables['qual_sst4'][:]
+
+    def apply_qc(self, qf=1):
+        """
+        Mask the sst values which don't match the mentioned quality flag
+        """
+        self.field = np.ma.masked_where(self.qflag != 1, self.field)
