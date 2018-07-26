@@ -1,0 +1,2 @@
+http://thredds.socib.es/thredds/dodsC/drifter/profiler_drifter/profiler_drifter_arvora3001-ogs_arvora3001/L1/2014/dep0001_profiler-drifter-arvora3001_ogs-arvora3001_L1_2014-05-25.nc
+http://thredds.socib.es/thredds/dodsC/drifter/profiler_drifter/profiler_drifter_provbioll001-ogs_provbioll001/L1/2014/dep0001_profiler-drifter-provbioll001_ogs-provbioll001_L1_2014-05-25.nc
