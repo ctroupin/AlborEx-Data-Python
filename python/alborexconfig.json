@@ -19,6 +19,7 @@
         "profilers": "/home/ctroupin/Data/Alborex/Profilers"
     },
     "figdir": "/home/ctroupin/Publis/201703_AlborexData/figures",
+    "figdirleaflet": "/home/ctroupin/Publis/201703_AlborexData/leaflet/images/",
     "domain":{
         "coordinates1": [-6.75, 3.001, 34.75, 40.0],
         "coordinates2": [-1.0, -0.25, 36.65, 37.25],
