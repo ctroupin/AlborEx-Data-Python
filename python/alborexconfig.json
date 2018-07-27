@@ -11,7 +11,8 @@
         "rv": "/home/ctroupin/Data/Alborex/RV/dep0015_socib-rv_scb-pos001_L1_2014-05-25.nc",
         "altimetry": "/home/ctroupin/DataOceano/AVISO/MedSea/Aviso_gridded/Alborex/dt_med_allsat_madt_uv_20140523_20141010.nc",
         "coast": "/home/ctroupin/Data/Alborex/Coastline/coastline_f.dat",
-        "adcp": "/home/ctroupin/Data/Alborex/ADCP/dep0009_socib-rv_scb-rdi001_L1_2014-05.nc"
+        "adcp": "/home/ctroupin/Data/Alborex/ADCP/dep0009_socib-rv_scb-rdi001_L1_2014-05.nc",
+        "thermosal": "/home/ctroupin/Data/Alborex/RV/dep0015_socib-rv_scb-tsl001_L1_2014-05-25_HR.nc"
     },
     "datadirs":{
         "sst": "/home/ctroupin/Data/Alborex/SST/",
