@@ -243,6 +243,35 @@ class Drifter(object):
         m.plot(self.lon[0], self.lat[0], latlon=True, linewidth=0, **kwargs)
 
 
+class Thermosal(object):
+    """
+    Thermosalinograph (temperature and salinity measured by the
+    ship near the surface)
+    """
+    def __init__(self, lon=None, lat=None, time=None,
+                 temperature=None, salinity=None, qclon=None, qclat=None,
+                 qctemp=None, qcsal=None):
+        self.lon = lon
+        self.lat = lat
+        self.time = time
+        self.temperature = temperature
+        self.salinity = salinity
+
+    def get_from_netcdf(self, datafile):
+        """
+        Read the coordinates and the field values from a netCDF file
+        """
+        if os.path.exists(datafile):
+            with netCDF4.Dataset(datafile, 'r') as nc:
+                self.lon = nc.get_variables_by_attributes(standard_name='longitude')[0][:]
+                self.lat = nc.get_variables_by_attributes(standard_name='latitude')[0][:]
+                self.time = nc.get_variables_by_attributes(standard_name='time')[0][:]
+                timeunits = nc.get_variables_by_attributes(standard_name='time')[0].units
+                self.dates = netCDF4.num2date(self.time, timeunits)
+                self.salinity = nc.get_variables_by_attributes(standard_name='sea_water_salinity')[0][:]
+                self.temperature = nc.get_variables_by_attributes(standard_name='sea_water_temperature')[0][:]
+
+
 class Glider(Drifter):
 
     def remove_masked_coords(self):
@@ -283,7 +312,7 @@ class CTD(Glider):
 
     def __init__(self, lon=None, lat=None, time=None, depth=None, pressure=None,
                  temperature=None, salinity=None, qclon=None, qclat=None,
-                 qctemp=None, qcsal=None):
+                 qctemp=None, qcsal=None, chloro=None):
         self.lon = lon
         self.lat = lat
         self.time = time
@@ -297,6 +326,7 @@ class CTD(Glider):
         self.qcsal = qcsal
         self.timeunits = None
         self.dates = None
+        self.chloro = chloro
 
     def get_from_netcdf(self, datafile):
         """
@@ -311,6 +341,7 @@ class CTD(Glider):
                 self.time = nc.get_variables_by_attributes(standard_name='time')[0][:]
                 self.timeunits = nc.get_variables_by_attributes(standard_name='time')[0].units
                 self.dates = netCDF4.num2date(self.time, self.timeunits)
+                self.chloro = nc.variables["CHLO"][:]
 
                 try:
                     self.qclat = nc.get_variables_by_attributes(standard_name='latitude status_flag')[0][:]
@@ -324,7 +355,7 @@ class CTD(Glider):
 
                 # Get salinity
                 try:
-                    salinityvar = nc.get_variables_by_attributes(standard_name='sea_water_salinity')[0]
+                    salinityvar = nc.get_variables_by_attributes(standard_name='sea_water_practical_salinity')[0]
                     salinityqcvar = salinityvar.ancillary_variables
                     self.salinity = salinityvar[:]
                     self.qcsal = nc.variables[salinityqcvar][:]
