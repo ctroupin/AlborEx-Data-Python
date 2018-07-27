@@ -56,9 +56,9 @@
 
 
 \begin{abstract}
-AlborEX (Alboran Sea Experiment) consisted of a multi-platform, multi-disciplinary experiment performed in the Alboran Sea (Western Mediterranean Sea) between May 25 and 31, 2014. The observational component of the experiment focused on the sampling of the physical and biogeochemical properties of sea water within oceanographic features present along an intense frontal zone, with a particular interest in the resulting vertical motions. To this end, the mission included 1 research vessel (66 profiles), 2 underwater gliders (adding up 554 profiles), 3 Argo floats and 25 surface drifters. 
+AlborEX (Alboran Sea Experiment) consisted of a multi-platform, multi-disciplinary experiment performed in the Alboran Sea (Western Mediterranean Sea) between May 25 and 31, 2014. The observational component of AlborEx aimed to sample the physical and biogeochemical properties of oceanographic features present along an intense frontal zone, with a particular interest in the vertical motions. To this end, the mission included 1 research vessel (66 profiles), 2 underwater gliders (adding up 554 profiles), 3 Argo floats and 25 surface drifters. 
 
-In addition, 500 water samples were collected at the 66 CTD stations for the measurement of chlorophyll and nutrient concentrations. Near real-time ADCP velocities were collected nightly and during the CTD sections. All of the Argo floats acquired temperature and conductivity profiles, while the Prov-bio float also measured oxygen and chlorophyll-a concentrations, colored dissolved organic matter, backscattering at 700 nm, downwelling irradiance at 380, 410, 490 nm, and photo-synthetically active radiation (PAR).
+In addition, 500 water samples were collected at the 66 CTD stations for the measurement of chlorophyll a and nutrient concentrations. Near real-time ADCP velocities were collected nightly and during the CTD sections. All of the Argo floats acquired temperature and conductivity profiles, while the Prov-bio float also measured oxygen and chlorophyll-a concentrations, colored dissolved organic matter, backscattering at 700 nm, downwelling irradiance at 380, 410, 490 nm, and photo-synthetically active radiation (PAR).
 
 In the context of mesoscale and submesoscale interactions, the AlborEX dataset constitutes a particularly valuable source of information to infer mechanisms, evaluate vertical transport and establish relationships between the thermal and haline structures and the biogeochemical variable evolution, in a region characterised by strong horizontal gradients provoked by the confluence of Atlantic and Mediterranean Waters.
 
@@ -67,30 +67,37 @@ In the context of mesoscale and submesoscale interactions, the AlborEX dataset c
 
 \introduction 
 
-The variety of physical and biological processes occurring in the ocean at various spatial and temporal scales requires a combination of tools in order to properly understand the underlying mechanisms. Hydrodynamical models constitute such a tool: they make it possible to design specific numerical experiments or simulate idealised situation that can reproduce some of these processes and assess the impacts of climate change. Despite the continuous progresses made in modeling (spatial resolution, parameterization, atmospheric coupling, \ldots), in situ observations remain an essential yet challenging ingredient when addressing the complexity of the ocean. 
+The variety of physical and biological processes occurring in the ocean at different spatial and temporal scales requires a combination of tools in order to properly understand the underlying mechanisms. Hydrodynamical models constitute such a tool as they make it possible to design specific numerical experiments or simulate idealised situation that can reproduce some of these processes and assess the impacts of climate change. Despite the continuous progresses made in modeling (spatial resolution, parameterization, atmospheric coupling, \ldots), in situ observations remain an essential yet challenging ingredient when addressing the complexity of the ocean. 
 
 The perfect observational system would consist in dense array of sensors present at many geographical locations, many depths and measuring almost continuously a wide range of parameters. Obviously such a system is not the reality: researchers have to rely on the combination of various platforms during a limited period of time, each platform measuring a given set of variables at different spatial and temporal resolutions, spatial coverage, accuracy and depth levels. We will refer to this as multi-platform experiment, by opposition to experiments articulated only around the observations made using a research vessel. 
 
 The western Mediterranean Sea is a particularly relevant region for multi-platform experiments, thanks to the wide range of processes taking place and intensively studied since the work of \citet{WUST61} on the vertical circulation: influence on climate \citep[e.g.,][]{GIORGI06,GIORGI08,ADLOFF15,GUIOT16,RAHMSTORF98} and sea-level change \citep[e.g.,][]{TSIMPLIS02,BONADUCE16,WOLFF18}, thermohaline circulation \citep[e.g.,][]{BERGAMASCO10,MILLOT87,MILLOT91,MILLOT99,SKLIRIS14,ROBINSON01}, water mass formation and convection process \citep[e.g.,][]{STOMMEL72,SEND1999,MACIAS18}, mesoscale \citep[e.g.,][]{ALVAREZ96,PINOT95,PUJOL05,SANCHEZROMAN17} and submesoscale processes \citep[e.g.,][]{BOSSE15,DAMIEN17,TESTOR03,TESTOR18}. Other recent instances of multi-platform experiments in the Mediterranean Sea were focused on the Northern Current \citep[December 2011,][]{BERTA18}, deep convection in the Northwestern Mediterranean sea \citep[July 2012--October 2013,][]{TESTOR18}, the Balearic Current system \citep[July and November 2007, April and June 2008,][]{BOUFFARD10} and coastal current off west of Ibiza island \citep[August 2013,][]{TROUPIN15}.
 
-The AlborEX multi-platform experiment was performed in the Alboran Sea from from May 25 to 31, 2014, with the objective of capturing meso and submesoscale processes and evaluating the interactions between both scales, with a specific focus on the vertical velocities. The observing system, described in the next section, is made up of the SOCIB coastal R/V, 2 underwater gliders, 3 Argo floats and 25 surface drifters. The resulting data set is particularly rich thanks due to the variety of sensors and measured variables concentrated on a relatively small area.
+Recently, the efforts carried out by data providers through European initiatives such as SeaDataNet (\url{http://seadatanet.org/}) makes it possible the creation and publication of aggregated datasets covering the Mediterranean Sea \citep{SIMONCELLI14}, upon which hydrographical atlas are build \citep[e.g.][]{SIMONCELLI16,IONA18a}. These atlas are particularly useful for the description of the general circulation, the large-scale oceanographic features or for the assessment of the long-term variability \citep{IONA18b}. However their limitation to temperature and salinity variables (as of July 2018) and their characteristic spatial scale prevent them to be employed for the study of submesoscale features.
+
+The AlborEx multi-platform experiment was performed in the Alboran Sea from from May 25 to 31, 2014, with the objective of capturing meso and submesoscale processes and evaluating the interactions between both scales, with a specific focus on the vertical velocities. The observing system, described in the next section, is made up of the SOCIB coastal R/V, 2 underwater gliders, 3 Argo floats and 25 surface drifters. The resulting data set is particularly rich thanks due to the variety of sensors and measured variables concentrated on a relatively small area.
 
 Section~\ref{sec:mission} strives to summarize the motivations behind the sampling and deployments. The presentation of the available data is the object of the Section~\ref{sec:database}.
 
-\section{The AlborEX mission\label{sec:mission}}
+\section{The AlborEx mission\label{sec:mission}}
 
-The mission took place from May 25 and 31, 2014 in the Alboran Sea frontal system \citep{CHENEY78,TINTORE91}, scene of the confluence of Atlantic and Mediterranean waters. While the present papers focuses solely on the original dataset, the mission itself is exensively presented in \citet{RUIZ2015} and the features and processes captured by the observations are discussed in \citet{PASCUAL2017}. \citet{OLITA17} examined the deep chlorophyll maximum variation combining the bio-physical data from the gliders and the Arglo floats.
-
-\subsection{Study area}
-
-The particularity of the mission design is that the exact sampling area was not firmly decided until a few days before the start. Prior to the experiment, satellite images of sea surface temperature (SST) and chlorophyll-a (chl-a) concentration were acquired in order to provide an overview of the surface oceanic features apparent in the Alboran Sea. A well-defined front (Fig.~\ref{fig1:SST}) separating Atlantic and Mediterranean waters and exhibiting filament-like structures was selected as the study area (see rectangular box in Fig.~\ref{fig1:SST}). 
-
-The pair of images indicates that the front position slightly changed between May 25 and 30, 2014. An anticyclonic eddy centered around 36$^{\circ}$30'N, 0.5$^{\circ}$W, according to altimetry data, slowly followed an eastward trajectory in the following days. Other SST images during the period of interest displayed different temperature values near the front, yet the front position remains stable. 
+The mission took place from May 25 and 31, 2014 in the Alboran Sea frontal system \citep[][see Fig.~\ref{fig1:general}]{CHENEY78,TINTORE91}, scene of the confluence of Atlantic and Mediterranean waters. The mission itself is exensively presented in \citet{RUIZ2015} and the features and processes captured by the observations are discussed in \citet{PASCUAL2017}. \citet{OLITA17} examined the deep chlorophyll maximum variation combining the bio-physical data from the gliders and the Arglo floats. The present papers focuses solely on the description of the original dataset, graphically summarised in Fig.~\ref{fig1:general}).
 
 \begin{figure}[t]
-\includegraphics[width=.5\textwidth]{../figures/A2014145125000_L2_LAC_SST.png}\\
-\includegraphics[width=.5\textwidth]{../figures/A2014150020500_L2_LAC_SST.png}
-\caption{Sea Surface Temperature in the western Mediterranean Sea from MODIS sensor onboard Aqua satellite corresponding for May 25 and 30, 2014. The dashed black line indicates the approximative position of the front based on the temperature gradient. Level-2, 11 $\mu m$, night-time images were selected. Only pixels with a quality flag equal to 1 (good data) were conserved and represented on the map.\label{fig1:SST}}
+\includegraphics[width=.5\textwidth]{../figures/fig01.png}
+\caption{Area of study and trajectories of the main platforms. The close-up view on displays the glider and the CTD measurements.\label{fig1:general}}
+\end{figure}
+
+\subsection{Remote-sensing data}
+
+The exact sampling area was not firmly decided until a few days before the start. Prior to the experiment, satellite images of sea surface temperature (SST) and chlorophyll-a (chl-a) concentration were acquired in order to provide an overview of the surface oceanic features apparent in the Alboran Sea. A well-defined front separating Atlantic and Mediterranean waters and exhibiting filament-like structures was selected as the study area (see rectangular box in Fig.~\ref{fig2:SST}). 
+
+The pair of images indicates that the front position slightly changed between May 25 and 30, 2014. An anticyclonic eddy centered around 36$^{\circ}$30'N, 0.5$^{\circ}$W, according to altimetry data (not shown), slowly followed an eastward trajectory in the following days. Other SST images during the period of interest displayed different temperature values near the front, yet the front position remains stable. 
+
+\begin{figure}[t]
+\includegraphics[width=.5\textwidth]{../figures/fig02a.png}\\
+\includegraphics[width=.5\textwidth]{../figures/fig02b.png}
+\caption{Sea Surface Temperature in the western Mediterranean Sea from MODIS sensor onboard Aqua satellite corresponding to May 25 and 30, 2014. The dashed black line indicates the approximative position of the front based on the temperature gradient. Level-2, 11 $\mu m$, night-time images were selected. Only pixels with a quality flag equal to 1 (good data) were conserved and represented on the map.\label{fig2:SST}}
 \end{figure}
 
 \subsection{Sampling strategy}
@@ -99,10 +106,10 @@ Whereas the remote sensing data helped in the mission design and the front detec
 
 \subsubsection{Research vessel}
 
-The SOCIB R/V was used to sample the area with vertical profiles acquired though the CTD. Two distinct CTD surveys were performed on a 10~km $\times$ 5~km grid, as depicted in Fig.~\ref{fig2:CTD}: the first survey was run from May 26 to 27 and consisted of 34 casts along 5 meridional legs. The second survey took place from May 29 to 30 and was made up of 28 casts. The casts from both surveys were performed at almost similar locations in order to allow for detecting changes between the two periods. 
+The SOCIB coastal R/V was used to sample the area with vertical profiles acquired though the CTD. Two distinct CTD surveys were performed on a 10~km $\times$ 5~km grid, as depicted in Fig.~\ref{fig2:CTD}: the first survey was run from May 26 to 27 and consisted of 34 casts along 5 meridional legs. The second survey took place from May 29 to 30 and was made up of 28 casts. The casts from both surveys were performed at almost similar locations in order to allow for detecting changes between the two periods. 
 
 \begin{figure}[t]
-\includegraphics[width=.5\textwidth]{../figures/CTD/ctd_casts.png}
+\includegraphics[width=.5\textwidth]{../figures/fig02.png}
 \caption{The CTD casts were organised in 5 legs that crossed the front and were repeated over 2 periods, at the beginning and the end of the mission. The front position (broad, dashed line) is overlayed to clarity.\label{fig2:CTD}}
 \end{figure}
 
@@ -130,7 +137,7 @@ On May 25, 25 Surface Velocity Program (SVP) drifters were deployed in the front
 
 \section{Description of the database\label{sec:database}}
 
-The AlborEX mission generated a large amount of data in a region scarcely sampled in the past. The synergy between lower-resolution (CTD, drifters) and high-resolution data (ADCP, gliders) makes this dataset unique for the study of submesoscale processes in the Mediterranean Sea. Moreover its multidisciplinary nature makes it suitable to study the interactions between the physical conditions and the biogeochemical variables.
+The AlborEx mission generated a large amount of data in a region scarcely sampled in the past. The synergy between lower-resolution (CTD, drifters) and high-resolution data (ADCP, gliders) makes this dataset unique for the study of submesoscale processes in the Mediterranean Sea. Moreover its multidisciplinary nature makes it suitable to study the interactions between the physical conditions and the biogeochemical variables.
 
 \subsection{File format and organisation}
 
@@ -147,7 +154,7 @@ Several processing levels are defined for the data files, all of them are provid
 \end{description}
 
 \begin{table*}[h]
-\caption{Characteristics of the instrument deployments in AlborEX.}
+\caption{Characteristics of the instrument deployments in AlborEx.}
 \begin{tabular}{lcrrccc}
 \tophline
 Instruments 		& Number of deployments & Initial time	& Final time			& \multicolumn{3}{c}{Processing levels} \\
@@ -189,7 +196,7 @@ However, none of the aforementioned solution allows users to get the whole data 
 
 \conclusions[Conclusions and perspectives]
 
-The AlborEX observations acquired in May 2014 constitutes a unique observational data set that captured mesoscale and submesocale features in a particularly energetic frontal zone in the western Mediterranean Sea. The potential uses of the dataset can be separated in different topics:
+The AlborEx observations acquired in May 2014 constitutes a unique observational data set that captured mesoscale and submesocale features in a particularly energetic frontal zone in the western Mediterranean Sea. The potential uses of the dataset can be separated in different topics:
 \begin{itemize}
 \item Hydrodynamics model validation: but the timing and location of small-scale features 
 \item High-resolution remote-sensing data validation: high quality in situ measurements of the sea surface are essential for the validation of operational product such SST or Ocean Color. 
@@ -209,7 +216,7 @@ In the near future multi-platform, high-resolution missions will be critical for
 \disclaimer{The authors do not accept any liability for the correctness and appropriate interpretation of the data or their suitability for any use.}
 
 \begin{acknowledgements}
-The AlborEX experiment was conducted in the framework of PERSEUS EU-funded project (Grant agreement no: 287600). Glider operations were partially funded by JERICO FP7 project. AP acknowledges support from the Spanish National Research Program (E-MOTION/CTM2012-31014 and PRE-SWOT/CTM2016-78607-P). SR and AP are also supported by the Copernicus Marine Environment Monitoring Service (CMEMS) MedSUB project. EM is supported by a post-doctoral grant from the Conselleria d'Educaci\'{o}, Cultura i Universitats del Govern de les Illes Balears (Mallorca, Spain) and the European Social Fund. AC is a FNRS researcher under the FNRS BENTHOX project (Convention T.1009.15). The profiling floats and some drifters were contributed by the Argo-Italy program. The authors thank A.~Massanet, F.~Margirier, M.~Palmer, C.~Castilla and P.~Balaguer for their efficient work at sea and M.~Menna, G.~Notarstefano and A.~Bussani for their help with the drifter and float data processing.
+AlborEx was conducted in the framework of PERSEUS EU-funded project (Grant agreement no: 287600). Glider operations were partially funded by JERICO FP7 project. AP acknowledges support from the Spanish National Research Program (E-MOTION/CTM2012-31014 and PRE-SWOT/CTM2016-78607-P). SR and AP are also supported by the Copernicus Marine Environment Monitoring Service (CMEMS) MedSUB project. EM is supported by a post-doctoral grant from the Conselleria d'Educaci\'{o}, Cultura i Universitats del Govern de les Illes Balears (Mallorca, Spain) and the European Social Fund. AC is a FNRS researcher under the FNRS BENTHOX project (Convention T.1009.15). The profiling floats and some drifters were contributed by the Argo-Italy program. The authors thank A.~Massanet, F.~Margirier, M.~Palmer, C.~Castilla and P.~Balaguer for their efficient work at sea and M.~Menna, G.~Notarstefano and A.~Bussani for their help with the drifter and float data processing.
 
 %NASA Goddard Space Flight Center, Ocean Ecology Laboratory, Ocean Biology Processing Group. Moderate-resolution Imaging Spectroradiometer (MODIS) Terra Ocean Color Data; 2014 Reprocessing. %NASA OB.DAAC, Greenbelt, MD, USA. doi: \doi{10.5067/TERRA/MODIS_OC.2014.0}.
 %Accessed on 03/07/2017
