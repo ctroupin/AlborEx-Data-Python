@@ -124,23 +124,52 @@ In addition to the CTDs, the R/V thermosalinograph continuously acquired tempera
 
 \begin{figure}[t]
 \includegraphics[width=.5\textwidth]{../figures/fig05.png}
-\caption{The near-surface salinity (colored dots) measured by the thermosalinograph evidences the strong horizontal gradients, in agreement with the front position as obtained using the SST (broad, dashed line). The 5 subplots depict the temperature and salinity along select meridional tracks \label{fig3:thermosal}}
+\caption{The near-surface salinity (colored dots) measured by the thermosalinograph evidences the strong horizontal gradients, in agreement with the front position as obtained using the SST (broad, dashed line). The 5 subplots depict the temperature and salinity along select meridional tracks. \label{fig3:thermosal}}
 \end{figure}
 
 \subsubsection{Gliders}
 
-To collect measurements addressing the submesoscale, two gliders were deployed on May 25 inside the study area. The coastal glider carried out measurements up to 200~m depth  against 500~m for the deep glider. The horizontal resolution was about 0.5~km for the shallow and 1~km for the deep glider. The initial plan was to have two 50-km meridional tracks, 10 kilometers away one from the other, and to repeat these tracks up to 4 times during the experiment. However, due to the strong eastward currents, different tracks (Fig.~\ref{}) crossing the front several times were made instead.
+To collect measurements addressing the submesoscale, two gliders were deployed on May 25 inside the study area. The coastal glider carried out measurements up to 200~m depth and the deep glider up to 500~m. The horizontal resolution was about 0.5~km for the shallow and 1~km for the deep glider. The initial sampling strategy consisted in  was to have two 50-km meridional tracks, 10 kilometers away one from the other, and to repeat these tracks up to 4 times during the experiment. However, due to the strong zonal currents in the frontal zone, different tracks (Fig.~\ref{fig6:glidertracks}) crossing the front several times were made instead.
+
+\begin{figure}[t]
+\includegraphics[width=.5\textwidth]{../figures/fig06a.png}
+\caption{Deployment positions and trajectories of the gliders. Different time instances separated by one day are indicated on the tracks to provide a temporal dimension.\label{fig6:glidertracks}}
+\end{figure}
+
+The total number of valid measurements (i.e., discarding the NaN values) acquired are 121513 for the deep glider and 226717 for the coastal. The mean vertical separation between 2 consecutive measurements is around 16~cm. Figure~\ref{fig6:glidersections} displays the temperature and salinity sections obtained with the 2 devices. The high density of measurements makes it possible to distinguish small-scale features on both sides of the front, such as strong lateral gradients, subduction or filament structures.  
+
+\begin{figure*}[t]
+\includegraphics[width=\textwidth]{../figures/fig06b.png}\\
+\includegraphics[width=\textwidth]{../figures/fig06c.png}
+\caption{Temperature and salinity measured by the two gliders. The front position is shown as a dashed, grey line.\label{fig6:glidersections}}
+\end{figure*}
+
+The gliders follow a 3-dimensional trajectory in the water column but for some specific usages it is sometimes more convenient to have the glider data as if they were a series vertical profiles. To do so, a spatial interpolation is applied on the original data, leading to the so-called Level-2 data, further described in Sec.~\ref{sec:processing}.
 
 
 \subsubsection{Surface drifters}
 
-On May 25, 25 Surface Velocity Program (SVP) drifters were deployed in the frontal area in a tight square pattern (mean distance between drifters around 3~km). Almost all the drifters also provided measurement of the sea water temperature. On the same day, three Argo floats were programmed to cycle at intervals ranging from 3 hours to 5 days and to depths up to 2000~m.
+On May 25, 25 Surface Velocity Program (SVP) drifters were deployed in the frontal area in a tight square pattern with a mean distance between neighbor drifters around 3~km. Almost all the drifters were equipped with a thermistor on the lower part of the buoy to measure sea water temperature. 
+
+11 out the 25 drifters, especially those deployed more to the south, were captured by the intense Algerian Current and followed a trajectory along the coast until a longitude about 5$^{\circ}$30'E. The other drifters were deflected northward about 0$^{\circ}$30'E, then veered northwestward or eastward 
+and described cyclonic and anticyclonic trajectories, respectively. Interestingly, all the drifters exhibit a trajectory close to the front position deduced from the SST images until they encounter the Algerian Current (Fig.~\ref{fig3:drifters}). 
+
+On average the time between two consecutive positions is close to one hour, except for 2 drifters for which the intervals are 4 and 5 hours. The velocities are directly computed from the successive positions and highlight the strength of the Algerian Current with velocities on the order of 1~m/s (Fig.~\ref{fig7:drifterszoom}).    
 
 \begin{figure}[t]
-\includegraphics[width=.5\textwidth]{../figures/drifter_temperature.png}\\
-\includegraphics[width=.5\textwidth]{../figures/drifter_temperature_closeup.png}
-\caption{Surface drifter trajectories. For the sake of simplicy, the temperature, when available, is only shown for the duration of the mission.\label{fig3:drifters}}
+\includegraphics[width=.5\textwidth]{../figures/fig07a.png}
+\caption{Surface drifter trajectories. For the sake of simplicy and clarity, the temperature, when available, is only shown for the duration of the mission.\label{fig3:drifters}}
 \end{figure}
+
+\begin{figure*}[h]
+\includegraphics[width=.9\textwidth]{../figures/fig07cd.png}
+\caption{Drifter temperature (left-hand side) and velocity in the area of study.\label{fig7:drifterszoom}}
+\end{figure*}
+
+
+\subsubsection{Profilers}
+
+On the same day, three Argo floats were programmed to cycle at intervals ranging from 3 hours to 5 days and to depths up to 2000~m.
 
 \section{Description of the database\label{sec:database}}
 
@@ -150,7 +179,7 @@ The AlborEx mission generated a large amount of data in a region scarcely sample
 
 The original data files (i.e. obtained directly from the sensors) are converted to Network Common Data Form (netCDF, \doi{(http://doi.org/10.5065/D6H70CW6}), an Open Geospatial Consortium (OGC) standard widely adopted in atmospheric and oceanic sciences. Each file contains the measurements acquired by the sensors as well the metadata (mission name, principal investigator, \ldots). The structure of the files follows the Climate and Forecast (CF) conventions \citep{DOMENICO13} and are based on the model of OceanSITES \citep{SEND2010}. 
 
-\subsection{Data processing levels}
+\subsection{Data processing levels\label{sec:processing}}
 
 Several processing levels are defined for the data files, all of them are provided in the data set. The files are organized by \textit{deployments}, where a deployment is defined as an event initiated when an instrument is put at sea and finished once the instrument is recovered from sea. The following table summarizes the deployments performed during the experiment.
 
@@ -160,7 +189,7 @@ Several processing levels are defined for the data files, all of them are provid
 \item[Level 2 (L2)]: this level consists of regular, homogeneous and instantaneous profiles obtained by interpolating the L1 data. It is only provided for gliders, mostly for visualization and post-processing purposes: specific tools designed to read and display profiler data can then be used the same way for gliders.
 \end{description}
 
-\begin{table*}[h]
+\begin{table*}[htpb]
 \caption{Characteristics of the instrument deployments in AlborEx.}
 \begin{tabular}{lcrrccc}
 \tophline
@@ -182,7 +211,7 @@ Profiling drifters	& 3						& 2014-05-25	& beyond the experiment & \checkmark 	&
 
 All of the data provided by SOCIB are applied quality checks to detect possibly wrong or suspect values. The two main exceptions are:
 \begin{description}
-\item[the gliders:] a set of quality checks have been added to the glider toolbox \citep{TROUPIN16}. 
+\item[the gliders:] a set of quality checks have been added to the glider toolbox \citep{TROUPIN16}.  + reference to Garau and Cusi
 \item[the CTD profiles:] new checks have been recently added to the processing chain.
 \end{description}
 As the new files will not be available before a full reprocessing of all the historical missions, we decided to provide the data files in their current state. A new version will be uploaded as soon as the processing has been performed.
@@ -191,15 +220,20 @@ As the new files will not be available before a full reprocessing of all the his
 
 Following SOCIB general policy, the data are made available as netCDF files through the SOCIB Thematic Real-time Environmental Distributed Data Services (THREDDS) Data Server, a standard way to distribute metadata and data using a variety of remote data access protocols such as OPeNDAP (\url{https://www.opendap.org}), Web Map Service (WMS) or direct HTTP access. 
 
-
-
 %Data are also available through the main European portals:
 %\begin{itemize}
 %\item Copernicus Marine Environment Monitoring Service (\url{http://marine.copernicus.eu/}), which  provides reference information on the state of the physical oceans and regional seas using numerical model and in situ observations.
 %\item EMODnet Physics (\url{http://www.emodnet-physics.eu/}), an operational service gathering near real time and historical validated marine data in an interoperable way.
 %\end{itemize}
 
-However, none of the aforementioned solution allows users to get the whole data set in a common place. Hence the different files were submitted to the Zenodo research platform (\url{https://zenodo.org/}), which stores research outputs (papers, code, datasets) and assigns them a Digital Object Identifier (DOI) so to have them easily and uniquely citeable.
+However, none of the aforementioned solution allows users to get the whole data set in a common place. Hence the different files were submitted to the Zenodo research platform (\url{https://zenodo.org/}), which stores research outputs (papers, code, datasets) and assigns them a Digital Object Identifier (DOI) so to have them easily and uniquely citable.
+
+\subsection{Improvements and future releases}
+
+The version of the dataset described in the present papers contains files that have been processed and standardised so that scientists can directly make use of them without having to perform unit or format conversions from the manufacturer raw data files. In particular, the glider processing tool allowed us to provide one single file per glider unit.
+
+Upgrades will be performed periodically with the implementation of new quality controls on sensors such as the ADCP, CTD or gliders. The new releases will be available using the same Zenodo identifier, but with a different version number
+
 
 \conclusions[Conclusions and perspectives]
 
@@ -212,7 +246,7 @@ The AlborEx observations acquired in May 2014 constitutes a unique observational
 
 \end{itemize} 
 
-In the near future multi-platform, high-resolution missions will be critical for the validation of altimetric data acquired by SWOT mission from 2020 on. 
+%In the near future multi-platform, high-resolution missions will be critical for the validation of altimetric data acquired by SWOT mission from 2020 on. 
 
 
 
