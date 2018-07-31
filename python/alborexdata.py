@@ -9,6 +9,8 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.basemap import Basemap
 import matplotlib.patches as patches
 from matplotlib.path import Path
+from mpl_toolkits.mplot3d import Axes3D
+from geopy.distance import vincenty
 
 import warnings
 import matplotlib.cbook
@@ -159,7 +161,8 @@ class Front(object):
 
 class Drifter(object):
 
-    def __init__(self, lon=None, lat=None, time=None, temperature=None, qclon=None, qclat=None):
+    def __init__(self, lon=None, lat=None, time=None, temperature=None,
+                 qclon=None, qclat=None):
         self.lon = lon
         self.lat = lat
         self.time = time
@@ -168,6 +171,8 @@ class Drifter(object):
         self.qclat = qclat
         self.timeunits = None
         self.dates = None
+        self.velocity = None
+        self.distance2front = None
 
     def get_from_netcdf(self, datafile):
         """
@@ -198,7 +203,7 @@ class Drifter(object):
     def apply_qc_latlon(self, QC=[1]):
         """
         Discard the measurements of which the position
-        don't have the indicated quality flag
+        doesn't have the indicated quality flag
         """
         if (self.qclon is not None) and (self.qclat is not None):
             badlon = [qc not in QC for qc in self.qclon]
@@ -237,10 +242,47 @@ class Drifter(object):
         return scat
 
     def point_plot(self, m, **kwargs):
-        m.plot(self.lon, self.lat, latlon=True, **kwargs)
+        m.plot(self.lon.compressed(), self.lat.compressed(), latlon=True, **kwargs)
 
     def add_initial_position(self, m, **kwargs):
         m.plot(self.lon[0], self.lat[0], latlon=True, linewidth=0, **kwargs)
+
+    def compute_velocity(self, velmax=5.):
+        """
+        Compute the velocity using the Vincenty distance
+
+        The values above velmax are masked
+        """
+
+        distancevec = np.zeros(len(self.lon)-1)
+        timevec = self.time[1:] - self.time[:-1]
+        for ii in range(0, len(self.lon)-1):
+            distancevec[ii] = vincenty((self.lat[ii+1], self.lon[ii+1]),
+                                       (self.lat[ii], self.lon[ii])).m
+        self.velocity = distancevec / timevec
+        self.velocity = np.ma.masked_greater(self.velocity, velmax, copy=True)
+
+    def get_distance_front(self, frontlon, frontlat):
+        """
+        For each position of the drifter, compute the distance to the front,
+        specified by 2 arrays of longitudes and latitudes
+
+        **Note:**
+        Brute force approach but could also approximate the front by a parabola
+        and use the formula to get the distance.
+        """
+        npoints = len(frontlon)
+        distance2front = np.zeros(len(self.lon))
+        jj = 0
+        for lond, latd in zip(self.lon, self.lat):
+            dd = np.zeros(npoints)
+            ii = 0
+            for lonf, latf in zip(frontlon, frontlat):
+                dd[ii] = vincenty((lonf, latf), (lond, latf)).m
+                ii += 1
+            distance2front[jj] = np.min(dd)
+            jj += 1
+        self.distance2front = distance2front
 
 
 class Thermosal(object):
@@ -271,8 +313,98 @@ class Thermosal(object):
                 self.salinity = nc.get_variables_by_attributes(standard_name='sea_water_salinity')[0][:]
                 self.temperature = nc.get_variables_by_attributes(standard_name='sea_water_temperature')[0][:]
 
+class CTD():
 
-class Glider(Drifter):
+    def __init__(self, lon=None, lat=None, time=None, depth=None, pressure=None,
+                 temperature=None, salinity=None, qclon=None, qclat=None,
+                 qctemp=None, qcsal=None, chloro=None):
+        self.lon = lon
+        self.lat = lat
+        self.time = time
+        self.depth = depth
+        self.pressure = pressure
+        self.temperature = temperature
+        self.salinity = salinity
+        self.qclon = qclon
+        self.qclat = qclat
+        self.qctemp = qctemp
+        self.qcsal = qcsal
+        self.timeunits = None
+        self.dates = None
+        self.chloro = chloro
+
+    def get_from_netcdf(self, datafile):
+        """
+        Read the coordinates and the temperature from existing data file
+        """
+        if os.path.exists(datafile):
+            with netCDF4.Dataset(datafile, 'r') as nc:
+
+                try:
+                    self.pressure =  nc.get_variables_by_attributes(standard_name='sea_water_pressure')[0][:]
+                except IndexError:
+                    self.pressure = None
+
+                self.lon = nc.get_variables_by_attributes(standard_name='longitude')[0][:]
+                self.lat = nc.get_variables_by_attributes(standard_name='latitude')[0][:]
+                self.depth = nc.get_variables_by_attributes(standard_name='depth')[0][:]
+                self.time = nc.get_variables_by_attributes(standard_name='time')[0][:]
+                self.timeunits = nc.get_variables_by_attributes(standard_name='time')[0].units
+                self.dates = netCDF4.num2date(self.time, self.timeunits)
+
+                try:
+                    self.chloro = nc.variables["CHLO"][:]
+                except KeyError:
+                    self.chloro = None
+
+                try:
+                    self.qclat = nc.get_variables_by_attributes(standard_name='latitude status_flag')[0][:]
+                except IndexError:
+                    self.qclat = None
+
+                try:
+                    self.qclon = nc.get_variables_by_attributes(standard_name='longitude status_flag')[0][:]
+                except IndexError:
+                    self.qclon = None
+
+                # Get salinity
+                try:
+                    salinityvar = nc.get_variables_by_attributes(standard_name='sea_water_practical_salinity')[0]
+                    salinityqcvar = salinityvar.ancillary_variables
+                    self.salinity = salinityvar[:]
+                    self.qcsal = nc.variables[salinityqcvar][:]
+                except IndexError:
+                    try:
+                        salinityvar = nc.get_variables_by_attributes(standard_name='sea_water_salinity')[0]
+                        self.salinity = salinityvar[:]
+                        salinityqcvar = salinityvar.ancillary_variables
+                        self.qcsal = nc.variables[salinityqcvar][:]
+                    except AttributeError:
+                        self.qcsal = None
+
+
+                # Get (potential) temperature and convert if necessary
+                try:
+                    tempvar = nc.get_variables_by_attributes(standard_name='sea_water_temperature')[0]
+                    self.temperature = tempvar[:]
+
+                except IndexError:
+                    try:
+                        tempvar = nc.get_variables_by_attributes(standard_name='sea_water_potential_temperature')[0]
+                        potentialtemp = tempvar[:]
+                        self.temperature = seawater.temp(self.salinity, potentialtemp, self.pressure)
+
+                    except IndexError:
+                        self.temperature = None
+                        self.qctemp = None
+
+                try:
+                    tempqcvar = tempvar.ancillary_variables
+                    self.qctemp = nc.variables[tempqcvar][:]
+                except AttributeError:
+                    self.qctemp = None
+
+class Glider(CTD):
 
     def remove_masked_coords(self):
         """
@@ -307,81 +439,12 @@ class Glider(Drifter):
 
         return day_indices, date_list
 
-
-class CTD(Glider):
-
-    def __init__(self, lon=None, lat=None, time=None, depth=None, pressure=None,
-                 temperature=None, salinity=None, qclon=None, qclat=None,
-                 qctemp=None, qcsal=None, chloro=None):
-        self.lon = lon
-        self.lat = lat
-        self.time = time
-        self.depth = depth
-        self.pressure = pressure
-        self.temperature = temperature
-        self.salinity = salinity
-        self.qclon = qclon
-        self.qclat = qclat
-        self.qctemp = qctemp
-        self.qcsal = qcsal
-        self.timeunits = None
-        self.dates = None
-        self.chloro = chloro
-
-    def get_from_netcdf(self, datafile):
+    def scatter_plot(self, ax, **kwargs):
         """
-        Read the coordinates and the temperature from existing data file
+        Add the measurements to a 3D scatter plot
         """
-        if os.path.exists(datafile):
-            with netCDF4.Dataset(datafile, 'r') as nc:
-                self.pressure =  nc.get_variables_by_attributes(standard_name='sea_water_pressure')[0][:]
-                self.lon = nc.get_variables_by_attributes(standard_name='longitude')[0][:]
-                self.lat = nc.get_variables_by_attributes(standard_name='latitude')[0][:]
-                self.depth = nc.get_variables_by_attributes(standard_name='depth')[0][:]
-                self.time = nc.get_variables_by_attributes(standard_name='time')[0][:]
-                self.timeunits = nc.get_variables_by_attributes(standard_name='time')[0].units
-                self.dates = netCDF4.num2date(self.time, self.timeunits)
-                self.chloro = nc.variables["CHLO"][:]
-
-                try:
-                    self.qclat = nc.get_variables_by_attributes(standard_name='latitude status_flag')[0][:]
-                except IndexError:
-                    self.qclat = None
-
-                try:
-                    self.qclon = nc.get_variables_by_attributes(standard_name='longitude status_flag')[0][:]
-                except IndexError:
-                    self.qclon = None
-
-                # Get salinity
-                try:
-                    salinityvar = nc.get_variables_by_attributes(standard_name='sea_water_practical_salinity')[0]
-                    salinityqcvar = salinityvar.ancillary_variables
-                    self.salinity = salinityvar[:]
-                    self.qcsal = nc.variables[salinityqcvar][:]
-                except IndexError:
-                    self.salinity = None
-                    self.qcsal = None
-
-                # Get (potential) temperature and convert if necessary
-                try:
-                    tempvar = nc.get_variables_by_attributes(standard_name='sea_water_temperature')[0]
-                    self.temperature = tempvar[:]
-
-                except IndexError:
-                    try:
-                        tempvar = nc.get_variables_by_attributes(standard_name='sea_water_potential_temperature')[0]
-                        potentialtemp = tempvar[:]
-                        self.temperature = seawater.temp(self.salinity, potentialtemp, self.pressure)
-
-                    except IndexError:
-                        self.temperature = None
-                        self.qctemp = None
-
-                tempqcvar = tempvar.ancillary_variables
-                self.qctemp = nc.variables[tempqcvar][:]
-
-
+        scat3D = ax.scatter(self.lon, self.lat, -self.depth, **kwargs)
+        return scat3D
 
 class Profiler(CTD):
     pass
@@ -448,3 +511,45 @@ class SST(object):
         Mask the sst values which don't match the mentioned quality flag
         """
         self.field = np.ma.masked_where(self.qflag != 1, self.field)
+
+
+def prepare_3D_scat():
+
+    fig = plt.figure(figsize=(12, 6))
+    fig.patch.set_facecolor('white')
+
+    ax1 = fig.add_subplot(1, 2, 1, projection='3d')
+    ax1.set_aspect('equal')
+    ax2 = fig.add_subplot(1, 2, 2, projection='3d')
+    ax2.set_aspect('equal')
+
+    ax1.set_xlabel("Longitude")
+    ax1.set_ylabel("Latitude")
+    ax1.set_xticks(np.arange(-1., 0, 0.2))
+    ax1.set_yticks(np.arange(36.8, 37.2, 0.2))
+    ax1.set_title("Coastal glider")
+
+    ax2.set_xlabel("Longitude")
+    ax2.set_ylabel("Latitude")
+    ax2.set_xticks(np.arange(-1., 0, 0.2))
+    ax2.set_yticks(np.arange(36.8, 37.2, 0.2))
+    ax2.set_title("Deep glider")
+    fig.subplots_adjust(right=0.6)
+    cbar_ax = fig.add_axes([0.65, 0.25, 0.015, 0.5])
+    return fig, ax1, ax2, cbar_ax
+
+def change_wall_prop(ax, coordinates, depths, angles):
+    ax.w_xaxis.set_pane_color((1.0, 1.0, 1.0, 1.0))
+    ax.w_yaxis.set_pane_color((1.0, 1.0, 1.0, 1.0))
+    ax.w_zaxis.set_pane_color((1.0, 1.0, 1.0, 1.0))
+    ax.w_xaxis.gridlines.set_linestyles(':')
+    ax.w_yaxis.gridlines.set_linestyles(':')
+    ax.w_zaxis.gridlines.set_linestyles(':')
+    ax.view_init(angles[0], angles[1])
+    ax.set_xlim(coordinates[0],coordinates[1])
+    ax.set_ylim(coordinates[2],coordinates[3])
+    ax.set_zlim(depths[0],depths[1])
+    ax.set_zlabel('Depth (m)')
+
+    ax.set_zticks(np.arange(depths[0],depths[1]+10,depths[2]))
+    ax.set_zticklabels(range(int(-depths[0]),-int(depths[1])-10,-int(depths[2])))
