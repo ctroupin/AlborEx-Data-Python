@@ -447,7 +447,30 @@ class Glider(CTD):
         return scat3D
 
 class Profiler(CTD):
-    pass
+    """
+    Stores Argo profiler data
+    """
+    def select_dates(self, finaldate, initialdate=None):
+        """
+        Mask the time outside the selected period
+
+        finaldate and initialdate are `datetime` obects
+        for example: finaldate=datatime.datetime(2017, 5, 3, 18, 30, 0)
+        """
+        if initialdate is not None:
+            dates2mask = np.logical_or(self.dates > finaldate,
+                                       self.dates < initialdate)
+        else:
+            dates2mask = self.dates > finaldate
+
+        ndepth = self.depth.shape[1]
+        dates2mask2D = np.matlib.repmat(dates2mask, ndepth, 1).transpose()
+        self.lon = np.ma.masked_where(dates2mask, self.lon)
+        self.lat = np.ma.masked_where(dates2mask, self.lat)
+        self.dates = np.ma.masked_where(dates2mask, self.dates)
+        self.depth = np.ma.masked_where(dates2mask2D, self.depth)
+        self.temperature = np.ma.masked_where(dates2mask2D, self.temperature)
+        self.salinity = np.ma.masked_where(dates2mask2D, self.salinity)
 
 class Ship(Drifter):
 
