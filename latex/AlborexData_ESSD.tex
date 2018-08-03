@@ -44,11 +44,13 @@
 
 
 \begin{abstract}
-AlborEX (Alboran Sea Experiment) consisted of a multi-platform, multi-disciplinary experiment performed in the Alboran Sea (Western Mediterranean Sea) between May 25 and 31, 2014. The observational component of AlborEx aimed to sample the physical and biogeochemical properties of oceanographic features present along an intense frontal zone, with a particular interest in the vertical motions. To this end, the mission included 1 research vessel (66 profiles), 2 underwater gliders (adding up 554 profiles), 3 profiling floats and 25 surface drifters. 
+AlborEX (Alboran Sea Experiment) consisted of a multi-platform, multi-disciplinary experiment carried out in the Alboran Sea (Western Mediterranean Sea) between May 25 and 31, 2014. The observational component of AlborEx aimed to sample the physical and biogeochemical properties of oceanographic features present along an intense frontal zone, with a particular interest in the vertical motions in its vicinity. To this end, the mission included 1 research vessel (66 profiles), 2 underwater gliders (adding up 554 profiles), 3 profiling floats and 25 surface drifters. 
 
-In addition, 500 water samples were collected at the 66 CTD stations for the measurement of chlorophyll-a and nutrient concentrations. Near real-time ADCP velocities were collected nightly and during the CTD sections. All of the profiling floats acquired temperature and conductivity profiles, while the Prov-bio float also measured oxygen and chlorophyll-a concentrations, colored dissolved organic matter, backscattering at 700 nm, downwelling irradiance at 380, 410, 490 nm, and photo-synthetically active radiation (PAR).
+In addition, 500 water samples were collected at the 66 CTD stations for the measurement of chlorophyll-a and nutrient concentrations. Near real-time ADCP velocities were collected nightly and during the CTD sections. All of the profiling floats acquired temperature and conductivity profiles, while the Provor-bio float also measured oxygen and chlorophyll-a concentrations, colored dissolved organic matter, backscattering at 700 nm, downwelling irradiance at 380, 410, 490 nm, and photo-synthetically active radiation (PAR).
 
-In the context of mesoscale and submesoscale interactions, the AlborEX dataset constitutes a particularly valuable source of information to infer mechanisms, evaluate vertical transport and establish relationships between the thermal and haline structures and the biogeochemical variable evolution, in a region characterised by strong horizontal gradients provoked by the confluence of Atlantic and Mediterranean Waters.
+In the context of mesoscale and submesoscale interactions, the AlborEX dataset constitutes a particularly valuable source of information to infer mechanisms, evaluate vertical transport and establish relationships between the thermal and haline structures and the biogeochemical variable evolution, in a region characterised by strong horizontal gradients provoked by the confluence of Atlantic and Mediterranean Waters, thanks to its multi-platform, multi-disciplinary nature.
+
+The most recent version of the dataset is available at \url{http://doi.org/10.5281/zenodo.1328238}.
 
 \end{abstract}
 
@@ -69,7 +71,7 @@ Section~\ref{sec:mission} strives to summarize the motivations behind the sampli
 
 \section{The AlborEx mission\label{sec:mission}}
 
-The mission took place from May 25 and 31, 2014 in the Alboran Sea frontal system \citep[][see Fig.~\ref{fig1:general}]{CHENEY78,TINTORE91}, scene of the confluence of Atlantic and Mediterranean waters. The mission itself is exensively presented in \citet{RUIZ2015} and the features and processes captured by the observations are discussed in \citet{PASCUAL2017}. \citet{OLITA17} examined the deep chlorophyll maximum variation combining the bio-physical data from the gliders and the Arglo floats. The present papers focuses solely on the description of the original dataset, graphically summarised in Fig.~\ref{fig1:general}).
+The mission took place from May 25 to May 31, 2014 in the Alboran Sea frontal system \citep[][see Fig.~\ref{fig1:general}]{CHENEY78,TINTORE91}, scene of the confluence of Atlantic and Mediterranean waters. The mission itself is extensively presented in \citet{RUIZ2015} and the features and processes captured by the observations are discussed in \citet{PASCUAL2017}. \citet{OLITA17} examined the deep chlorophyll maximum variation combining the bio-physical data from the gliders and the profiling floats. The present papers focuses solely on the description of the original dataset, graphically summarised in Fig.~\ref{fig1:general}).
 
 \begin{figure}[t]
 \includegraphics[width=.5\textwidth]{../figures/fig01.png}
@@ -78,14 +80,14 @@ The mission took place from May 25 and 31, 2014 in the Alboran Sea frontal syste
 
 \subsection{Remote-sensing data}
 
-The definitive sampling area was not firmly decided until a few days before the start. Prior to the experiment, satellite images of sea surface temperature (SST) and chlorophyll-a concentration were acquired from the Ocea Color Data server (\url{https://oceandata.sci.gsfc.nasa.gov/}, last accessed August 3, 2018) in order to provide an overview of the surface oceanic features apparent in the Alboran Sea. A well-defined front separating Atlantic and Mediterranean waters and exhibiting filament-like structures was selected as the study area (see rectangular boxes in Figs.~\ref{fig1:general} and ~\ref{fig2:SST}). 
+The definitive sampling area was not firmly decided until a few days before the start of the mission. Prior to the experiment, satellite images of sea surface temperature (SST) and chlorophyll-a concentration were acquired from the Ocean Color Data server (\url{https://oceandata.sci.gsfc.nasa.gov/}, last accessed August 3, 2018) in order to provide an overview of the surface oceanic features apparent in the Alboran Sea. A well-defined front separating Atlantic and Mediterranean waters and exhibiting filament-like structures was selected as the study area (see rectangular boxes in Figs.~\ref{fig1:general} and \ref{fig2:SST}). 
 
-The pair of images indicates that the front position slightly changed between May 25 and 30, 2014. An anticyclonic eddy centered around 36$^{\circ}$30'N, 0$^{\circ}$30'W, according to altimetry data (not shown), slowly followed an eastward trajectory in the following days. Other SST images during the period of interest displayed different temperature values near the front, yet the front position remains stable. 
+The pair of images indicates that the front position slightly changed between May 25 and 30. An anticyclonic eddy centered around 36$^{\circ}$30'N, 0$^{\circ}$30'W, according to altimetry data (not shown), slowly followed an eastward trajectory in the following days. Other SST images during the period of interest (not shown here) displayed different temperature values near the front, yet the front position remains stable. 
 
 \begin{figure}[t]
 \includegraphics[width=.5\textwidth]{../figures/fig02a.png}\\
 \includegraphics[width=.5\textwidth]{../figures/fig02b.png}
-\caption{Sea Surface Temperature in the western Mediterranean Sea from MODIS sensor onboard Aqua satellite corresponding to May 25 and 30, 2014. The dashed black line indicates the approximative position of the front based on the temperature gradient for the period 25--30 May. Level-2, 11 $\mu m$, night-time images were selected. Only pixels with a quality flag equal to 1 (good data) were conserved and represented on the map. Note that the same front position is used in the subsequent figures.\label{fig2:SST}}
+\caption{Sea surface temperature in the western Mediterranean Sea from MODIS sensor onboard Aqua satellite corresponding to May 25 and 30, 2014. The dashed black line indicates the approximative position of the front based on the temperature gradient for the period 25--30 May. Level-2, 11 $\mu m$, night-time images were selected. Only pixels with a quality flag equal to 1 (good data) were conserved and represented on the map. Note that the same front position is used in the subsequent figures.\label{fig2:SST}}
 \end{figure}
 
 \subsection{In situ data}
@@ -94,21 +96,21 @@ Whereas the remote sensing measurements helped in the mission design and the fro
 
 \subsubsection{Research vessel}
 
-The SOCIB coastal R/V was used to sample the area with vertical profiles acquired though the CTD. Two distinct CTD surveys were performed on a 10~km $\times$ 5~km grid, as depicted in Fig.~\ref{fig3:CTD}: the first survey was run from May 26 to 27 and consisted of 34 casts along 5 meridional legs. The second survey took place from May 29 to 30 and was made up of 28 casts. The casts from both surveys were performed at almost similar locations in order to allow for detecting changes between the two periods. 
+The SOCIB coastal research vessel (R/V) was used to sample the area with vertical profiles acquired though the CTD. Two distinct CTD surveys were performed on a 10~km $\times$ 5~km resolution grid, as depicted in Fig.~\ref{fig3:CTD}: the first survey was run from May 26 to 27 and consisted of 34 casts along 5 meridional legs. The second survey took place from May 29 to 30 and was made up of 28 casts. The casts from both surveys were performed at almost similar locations in order to allow for detecting changes between the two periods. 
 
 \begin{figure}[t]
 \includegraphics[width=.5\textwidth]{../figures/fig03.png}
 \caption{The CTD casts were organised in 5 legs that crossed the front and were repeated over 2 periods, at the beginning and the end of the mission.\label{fig3:CTD}.}
 \end{figure}
 
-The distinct water properties on both sides of the front are evidenced by the T-S diagrams in Fig.~\ref{fig4:TSdiag}, where the colors represent the fluorescence values. The salinity range north of the front is roughly between 38 and 38.5 with the exception of a few measurements and confirms the nature of the Mediterranean Water mass. The fluorescence maximum appears between 14 and 15$^{\circ}$C. South of the front the salinity range is wider 	while the temperature values are similar to the north.
+The distinct water properties on both sides of the front are evidenced by the T-S diagrams in Fig.~\ref{fig4:TSdiag}, where the colors represent the fluorescence. The salinity range north of the front is roughly between 38 and 38.5, with the exception of a few measurements, and confirms the nature of the Mediterranean Water mass. The fluorescence maximum appears between 14 and 15$^{\circ}$C. South of the front the salinity range is wider 	while the temperature values are similar to the north.
 
 \begin{figure*}[t]
 \includegraphics[width=.9\textwidth]{../figures/fig04.png}
 \caption{The T-S diagrams are shown separately for the casts located north and south of the front (broad, dashed line) \label{fig4:TSdiag}.}
 \end{figure*}
 
-In addition to the CTDs, the R/V thermosalinograph continuously acquired temperature and conductivity along the ship track, from which near surface salinity is derived (Fig.~\ref{fig3:thermosal}). Direct measurements of currents were performed during the night (from 10~PM UTC to 6~AM UTC) and during the 2 CTD surveys, using an acoustic Doppler current profiler (ADCP). The R/V weather station acquired air temperature, pressure, wind speed and direction during the whole duration of the mission. 
+In addition to the CTDs, the R/V thermosalinograph continuously acquired temperature and conductivity along the ship track, from which near surface salinity is derived (Fig.~\ref{fig3:thermosal}). The R/V weather station acquired air temperature, pressure, wind speed and direction during the whole duration of the mission. Direct measurements of currents were performed with acoustic Doppler current profiler and are presented in Sec.~\ref{sec:adcp}. 
 
 \begin{figure}[t]
 \includegraphics[width=.5\textwidth]{../figures/fig05.png}
@@ -117,7 +119,7 @@ In addition to the CTDs, the R/V thermosalinograph continuously acquired tempera
 
 \subsubsection{Gliders}
 
-To collect measurements addressing the submesoscale, two gliders were deployed on May 25 inside the study area. The coastal glider carried out measurements up to 200~m depth and the deep glider up to 500~m. The horizontal resolution was about 0.5~km for the shallow and 1~km for the deep glider. The initial sampling strategy consisted in  was to have two 50-km meridional tracks, 10 kilometers away one from the other, and to repeat these tracks up to 4 times during the experiment. However, due to the strong zonal currents in the frontal zone, different tracks (Fig.~\ref{fig6:glidertracks}) crossing the front several times were made instead.
+To collect measurements addressing the submesoscale, two gliders were deployed on May 25 inside the study area. The coastal glider carried out measurements up to 200~m depth and the deep glider up to 500~m. The horizontal resolution was about 0.5~km for the shallow and 1~km for the deep glider. The initial sampling strategy consisted in two 50-km long, meridional tracks, 10 kilometers away one from the other, and to repeat these tracks up to 4 times during the experiment. However, due to the strong zonal currents in the frontal zone, different tracks (Fig.~\ref{fig6:glidertracks}) crossing the front several times were made instead.
 
 \begin{figure}[t]
 \includegraphics[width=.5\textwidth]{../figures/fig06a.png}
@@ -140,7 +142,7 @@ The gliders follow a 3-dimensional trajectory in the water column but for some s
 On May 25, 25 Surface Velocity Program (SVP) drifters were deployed in the frontal area in a tight square pattern with a mean distance between neighbor drifters around 3~km. Almost all the drifters were equipped with a thermistor on the lower part of the buoy to measure sea water temperature. 
 
 11 out the 25 drifters, especially those deployed more to the south, were captured by the intense Algerian Current and followed a trajectory along the coast until a longitude about 5$^{\circ}$30'E. The other drifters were deflected northward about 0$^{\circ}$30'E, then veered northwestward or eastward 
-and described cyclonic and anticyclonic trajectories, respectively. Interestingly, all the drifters exhibit a trajectory close to the front position deduced from the SST images until they encounter the Algerian Current (Fig.~\ref{fig3:drifters}). 
+and described cyclonic and anticyclonic trajectories, respectively. Interestingly, all the drifters exhibit a trajectory close to the front position deduced from the SST images, until they encounter the Algerian Current (Fig.~\ref{fig3:drifters}). 
 
 On average the time between two consecutive positions is close to one hour, except for 2 drifters for which the intervals are 4 and 5 hours. The velocities are directly computed from the successive positions and highlight the strength of the Algerian Current with velocities on the order of 1~m/s (Fig.~\ref{fig7:drifterszoom}).    
 
@@ -157,9 +159,9 @@ On average the time between two consecutive positions is close to one hour, exce
 
 \subsubsection{Profiling floats}
 
-Three profiling floats were deployed in the same zone as the drifter, on May 25 (see Tab.~\ref{tab:argofloats}) for their characteristics). They were programmed to cycle at intervals ranging from 3 hours to 5 days and to depths up to 2000~m. The floats constitute an essential tool in order to monitor the mesoscale \citep{SANCHEZROMAN17}. The trajectories (Fig.~\ref{fig8:argofloats}) clearly show that profiles were acquired in the frontal area, before the floats were eventually captured by the Algerian Current  (Arvor-C and Provor-bio) or the deployment was finished (Arvor-A3).
+Three profiling floats were deployed in the same zone as the drifters, on May 25 (see Tab.~\ref{tab:argofloats}) for their characteristics). They were programmed to cycle at intervals ranging from 3 hours to 5 days and to depths up to 2000~m. The floats constitute an essential tool in order to monitor the mesoscale \citep{SANCHEZROMAN17}. The trajectories (Fig.~\ref{fig8:argofloats}) clearly show that profiles were acquired in the frontal area, before the floats were eventually captured by the Algerian Current (Arvor-C and Provor-bio) or the deployment was finished (Arvor-A3).
 
-The 2 Arvor-type floats provided temperature and salinity profiles. In addition to T and S, The Provor-bio platform measured biochemical and optical parameters: colored dissolved organic matter (CDOM), chlorophyll-a concentration, backscattering (650~nm), dissolved oxygen concentration and downwelling  irradiance (380, 410, 490~nm) and Photosynthetically active radiation (PAR). The profiles were performed around local noon time and were used in combination with the glider measurements to study the deep chlorophyll maximum (DCM) across the front \citep{OLITA17}.
+The 2 Arvor-type floats provided temperature and salinity profiles. In addition to T and S, the Provor-bio platform measured biochemical and optical properties: colored dissolved organic matter (CDOM), chlorophyll-a concentration, backscattering (650~nm), dissolved oxygen concentration and downwelling  irradiance (380, 410, 490~nm) and photosynthetically active radiation (PAR). The profiles were performed around local noon time and were used in combination with the glider measurements to study the deep chlorophyll maximum (DCM) across the front \citep{OLITA17}.
 
 \begin{figure*}[h]
 \includegraphics[width=.9\textwidth]{../figures/fig08a.png}
@@ -173,18 +175,18 @@ The 2 Arvor-type floats provided temperature and salinity profiles. In addition 
 \tophline
 Platform 			& Initial time	& Final time	& Maximal depth (m)		& Period & Number of profiles \\
 \middlehline
-Arvor-A3			& 2014-05-25	& 2014-06-17	& 2000		& 1.5 hour 	& 12 	\\ 
-Arvor-C				& 2014-05-25	& 2014-06-17	& 400		& 1 day		& 400 	\\ 
+Arvor-A3			& 2014-05-25	& 2014-06-17	& 2000		& 1.5 hour 	& 12 							\\ 
+Arvor-C				& 2014-05-25	& 2014-06-17	& 400		& 1 day		& 400 (to check)				\\ 
 Provor-bio			& 2014-05-25	& 2014-07-13	& 1000		& 1 day until June 7, then 5 days	& 71	\\ 
 \bottomhline
 \end{tabular}
 \end{table*}
 
-\subsubsection{Current profiler}
+\subsubsection{Current profiler\label{sec:adcp}}
 
-The Vessel Mounted-Acoustic Doppler Current Meter Profiler (VM-ADCP) operating at 153 kHz acquired velocity profiles during nighttime (22:00	-- 6:00 UTC) at a speed of 10 knots and during the CTD surveys (see Fig.~\ref{fig3:CTD}), every 2 minutes. The measurement accuracy is on the order of 0.01~m/s. The measurements were vertically averaged over 8~m depth bins.
+The Vessel Mounted-Acoustic Doppler Current Meter Profiler (VM-ADCP) operating at 153 kHz acquired velocity profiles approximatively every 2 minutes during nighttime (22:00--6:00 UTC) at a speed of 10 knots and during the CTD surveys (see Fig.~\ref{fig3:CTD}). The measurement accuracy is on the order of 0.01~m/s. The measurements were vertically averaged over 8~m depth bins.
 
-The velocities exhibit a dominant eastward current with speed locally larger than 1~m/s. Also needs to plot the position of the front and the velocity field at another depth.
+The velocities exhibit a dominant eastward current with speed locally larger than 1~m/s. [Also needs to plot the position of the front and the velocity field at another depth.]
 
 \begin{figure}[h]
 \includegraphics[width=.475\textwidth]{../figures/fig09.png}
@@ -213,7 +215,7 @@ All the data provided by SOCIB are available in different so-called processing l
 \item[Level 1 (L1)]: in this level, additional variables are derived from the existing ones (e.g., salinity, potential temperature). The attributes corresponding to each variable are stored in the netCDF file, with details of any modifications. Unit conversion are also applied if necessary.
 \item[Level 2 (L2)]: this level consists of regular, homogeneous and instantaneous profiles obtained by interpolating the L1 data. It is only provided for gliders, mostly for visualization and post-processing purposes: specific tools designed to read and display profiler data can then be used the same way for gliders.
 \end{description}
-The glider data require a specific processing to ingest and convert the raw data files produced by the coastal and deep units. This is done within a toolbox designed for this purposed and extensively described in \citet{TROUPIN16}, the capabilities of which includes metadata aggregation, data download, advanced data processing and the generation of data products and figures. Of particular interest is the application of a thermal-lag correction for un-pumped Sea-Bird CTD sensors installed on Slocum gliders \citep{GARAU11}, which improves the quality of the glider data.
+The glider data require a specific processing to ingest and convert the raw data files produced by the coastal and deep units. This is done within a toolbox designed for this purpose and extensively described in \citet{TROUPIN16}, the capabilities of which includes metadata aggregation, data download, advanced data processing and the generation of data products and figures. Of particular interest is the application of a thermal-lag correction for un-pumped Sea-Bird CTD sensors installed on Slocum gliders \citep{GARAU11}, which improves the quality of the glider data.
 
 \begin{table*}[htpb]
 \caption{Characteristics of the instrument deployments in AlborEx.\label{tab:deployment}}
@@ -238,7 +240,7 @@ Profiling drifters	& 3						& 2014-05-25	& beyond the experiment & \checkmark 	&
 Automated data quality control (QC) is part of the processing routine of SOCIB Data Center: most of the datasets provided with this paper come with a set of flags that reflect the quality of the measurements, based on different tests regarded the range of measurements, the presence of spike, the displacement of the platform and the correctness of the metadata. For some platforms, the automated QC are not implemented yet:
 \begin{description}
 \item[gliders:] a set of quality checks have been added to the glider toolbox \citep[][and available at \url{https://github.com/socib/glider_toolbox}]{TROUPIN16} and are in testing phase at the time of the writing. This new QC step will then be included to the general procedure and new netCDF files will be produced and made available as a new version of the present dataset.
-\item[CTD profiles:] the situation is similar to the gliders: new quality checks have been recently added to the processing chain at SOCIB, hence the AlborEx CTD profiles will have to be reprocessed in order to assign the quality flags to the measurements. These tests are essentialy based on the range of measured values depending on each variable and the presence of strong vertical variations spike within a profile.
+\item[CTD profiles:] the situation is similar to the gliders: new quality checks have been recently added to the processing chain at SOCIB, hence the AlborEx CTD profiles will have to be reprocessed in order to assign the quality flags to the measurements. These tests are essentially based on the range of measured values depending on each variable and the presence of strong vertical variations spike within a profile.
 \end{description}
 
 As the new files will not be available before a full reprocessing of all the historical missions, we decided to provide the data files in their current state. A new version will be uploaded as soon as the processing has been performed.
@@ -248,23 +250,19 @@ As the new files will not be available before a full reprocessing of all the his
 
 Following SOCIB general policy, the data are made available as netCDF files through the SOCIB Thematic Real-time Environmental Distributed Data Services (THREDDS) Data Server, a standard way to distribute metadata and data using a variety of remote data access protocols such as OPeNDAP (\url{https://www.opendap.org}), Web Map Service (WMS) or direct HTTP access. 
 
-In addition, the whole AlborEx dataset is made available from Zenodo (\url{https://zenodo.org/}, last accessed in August 3, 2018), a research platform designed to store any type of research outputs (papers, code, datasets) and assigns a Digital Object Identifier (DOI) to make them easily and uniquely citable.
+In addition, the whole AlborEx dataset has been uploaded Zenodo (\url{https://zenodo.org/}, last accessed in August 3, 2018), a research platform designed to store any type of research outputs (papers, code, datasets) and assigns a Digital Object Identifier (DOI) to make them easily and uniquely citable.
 
-\subsection{Versioning and improvements}
+The most recent version of the dataset is accessible from \url{http://doi.org/10.5281/zenodo.1328238}.
 
-The version of the dataset described in the present paper contains files that have been processed and standardised so that they are directly usable by scientists without having to perform unit or format conversions from the manufacturer raw data files.
+%\subsection{Versioning and improvements}
 
-Upgrades will be performed periodically with the implementation of fresh or better quality controls on sensors such as the ADCP, CTD or gliders. The new releases will be available using the same Zenodo identifier, but with be assigned a different version number, each version having its own DOI. 
-
-Files not available at the time of the writing will also be appended to the original database. 
-
-\subsection{Availability in other portals}
-
-Whenever possible, the data files are also provided to the different portals dedicated to oceanographic data:
-\begin{itemize}
-\item Profiling floats: they can be viewed and downloaded from the Coriolis FTP, which is the Global Data Assembly Center (GDAC) for ARGO.
-\item Gliders: 
-\end{itemize}
+%\subsection{Availability in other portals}
+%
+%Whenever possible, the data files are also provided to the different portals dedicated to oceanographic data:
+%\begin{itemize}
+%\item Profiling floats: they can be viewed and downloaded from the Coriolis FTP, which is the Global Data Assembly Center (GDAC) for ARGO.
+%\item Gliders: 
+%\end{itemize}
 
 
 %Data are also available through the main European portals:
@@ -285,14 +283,17 @@ The AlborEx observations acquired in May 2014 constitutes a unique observational
 \item High-resolution remote-sensing data validation: high quality in situ measurements of the sea surface are essential for the validation of operational product such SST or Ocean Color. 
 \item Study of mechanisms: the Mediterranean Sea is often referred to as a laboratory for oceanography and in particular the Alboran Sea is the stage of intense processes of mixing, subduction and instabilities.
 \item Assessment of mechanisms responsible for intense vertical motions.
-
 \end{itemize} 
+
+The version of the dataset described in the present paper contains files that have been processed and standardised so that they are directly usable by scientists without having to perform unit or format conversions from the manufacturer raw data files.
+
+Upgrades will be performed periodically with the implementation of fresh or better quality controls on sensors such as the ADCP, CTD or gliders. The new releases will be available using the same Zenodo identifier, but with be assigned a different version number, each version having its own DOI. 
+
+Files not available at the time of the writing will also be appended to the original database. 
 
 %In the near future multi-platform, high-resolution missions will be critical for the validation of altimetric data acquired by SWOT mission from 2020 on. 
 
-
-
-\authorcontribution{C.T. prepared the figures and the present manuscript.}
+\authorcontribution{C.T. prepared the figures and the present manuscript. + [other contributions]}
 
 \competinginterests{The authors declare that the research was conducted in the absence of any commercial or financial relationships that could be construed as a potential conflict of interest.}
 
