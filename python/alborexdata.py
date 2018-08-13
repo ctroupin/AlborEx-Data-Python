@@ -487,6 +487,8 @@ class Ship(Drifter):
         m.plot(self.lon, self.lat, latlon=True, **kwargs)
 
 
+
+
 class SST(object):
     """
     Sea surface temperature field
@@ -534,6 +536,78 @@ class SST(object):
         Mask the sst values which don't match the mentioned quality flag
         """
         self.field = np.ma.masked_where(self.qflag != 1, self.field)
+
+class Adcp(object):
+
+    """
+    Stores ADCP transects
+    """
+
+    def __init_(self, lon=None, lat=None, depth=None, u=None, v=None, qcu=None, qcv=None):
+        self.lon = lon
+        self.lat = lat
+        self.depth = depth
+        self.u = u
+        self.v = v
+        self.qclon = qclon
+        self.qclat = qclat
+        self.qcu = qcu
+        self.qcv = qcv
+
+    def get_from_netcdf(self, filename):
+        """
+        Read the coordinates and the velocity components
+        from the netCDF file
+        """
+        if os.path.exists(filename):
+            with netCDF4.Dataset(filename) as nc:
+                self.lon = nc.get_variables_by_attributes(standard_name='longitude')[0][:]
+                self.lat = nc.get_variables_by_attributes(standard_name='latitude')[0][:]
+                self.depth = nc.get_variables_by_attributes(standard_name='depth')[0][:]
+                self.time = nc.get_variables_by_attributes(standard_name='time')[0][:]
+                self.timeunits = nc.get_variables_by_attributes(standard_name='time')[0].units
+                self.dates = netCDF4.num2date(self.time, self.timeunits)
+                self.qclat = nc.get_variables_by_attributes(standard_name='latitude status_flag')[0][:]
+                self.qclon = nc.get_variables_by_attributes(standard_name='longitude status_flag')[0][:]
+                # Velocity components
+                uvar = nc.get_variables_by_attributes(standard_name='eastward_sea_water_velocity')[0]
+                vvar = nc.get_variables_by_attributes(standard_name='northward_sea_water_velocity')[0]
+                self.u = uvar[:]
+                self.v = vvar[:]
+                # Quality flags for velocity
+                uqcvar = uvar.ancillary_variables
+                vqcvar = vvar.ancillary_variables
+                self.qcu = nc.variables[uqcvar][:]
+                self.qcv = nc.variables[uqcvar][:]
+
+    def get_from_matfile(self, filename):
+        """
+        Read the coordinates (lon, lat, depth) and
+        the velocity components from the .mat files
+        """
+        # Read the mat file
+        dataadcp = sio.loadmat(filename)
+
+        self.lon = dataadcp["AnFLonDeg"]
+        self.lat = dataadcp["AnFLatDeg"]
+        self.u = dataadcp["SerEmmpersec"]
+        self.v = dataadcp["SerNmmpersec"]
+        ndepth = self.u.shape[1]
+        depthmin = 16.
+        deltadepth = 8.
+        depthmax = depthmin + (ndepth - 1) * deltadepth
+        self.depth = np.linspace(depthmin, depthmax, int(nbins))
+
+    def apply_qc(self, qf=1):
+        """
+        Mask the velocity values which don't match the mentioned quality flag
+        """
+        self.u = np.ma.masked_where(self.qcu != 1, self.u)
+        self.v = np.ma.masked_where(self.qcv != 1, self.v)
+
+    def get_norm(self):
+
+        self.velnorm = np.sqrt(self.u * self.u + self.v * self.v)
 
 
 def prepare_3D_scat():
