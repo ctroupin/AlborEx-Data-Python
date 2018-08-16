@@ -3,7 +3,7 @@
 %% This template should be used for copernicus.cls
 %% The class file and some style files are bundled in the Copernicus Latex Package, which can be downloaded from the different journal webpages.
 \documentclass[essd]{copernicus}
-
+\newcommand{\charles}[1]{\textcolor{blue}{#1}}
 \begin{document}
 
 
@@ -17,6 +17,7 @@
 \Author[4]{Pierre-Marie}{Poulain}
 \Author[5]{Marc}{Torner}
 \Author[5]{Juan Gabriel}{Fern\'{a}ndez}
+\Author[5]{Miquel \`{A}ngel}{Rújula}
 \Author[5]{Cristian}{Mu\~{n}oz}
 \Author[5]{John~T.}{Allen}
 \Author[5,2]{Joaqu\'{i}n}{Tintor\'{e}}
@@ -113,10 +114,10 @@ The distinct water properties on both sides of the front are evidenced by the T-
 
 In addition to the CTDs, the R/V thermosalinograph continuously acquired temperature and conductivity along the ship track, from which near surface salinity is derived (Fig.~\ref{fig3:thermosal}). The R/V weather station acquired air temperature, pressure, wind speed and direction during the whole duration of the mission. Direct measurements of currents were performed with acoustic Doppler current profiler and are presented in Sec.~\ref{sec:adcp}. 
 
-\begin{figure}[t]
-\includegraphics[width=.5\textwidth]{fig05.png}
+\begin{figure*}[t]
+\includegraphics[width=.95\textwidth]{fig05.png}
 \caption{The near-surface salinity (colored dots) measured by the thermosalinograph evidences the strong horizontal gradients, in agreement with the front position as obtained using the SST (broad, dashed line). The 5 subplots depict the temperature and salinity along select meridional tracks. \label{fig3:thermosal}}
-\end{figure}
+\end{figure*}
 
 \subsubsection{Gliders}
 
@@ -194,7 +195,7 @@ The velocities exhibit a dominant eastward current with speed locally larger tha
 \caption{Velocity field obtained with the ADCP at a 40~m depth (left panel) and sections of zonal velocity on May 26 (S1) and 27 (S2). The locations of the sections are indicated by dashed rectangles on the map. Only data with a quality flag equal to 1 (good data) are represented\label{fig9a:adcp}}
 \end{figure*}
 
-This type of current measurements requires a careful processing in order to get meaningful velocities from the raw signal, hence it is relevant to have a quality flag assigned to each measurement. The quality checks applied for this platform were adapted from the QC relative to the ADCP mounted on a mooring.
+This type of current measurements requires a careful processing in order to get meaningful velocities from the raw signal, hence it is relevant to have a quality flag (QF) assigned to each measurement. The quality checks applied for this platform were adapted from the quality control (QC hereinafter) relative to the ADCP mounted on a mooring.
 
 Figure~\ref{fig9b:adcpQC} shows the QF during the whole mission. The 3 main periods during which the ADCP was turned off are shown as grey areas. In addition, no measurements are available in the first meters of the water column, due to the position of the ADCP on the ship.
 
@@ -248,10 +249,10 @@ Profiling drifters	& 3						& 2014-05-25	& beyond the experiment & \checkmark 	&
 
 \subsubsection{Quality control}
 
-Automated data quality control (QC) is part of the processing routine of SOCIB Data Center: most of the datasets provided with this paper come with a set of flags that reflect the quality of the measurements, based on different tests regarded the range of measurements, the presence of spike, the displacement of the platform and the correctness of the metadata. For some platforms, the automated QC are not implemented yet:
+Automated data QC is part of the processing routine of SOCIB Data Center: most of the datasets provided with this paper come with a set of flags that reflect the quality of the measurements, based on different tests regarded the range of measurements, the presence of spike, the displacement of the platform and the correctness of the metadata. For some platforms, the automated QC are not implemented yet:
 \begin{description}
 \item[gliders:] a set of quality checks have been added to the glider toolbox \citep[][and available at \url{https://github.com/socib/glider_toolbox}]{TROUPIN16} and are in testing phase at the time of the writing. This new QC step will then be included to the general procedure and new netCDF files will be produced and made available as a new version of the present dataset.
-\item[CTD profiles:] the situation is similar to the gliders: new quality checks have been recently added to the processing chain at SOCIB, hence the AlborEx CTD profiles will have to be reprocessed in order to assign the quality flags to the measurements. These tests are essentially based on the range of measured values depending on each variable and the presence of strong vertical variations spike within a profile.
+\item[CTD profiles:] the situation is similar to the gliders: new tests have been recently added to the processing chain at SOCIB, hence the AlborEx CTD profiles will have to be reprocessed in order to assign the quality flags to the measurements. These tests are essentially based on the range of measured values depending on each variable and the presence of strong vertical variations spike within a profile. \charles{Data Center: podeis anadir algo aqui, basado sobre el trabajo de Andreas? Es que ahora no veo su "branch" en github Glider Toolbox.}
 \end{description}
 
 As the new files will not be available before a full reprocessing of all the historical missions, we decided to provide the data files in their current state. A new version will be uploaded as soon as the processing has been performed.
@@ -265,13 +266,9 @@ In addition, the whole AlborEx dataset has been uploaded Zenodo (\url{https://ze
 
 The most recent version of the dataset is accessible from \url{http://doi.org/10.5281/zenodo.1328238}.
 
-\subsection{Code availability}
-
-A set of programs in Python to read the files and represent their content as in the figures presented through the paper are available at \url{https://github.com/ctroupin/AlborEX-Data} (+ link to Zenodo once it's there). The programs are written in the form of documented Jupyter notebooks, a web application that combines code fragment, equations, graphics and explanatory text (\url{http://jupyter.org/}, last accessed 14 August, 2018) so that they can be run step by step. The figures colormaps were produced using the cmocean module \citep{THYNG16}.
-
 \subsection{Versioning and improvements}
 
-Upgrades will be performed periodically with the implementation of fresh or better quality controls on sensors such as the ADCP, CTD or gliders. The new releases will be available using the same Zenodo identifier, but with be assigned a different version number, each version having its own DOI. 
+Upgrades will be performed periodically with the implementation of fresh or better QCs on sensors such as the ADCP, CTD or gliders. The new releases will be available using the same Zenodo identifier, but with be assigned a different version number, each version having its own DOI. 
 
 Files not available at the time of the writing will also be appended to the original database. 
 
@@ -279,24 +276,21 @@ Concerning the improvement of the quality control, it is worth mentioning the ne
 
 The checks performed on the ADCP velocities involves a set of parameters that can also be fine-tuned to improve the relevance of the quality flags. Nevertheless, noticeable changes are not expected with respect to the quality flags displayed in Fig.~\ref{fig9b:adcpQC}.
 
-%\subsection{Availability in other portals}
-%
-%Whenever possible, the data files are also provided to the different portals dedicated to oceanographic data:
-%\begin{itemize}
-%\item Profiling floats: they can be viewed and downloaded from the Coriolis FTP, which is the Global Data Assembly Center (GDAC) for ARGO.
-%\item Gliders: 
-%\end{itemize}
+Finally, the quality of the CTD and the glider profiles can be improved by using the salinity measurements of water samples collected during the mission. This type of correction might not be essential for the study of mesoscale processes but is crucial when one is focused on long-term studies and when a drift can be observed in the salinity measurements. \charles{To be reformulated}.
 
+\subsection{Availability in other portals}
 
-%Data are also available through the main European portals:
-%\begin{itemize}
-%\item Copernicus Marine Environment Monitoring Service (\url{http://marine.copernicus.eu/}), which  provides reference information on the state of the physical oceans and regional seas using numerical model and in situ observations.
-%\item EMODnet Physics (\url{http://www.emodnet-physics.eu/}), an operational service gathering near real time and historical validated marine data in an interoperable way.
-%\end{itemize}
+\charles{All: do you think this section is useful?}
+Whenever possible, the data files are also provided to the different portals dedicated to oceanographic data:
+\begin{itemize}
+\item Coriolis FTP, which is the Global Data Assembly Center (GDAC) for the ARGO floars.
+\item Copernicus Marine Environment Monitoring Service (\url{http://marine.copernicus.eu/}), which  provides reference information on the state of the physical oceans and regional seas using numerical model and in situ observations.
+\item EMODnet Physics (\url{http://www.emodnet-physics.eu/}), an operational service gathering near real time and historical validated marine data in an interoperable way.
+\end{itemize}
 
+\subsection{Code availability}
 
-
-
+A set of programs in Python to read the files and represent their content as in the figures presented through the paper are available at \url{https://github.com/ctroupin/AlborEX-Data} (+ link to Zenodo once it's there). The programs are written in the form of documented Jupyter notebooks, a web application that combines code fragment, equations, graphics and explanatory text (\url{http://jupyter.org/}, last accessed 14 August, 2018) so that they can be run step by step. The figures colormaps were produced using the \texttt{cmocean} module \citep{THYNG16}.
 
 \conclusions[Conclusions and perspectives]
 
@@ -312,180 +306,25 @@ The version of the dataset described in the present paper contains files that ha
 
 Updates will be performed when new versions of the files or new files are made available.
 
+\authorcontribution{C.T. prepared the figures and the first version of the manuscript. A.P. and S.R. edited the manuscript and helped with the .... J.G.F. and M.A.R. lead the data management and the creation of a DOI in Datacite. C.M. implemented the processing of the ADCP data.}
 
-\authorcontribution{C.T. prepared the figures and the first verstion of the manuscript. A.P. and S.R. edited the manuscript and helped with the .... J.G.F. lead the data management and the creation of a DOI in Datacite. C.M. implemented the processing of the ADCP data.}
+\charles{Please help here with the contribution}
 
 \competinginterests{The authors declare that the research was conducted in the absence of any commercial or financial relationships that could be construed as a potential conflict of interest.}
 
 \disclaimer{The authors do not accept any liability for the correctness and appropriate interpretation of the data or their suitability for any use.}
 
 \begin{acknowledgements}
-AlborEx was conducted in the framework of PERSEUS EU-funded project (Grant agreement no.~287600). Glider operations were partially funded by JERICO FP7 project. AP acknowledges support from the Spanish National Research Program (E-MOTION/CTM2012-31014 and PRE-SWOT/CTM2016-78607-P). SR and AP are also supported by the Copernicus Marine Environment Monitoring Service (CMEMS) MedSUB project. The profiling floats and some drifters were contributed by the Argo-Italy program. The proceedings of such an ambitious mission would not have been possible without the involvement of a numerous staff both at sea and on land: A.~Massanet, F.~Margirier, M.~Palmer, C.~Castilla, P.~Balaguer, M.~Menna, G.~Notarstefano and A.~Bussani .
+AlborEx was conducted in the framework of PERSEUS EU-funded project (Grant agreement no.~287600). Glider operations were partially funded by JERICO FP7 project. AP acknowledges support from the Spanish National Research Program (E-MOTION/CTM2012-31014 and PRE-SWOT/CTM2016-78607-P). SR and AP are also supported by the Copernicus Marine Environment Monitoring Service (CMEMS) MedSUB project. The profiling floats and some drifters were contributed by the Argo-Italy program. The proceedings of such an ambitious mission would not have been possible without the involvement of a numerous staff both at sea and on land: A.~Massanet, F.~Margirier, M.~Palmer, C.~Castilla, P.~Balaguer, M.~Menna, G.~Notarstefano, K.~Sebastián, S.~Lora and A.~Bussani .
 
 
 \end{acknowledgements}
-
-
-
 
 %% REFERENCES
 \newpage
 
 \bibliographystyle{copernicus}
 \bibliography{AlborexData.bib}
-
-
-%%
-%% URLs and DOIs can be entered in your BibTeX file as:
-%%
-%% URL = {http://www.xyz.org/~jones/idx_g.htm}
-%% DOI = {10.5194/xyz}
-
-
-%% LITERATURE CITATIONS
-%%
-%% command                        & example result
-%% \citet{jones90}|               & Jones et al. (1990)
-%% \citep{jones90}|               & (Jones et al., 1990)
-%% \citep{jones90,jones93}|       & (Jones et al., 1990, 1993)
-%% \citep[p.~32]{jones90}|        & (Jones et al., 1990, p.~32)
-%% \citep[e.g.,][]{jones90}|      & (e.g., Jones et al., 1990)
-%% \citep[e.g.,][p.~32]{jones90}| & (e.g., Jones et al., 1990, p.~32)
-%% \citeauthor{jones90}|          & Jones et al.
-%% \citeyear{jones90}|            & 1990
-
-
-
-%% FIGURES
-
-%% We suggest to put the figures in the correct order and placement within the text. This aids readability.
-%% When figures and tables are placed at the end of the MS (article in one-column style), please add \clearpage
-%% between bibliography and first table and/or figure as well as between each table and/or figure.
-
-
-%% ONE-COLUMN FIGURES
-
-%%f
-%\begin{figure}[t]
-%\includegraphics[width=8.3cm]{FILE NAME}
-%\caption{TEXT}
-%\end{figure}
-%
-%%% TWO-COLUMN FIGURES
-%
-%%f
-%\begin{figure*}[t]
-%\includegraphics[width=12cm]{FILE NAME}
-%\caption{TEXT}
-%\end{figure*}
-%
-%
-%%% TABLES
-%%%
-%%% The different columns must be seperated with a & command and should
-%%% end with \\ to identify the column brake.
-%
-%%% ONE-COLUMN TABLE
-%
-%%t
-%\begin{table}[t]
-%\caption{TEXT}
-%\begin{tabular}{column = lcr}
-%\tophline
-%
-%\middlehline
-%
-%\bottomhline
-%\end{tabular}
-%\belowtable{} % Table Footnotes
-%\end{table}
-%
-%%% TWO-COLUMN TABLE
-%
-%%t
-%\begin{table*}[t]
-%\caption{TEXT}
-%\begin{tabular}{column = lcr}
-%\tophline
-%
-%\middlehline
-%
-%\bottomhline
-%\end{tabular}
-%\belowtable{} % Table Footnotes
-%\end{table*}
-%
-%
-%%% MATHEMATICAL EXPRESSIONS
-%
-%%% All papers typeset by Copernicus Publications follow the math typesetting regulations
-%%% given by the IUPAC Green Book (IUPAC: Quantities, Units and Symbols in Physical Chemistry,
-%%% 2nd Edn., Blackwell Science, available at: http://old.iupac.org/publications/books/gbook/green_book_2ed.pdf, 1993).
-%%%
-%%% Physical quantities/variables are typeset in italic font (t for time, T for Temperature)
-%%% Indices which are not defined are typeset in italic font (x, y, z, a, b, c)
-%%% Items/objects which are defined are typeset in roman font (Car A, Car B)
-%%% Descriptions/specifications which are defined by itself are typeset in roman font (abs, rel, ref, tot, net, ice)
-%%% Abbreviations from 2 letters are typeset in roman font (RH, LAI)
-%%% Vectors are identified in bold italic font using \vec{x}
-%%% Matrices are identified in bold roman font
-%%% Multiplication signs are typeset using the LaTeX commands \times (for vector products, grids, and exponential notations) or \cdot
-%%% The character * should not be applied as mutliplication sign
-%
-%
-%%% EQUATIONS
-%
-%%% Single-row equation
-%
-%\begin{equation}
-%
-%\end{equation}
-%
-%%% Multiline equation
-%
-%\begin{align}
-%& 3 + 5 = 8\\
-%& 3 + 5 = 8\\
-%& 3 + 5 = 8
-%\end{align}
-%
-%
-%%% MATRICES
-%
-%\begin{matrix}
-%x & y & z\\
-%x & y & z\\
-%x & y & z\\
-%\end{matrix}
-%
-%
-%%% ALGORITHM
-%
-%\begin{algorithm}
-%\caption{?}
-%\label{a1}
-%\begin{algorithmic}
-%?
-%\end{algorithmic}
-%\end{algorithm}
-%
-%
-%%% CHEMICAL FORMULAS AND REACTIONS
-%
-%%% For formulas embedded in the text, please use \chem{}
-%
-%%% The reaction environment creates labels including the letter R, i.e. (R1), (R2), etc.
-%
-%\begin{reaction}
-%%% \rightarrow should be used for normal (one-way) chemical reactions
-%%% \rightleftharpoons should be used for equilibria
-%%% \leftrightarrow should be used for resonance structures
-%\end{reaction}
-%
-%
-%%% PHYSICAL UNITS
-%%%
-%%% Please use \unit{} and apply the exponential notation
 
 
 \end{document}

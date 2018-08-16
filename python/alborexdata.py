@@ -11,6 +11,7 @@ import matplotlib.patches as patches
 from matplotlib.path import Path
 from mpl_toolkits.mplot3d import Axes3D
 from geopy.distance import vincenty
+import cmocean
 
 import warnings
 import matplotlib.cbook
@@ -543,7 +544,9 @@ class Adcp(object):
     Stores ADCP transects
     """
 
-    def __init_(self, lon=None, lat=None, depth=None, u=None, v=None, qcu=None, qcv=None):
+    def __init_(self, lon=None, lat=None, depth=None,
+                u=None, v=None, qcu=None, qcv=None,
+                time=None, dates=None):
         self.lon = lon
         self.lat = lat
         self.depth = depth
@@ -553,6 +556,8 @@ class Adcp(object):
         self.qclat = qclat
         self.qcu = qcu
         self.qcv = qcv
+        self.time = time
+        self.dates = dates
 
     def get_from_netcdf(self, filename):
         """
@@ -606,9 +611,103 @@ class Adcp(object):
         self.v = np.ma.masked_where(self.qcv != 1, self.v)
 
     def get_norm(self):
-
+        """
+        Compute the norm of the velocity vectors
+        """
         self.velnorm = np.sqrt(self.u * self.u + self.v * self.v)
 
+    def get_time_index(self, datemin=None, datemax=None):
+        """
+        Return an array of indices corresponding to the dates between
+        datemin and datemax
+        """
+        if datemin is not None:
+            if datemax is not None:
+                gooddates = np.where( (self.dates >= datemin) and (self.dates <= datemax))[0]
+            else:
+                gooddates = np.where(self.dates >= datemin)[0]
+        else:
+            if datemax is not None:
+                gooddates = np.where(self.dates <= datemax)[0]
+            else:
+                gooddates = np.where(self.dates)[0]
+
+        return gooddates
+
+    def plot_adcp_quiver(self, m, depthindex=0, depth=None, datemin=None, datemax=None):
+        """
+        Plot velocity field with arrows on a map
+        """
+
+        gooddates = self.get_time_index(datemin, datemax)
+
+        m.plot(self.lon[gooddates], self.lat[gooddates], "k--", lw=.2, latlon=True)
+        llon, llat = m(self.lon[gooddates], self.lat[gooddates])
+        qv = plt.quiver(llon, llat,
+                   self.u[gooddates, depthindex] / self.velnorm[gooddates, depthindex],
+                   self.v[gooddates, depthindex] / self.velnorm[gooddates, depthindex],
+                   self.velnorm[gooddates, depthindex], headwidth=0, scale=25, cmap=cmocean.cm.speed)
+
+        cb = plt.colorbar(qv, shrink=0.8, extend="max")
+        cb.set_label("$\|v\|$\n(m/s)", rotation=0, ha="left", fontsize=14)
+        plt.tick_params(axis='both', which='major', labelsize=12)
+        plt.clim(0, 1.)
+
+        if depth:
+            plt.title("Depth: {} m".format(depth), fontsize=20)
+
+    def add_rectangle(self, N1, N2, m, dlon=0.02, dlat=0.02, label=None):
+        """
+        Draw a rectangle around the transect
+        N1 and N2 are the indices of the extreme points
+        of the considered section
+        """
+        lonmin = self.lon[N1:N2].min() - dlon
+        lonmax = self.lon[N1:N2].max() + dlon
+        latmin = self.lat[N1:N2].min() - dlat
+        latmax = self.lat[N1:N2].max() + dlat
+        lonrec = [lonmin, lonmax, lonmax, lonmin, lonmin]
+        latrec = [latmin, latmin, latmax, latmax, latmin]
+        m.plot(lonrec, latrec, "k-.", lw=1, latlon=True)
+        # Add a label on top of the rectangle
+        if label is not None:
+            lontext = 0.5 * (lonmin + lonmax)
+            lattext = latmax
+            xt, yt = m(lontext, lattext)
+            plt.text(xt, yt, label, fontsize=16, ha="center", va="bottom")
+
+    @staticmethod
+    def make_velocity_section(lat, depth, u, frontlat=None, title=None, xlabel=None):
+        """
+        Create a meridional section of zonal velocity
+        Inputs:
+        lat: 1-D array of latitudes
+        depth: 1-D array of depths
+        u: 2-D array of velocities
+        """
+
+        plt.pcolormesh(lat, depth, u, cmap=cmocean.cm.speed, vmin=0, vmax=1.)
+
+        # Front position
+        if frontlat is not None:
+            plt.vlines(frontlat, 0, 400, colors='k', linestyles='--', linewidth=.5)
+
+        if xlabel is not None:
+            plt.xlabel(xlabel, fontsize=14)
+
+        plt.ylabel("Depth\n(m)", rotation=0, ha="right", fontsize=14)
+        cb = plt.colorbar(extend="max")
+        cb.set_label("u\n(m/s)", rotation=0, ha="left", fontsize=14)
+        plt.tick_params(axis='both', which='major', labelsize=12)
+
+        if title is not None:
+            plt.title(title, fontsize=20)
+        xticks = np.arange(36.5, 37.5, 0.1)
+        xticklabels = ["{}°N".format(np.round(xt,1)) for xt in xticks]
+        plt.xticks(xticks, xticklabels)
+        plt.xlim(lat.min(), lat.max())
+        plt.ylim(0., 400.)
+        plt.gca().invert_yaxis()
 
 def prepare_3D_scat():
 
