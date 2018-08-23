@@ -12,6 +12,7 @@ from matplotlib.path import Path
 from mpl_toolkits.mplot3d import Axes3D
 from geopy.distance import vincenty
 import cmocean
+import scipy.io as sio
 
 import warnings
 import matplotlib.cbook
@@ -379,7 +380,10 @@ class CTD():
                         salinityvar = nc.get_variables_by_attributes(standard_name='sea_water_salinity')[0]
                         self.salinity = salinityvar[:]
                         salinityqcvar = salinityvar.ancillary_variables
-                        self.qcsal = nc.variables[salinityqcvar][:]
+                        try:
+                            self.qcsal = nc.variables[salinityqcvar][:]
+                        except KeyError:
+                            self.qcsal = None
                     except AttributeError:
                         self.qcsal = None
 
@@ -401,7 +405,10 @@ class CTD():
 
                 try:
                     tempqcvar = tempvar.ancillary_variables
-                    self.qctemp = nc.variables[tempqcvar][:]
+                    try:
+                        self.qctemp = nc.variables[tempqcvar][:]
+                    except KeyError:
+                        self.qctemp = None
                 except AttributeError:
                     self.qctemp = None
 
@@ -472,6 +479,173 @@ class Profiler(CTD):
         self.depth = np.ma.masked_where(dates2mask2D, self.depth)
         self.temperature = np.ma.masked_where(dates2mask2D, self.temperature)
         self.salinity = np.ma.masked_where(dates2mask2D, self.salinity)
+
+    def read_profile_from_mat(datafile):
+        """
+        Read the profile stored in a mat file
+        Return
+          the coordinates lon, lat and time (scalars)
+          the depth (array)
+          the temperature and salinity (arrays)
+        """
+        if os.path.exists(datafile):
+            data_argo = sio.loadmat(datafile)
+            lon = data_argo["lon"][0][0]
+            lat = data_argo["lat"][0][0]
+            time = data_argo["time"]
+            temperature = np.array([t[0] for t in data_argo["temp"]])
+            salinity = np.array([s[0] for s in data_argo["saly"]])
+            pressure = np.array([p[0] for p in data_argo["pres"]])
+        else:
+            lon, lat, pressure, time, temperature, salinity = \
+            None, None, None, None, None, None
+
+        return lon, lat, pressure, time, temperature, salinity
+
+    def read_profiles_from_list(filelist):
+        """
+        Read all the profiles from a list of files
+        Return
+          arrays for lon, lat and time
+        """
+        nfiles = len(filelist)
+        if nfiles > 0:
+            # Allocate arrays
+            # lon, lat and time are fixed for each profile, so we have
+            # 1D arrays
+            lon_array = np.empty(nfiles)
+            lat_array = np.empty(nfiles)
+            time_array = np.empty(nfiles)
+            # For the other variables, we use arrays of arrays (one per profile)
+            # We start with empty lists that will be turned into lists of lists
+            temp_list = []
+            salt_list = []
+            pressure_list = []
+            for idata, datafile in enumerate(filelist):
+                # Read the data from the file
+                lon, lat, pressure, time, temperature, salinity = Profiler.read_profile_from_mat(datafile)
+
+                # Fill the arrays
+                lon_array[idata] = lon
+                lat_array[idata] = lat
+                time_array[idata] = time
+                temp_list.append(temperature)
+                salt_list.append(salinity)
+                pressure_list.append(pressure)
+
+            temp_array = np.array(temp_list)
+            salt_array = np.array(salt_list)
+            pressure_array = np.array(pressure_list)
+
+        return lon_array, lat_array, time_array, pressure_array, temp_array, salt_array
+
+    def arrays_to_netcdf(ncfile, lon, lat, t, p, T, S):
+        """
+        Write the arrays into a single netCDF file `ncfile`
+        with a structure similar to SOCIB files
+        Inputs:
+          lon, lat, time, pressure, T and S are numpy ndarrays
+          (arrays of arrays), one array per profile
+        """
+
+        with netCDF4.Dataset(ncfile, "w", format="NETCDF4") as nc:
+
+            ndepth = len(p)
+
+            # Dimensions
+            time = nc.createDimension("time", None)         # unlimited
+            depth = nc.createDimension("depth", ndepth)
+
+            # Variables and attributes
+            time = nc.createVariable("time", "f8",("time",), fill_value=np.nan)
+            time.standard_name = "time"
+            time.units = "days since 01-01-01 00:00:00"
+            time.axis = "T"
+            time.calendar = "gregorian"
+
+            DEPTH = nc.createVariable("DEPTH", "f8",("time", "depth"))
+            DEPTH.ancillary_variables = "QC_DEPTH"
+            DEPTH.axis = "Z"
+            DEPTH.long_name = "Depth coordinate"
+            DEPTH.positive = "down"
+            DEPTH.reference_datum = "geographical coordinates, WGS84 projection"
+            DEPTH.standard_name = "depth"
+            DEPTH.units = "m"
+
+            LON = nc.createVariable("LON", "f4",("time",))
+            LON.standard_name = "longitude"
+            LON.long_name = "Longitude"
+            LON.units = "degrees_east"
+            LON.ancillary_variables = "QC_LON"
+            LON.axis = "X"
+            LON.valid_min = -180.
+            LON.valid_max = 180.
+            LON.reference_datum = "geographical coordinates, WGS84 projection" ;
+
+            LAT = nc.createVariable("LAT", "f4",("time",))
+            LAT.standard_name = "latitude"
+            LAT.long_name = "Latitude"
+            LAT.units = "degrees_north"
+            LAT.ancillary_variables = "QC_LAT"
+            LAT.axis = "Y"
+            LAT.valid_min = -90.
+            LAT.valid_max = 90.
+            LAT.reference_datum = "geographical coordinates, WGS84 projection"
+
+            WTR_PRE = nc.createVariable("WTR_PRE", "f8",("time", "depth"))
+            WTR_PRE.ancillary_variables = "QC_WTR_PRE"
+            WTR_PRE.coordinates = "time LAT LON DEPTH"
+            WTR_PRE.long_name = "Sea water pressure"
+            WTR_PRE.observation_type = "measured"
+            WTR_PRE.original_units = "dbar"
+            WTR_PRE.precision = "0.1"
+            WTR_PRE.resolution = "0.1"
+            WTR_PRE.standard_name = "sea_water_pressure"
+            WTR_PRE.units = "dbar"
+
+            WTR_TEM = nc.createVariable("WTR_TEM", "f8",("time", "depth"))
+            WTR_TEM.ancillary_variables = "QC_WTR_TEM"
+            WTR_TEM.coordinates = "time LAT LON DEPTH"
+            WTR_TEM.long_name = "Sea water tempature"
+            WTR_TEM.observation_type = "measured"
+            WTR_TEM.original_units = "C"
+            WTR_TEM.precision = "0.001"
+            WTR_TEM.resolution = "0.001"
+            WTR_TEM.standard_name = "sea_water_temperature"
+            WTR_TEM.units = "C"
+
+            SALT = nc.createVariable("SALT", "f8",("time", "depth"))
+            SALT.ancillary_variables = "QC_SALT"
+            SALT.coordinates = "time LAT LON DEPTH"
+            SALT.long_name = "Sea water salinity"
+            SALT.observation_type = "derived"
+            SALT.original_units = "psu"
+            SALT.precision = "0.001"
+            SALT.resolution = "0.001"
+            SALT.standard_name = "sea_water_salinity"
+            SALT.units = "psu"
+
+            # Add values to the variables
+            LON[:] = lon
+            LAT[:] = lat
+            # Remove 365 days because of reference year
+            time[:] = t - 365
+
+            for i, Pprofile in enumerate(p):
+                npoints = len(Pprofile)
+                if npoints > 0:
+                    WTR_PRE[i,:npoints] = Pprofile
+                    # Convert pressure to depth
+                    depth = seawater.dpth(Pprofile, lat[i])
+                    DEPTH[i,:npoints] = depth
+
+            for i, Tprofile in enumerate(T):
+                npoints = len(Tprofile)
+                WTR_TEM[i,:npoints] = Tprofile
+
+            for i, Sprofile in enumerate(S):
+                npoints = len(Sprofile)
+                SALT[i,:npoints] = Sprofile
 
 class Ship(Drifter):
 
