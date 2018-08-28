@@ -908,6 +908,48 @@ def prepare_3D_scat():
     cbar_ax = fig.add_axes([0.65, 0.25, 0.015, 0.5])
     return fig, ax1, ax2, cbar_ax
 
+def prepare_3D_scat4():
+    fig = plt.figure(figsize=(14, 12))
+    fig.patch.set_facecolor('white')
+
+    ax1 = fig.add_subplot(2, 2, 1, projection='3d')
+    ax1.set_aspect('equal')
+    ax2 = fig.add_subplot(2, 2, 2, projection='3d')
+    ax2.set_aspect('equal')
+    ax3 = fig.add_subplot(2, 2, 3, projection='3d')
+    ax3.set_aspect('equal')
+    ax4 = fig.add_subplot(2, 2, 4, projection='3d')
+    ax4.set_aspect('equal')
+
+    ax1.set_xlabel("Longitude")
+    ax1.set_ylabel("Latitude")
+    ax1.set_xticks(np.arange(-1., 0, 0.2))
+    ax1.set_yticks(np.arange(36.8, 37.2, 0.2))
+    ax1.set_title("Coastal glider", fontsize=18)
+
+    ax2.set_xlabel("Longitude")
+    ax2.set_ylabel("Latitude")
+    ax2.set_xticks(np.arange(-1., 0, 0.2))
+    ax2.set_yticks(np.arange(36.8, 37.2, 0.2))
+    ax2.set_title("Deep glider", fontsize=18)
+
+    ax3.set_xlabel("Longitude")
+    ax3.set_ylabel("Latitude")
+    ax3.set_xticks(np.arange(-1., 0, 0.2))
+    ax3.set_yticks(np.arange(36.8, 37.2, 0.2))
+
+    ax4.set_xlabel("Longitude")
+    ax4.set_ylabel("Latitude")
+    ax4.set_xticks(np.arange(-1., 0, 0.2))
+    ax4.set_yticks(np.arange(36.8, 37.2, 0.2))
+
+
+    fig.subplots_adjust(right=0.8)
+    cbar_ax1 = fig.add_axes([0.85, 0.525, 0.02, 0.35])
+    cbar_ax2 = fig.add_axes([0.85, 0.125, 0.02, 0.35])
+    return fig, ax1, ax2, ax3, ax4, cbar_ax1, cbar_ax2
+
+
 def change_wall_prop(ax, coordinates, depths, angles):
     ax.w_xaxis.set_pane_color((1.0, 1.0, 1.0, 1.0))
     ax.w_yaxis.set_pane_color((1.0, 1.0, 1.0, 1.0))
