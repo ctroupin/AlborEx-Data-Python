@@ -883,6 +883,94 @@ class Adcp(object):
         plt.ylim(0., 400.)
         plt.gca().invert_yaxis()
 
+class Altimetry(object):
+
+    """
+    SLA field from altimetry
+    """
+
+    def __init__(self, lon=None, lat=None, sla=None, u=None, v=None,
+                 time=None, date=None, speed=None):
+        self.lon = lon
+        self.lat = lat
+        self.sla = sla
+        self.u = u
+        self.v = v
+        self.time = time
+        self.speed = speed
+
+    def read_from_aviso(self, filename):
+        """
+
+        :param filename: name of the netCDF file
+        :return: lon, lat, SLA, u, v, time
+        """
+
+        if os.path.exists(filename):
+            with netCDF4.Dataset(filename) as nc:
+                self.lon = nc.get_variables_by_attributes(standard_name='longitude')[0][:]
+                self.lat = nc.get_variables_by_attributes(standard_name='latitude')[0][:]
+                self.time = nc.get_variables_by_attributes(standard_name='time')[0][:]
+                timeunits = nc.get_variables_by_attributes(standard_name='time')[0].units
+                self.date = netCDF4.num2date(self.time, timeunits)
+
+                self.sla = nc.get_variables_by_attributes(standard_name='sea_surface_height_above_sea_level')[0][0,:]
+                self.u = nc.get_variables_by_attributes(standard_name='surface_geostrophic_eastward_sea_water_velocity')[0][0,:]
+                self.v = nc.get_variables_by_attributes(standard_name='surface_geostrophic_northward_sea_water_velocity')[0][0,:]
+
+    def get_speed(self):
+        """
+        Compute current speed
+        """
+
+        self.speed = np.sqrt(self.u * self.u + self.v * self.v )
+        self.speed = np.ma.masked_greater(self.speed, 1.5)
+
+    def get_vort(self):
+        llon, llat = np.meshgrid(self.lon, self.lat)
+        dx = llon[:, 1:] - llon[:, :-1]
+        dy = llat[1:, :] - llat[:-1, :]
+        dux, duy = np.gradient(self.u)
+        dvx, dvy = np.gradient(self.v)
+        self.vort = dvx/dx.mean() - duy/dy.mean()
+
+    def plot_streamline(self, m=None, cmap=plt.cm.RdBu_r, vmax=0.15, density=3):
+
+        if m is not None:
+            llon, llat = np.meshgrid(self.lon, self.lat)
+            self.sla[self.sla >= vmax] = vmax
+            self.sla[self.sla <= -vmax] = -vmax
+            m.streamplot(llon, llat, self.u, self.v, color=self.sla,
+                       arrowstyle="fancy", density=density, linewidth=.5, cmap=cmap, latlon=True)
+        else:
+            plt.streamplot(self.lon, self.lat, self.u, self.v, color=self.sla,
+                       arrowsize=2, density=density, linewidth=.5, cmap=cmap)
+
+    def plot_sla(self, m=None, cmap=plt.cm.RdBu_r, slalevels=np.arange(-0.3, 0.3, 0.025)):
+
+        if m is not None:
+            llon, llat = np.meshgrid(self.lon, self.lat)
+            xx, yy = m(llon, llat)
+            plt.contour(xx, yy, self.sla, slalevels, cmap=cmap)
+
+        else:
+            plt.contour(self.lon, self.lat, self.sla, slalevels, cmap=cmap)
+
+    def select_domain(self, coordinates):
+        """
+        Subset based on geographical positions
+        """
+        goodlon = np.where(np.logical_and(self.lon >= coordinates[0], self.lon <= coordinates[1]))[0]
+        goodlat = np.where(np.logical_and(self.lat >= coordinates[2], self.lat <= coordinates[3]))[0]
+        self.lon = self.lon[goodlon]
+        self.lat = self.lat[goodlat]
+        self.u = self.u[goodlat, :]
+        self.u = self.u[:, goodlon]
+        self.v = self.v[goodlat, :]
+        self.v = self.v[:, goodlon]
+        self.sla = self.sla[goodlat, :]
+        self.sla = self.sla[:, goodlon]
+
 def prepare_3D_scat():
 
     fig = plt.figure(figsize=(12, 6))

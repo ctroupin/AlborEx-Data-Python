@@ -10,7 +10,7 @@
                       "/home/ctroupin/Data/Alborex/Profilers/dep0001_profiler-drifter-provbioll001_ogs-provbioll001_L1_2014-05-25.nc"],
         "coast": "/home/ctroupin/Data/Alborex/Coastline/coastline_cartex_f3.txt",
         "rv": "/home/ctroupin/Data/Alborex/RV/dep0015_socib-rv_scb-pos001_L1_2014-05-25.nc",
-        "altimetry": "/home/ctroupin/DataOceano/AVISO/MedSea/Aviso_gridded/Alborex/dt_med_allsat_madt_uv_20140523_20141010.nc",
+        "altimetry": "/home/ctroupin/Data/Alborex/Altimetry/mean.nc",
         "coast": "/home/ctroupin/Data/Alborex/Coastline/coastline_f.dat",
         "thermosal": "/home/ctroupin/Data/Alborex/RV/dep0015_socib-rv_scb-tsl001_L1_2014-05-25_HR.nc"
     },
