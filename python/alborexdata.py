@@ -13,7 +13,6 @@ from mpl_toolkits.mplot3d import Axes3D
 from geopy.distance import vincenty
 import cmocean
 import scipy.io as sio
-
 import warnings
 import matplotlib.cbook
 warnings.filterwarnings("ignore",category=matplotlib.cbook.mplDeprecation)
