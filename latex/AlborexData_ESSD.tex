@@ -105,6 +105,56 @@ The pair of images indicates that the front position slightly changed between Ma
 \caption{Sea surface temperature in the western Mediterranean Sea from MODIS sensor onboard Aqua satellite corresponding to May 25 and 30, 2014. The dashed black line indicates the approximative position of the front based on the temperature gradient for the period 25--30 May. Level-2, 11 $\mu m$, night-time images were selected. Only pixels with a quality flag equal to 1 (good data) were conserved and represented on the map. Note that the same front position is used in the subsequent figures.\label{fig2:SST}}
 \end{figure}
 
+\subsection{Data processing\label{sec:processing}}
+
+For each of the platform described in Sec.~\ref{sec:mission}, different processing are performed with the objective to turn raw data into quality-controlled, standardised data directly usable by scientists and experts. Specific conventions for data managed by SOCIB are explained below.
+
+\subsubsection{Processing levels}
+
+All the data provided by SOCIB are available in different so-called processing levels, ranging from 0 (raw data) to 2 (gridded data). The files are organized by \textit{deployments}, where a deployment is defined as an event initiated when an instrument is put at sea and finished once the instrument is recovered from sea. Table~\ref{tab:deployment} summarizes the deployments performed during the experiment and the available processing levels.
+
+\begin{description}
+\item[Level 0 (L0)]: this is the level closest to the original measurements, as it contains exactly the same data as the raw files provided by the instruments, but in a single file.
+\item[Level 1 (L1)]: in this level, additional variables are derived from the existing ones (e.g., salinity, potential temperature). The attributes corresponding to each variable are stored in the netCDF file, with details of any modifications. Unit conversion are also applied if necessary.
+\item[Level 2 (L2)]: this level consists of regular, homogeneous and instantaneous profiles obtained by interpolating the L1 data. It is only provided for gliders, mostly for visualization and post-processing purposes: specific tools designed to read and display profiler data can then be used the same way for gliders.
+\end{description}
+The glider data require a specific processing to ingest and convert the raw data files produced by the coastal and deep units. This is done within a toolbox designed for this purpose and extensively described in \citet{TROUPIN16}, the capabilities of which includes metadata aggregation, data download, advanced data processing and the generation of data products and figures. Of particular interest is the application of a thermal-lag correction for un-pumped Sea-Bird CTD sensors installed on Slocum gliders \citep{GARAU11}, which improves the quality of the glider data.
+
+\begin{table*}[htpb]
+\caption{Characteristics of the instrument deployments in AlborEx.\label{tab:deployment}}
+\begin{tabular}{lcrrccc}
+\tophline
+Instruments 		& Number of deployments & Initial time	& Final time			& \multicolumn{3}{c}{Processing levels} \\
+					& 						& 				& 						& L0 			& L1 		& L2 \\
+\middlehline
+Weather station on board R/V	& 1			& 2014-05-25	& 2014-05-02			& \checkmark	& \checkmark &  \\ 
+ADCP on board R/V	& 1						& 2014-05-25	& 2014-05-02			& \checkmark	& \checkmark &  \\ 
+CTD					& 1 (66 stations)		& 2014-05-25	& 2014-05-02			& \checkmark	& \checkmark &  \\ 
+Gliders 			& 2						& 2014-05-25	& 2014-05-30 			& \checkmark 	& \checkmark & \checkmark \\
+Surface drifters	& 25					& 2014-05-25	& beyond the experiment & \checkmark 	& \checkmark &  \\
+Profiling floats	& 3						& 2014-05-25	& beyond the experiment & \checkmark 	& \checkmark &  \\
+\bottomhline
+\end{tabular}
+\belowtable{} % Table Footnotes
+\end{table*}
+
+\subsubsection{Quality control}
+
+Automated data QC is part of the processing routine of SOCIB Data Center: most of the datasets provided with this paper come with a set of flags that reflect the quality of the measurements, based on different tests regarded the range of measurements, the presence of spike, the displacement of the platform and the correctness of the metadata. 
+
+\begin{description}
+\item[Drifters:] checks are performed to remove bad positions (i.e. on land) and spikes in the trajectory. For the SVP drifters, the method developed by \citep{RIO12} is used to improve the accuracy of the drogue presence from wind slippage \citep{MENNA18}.
+\item[Profiling floats:] standard tests are performed to check the time and the position accuracy. Variable ranges are checked at each depth.
+\end{description}
+
+For some platforms, the automated QC are not implemented yet:
+\begin{description}
+\item[Gliders:] a set of quality checks have been added to the glider toolbox \citep[][and available at \url{https://github.com/socib/glider_toolbox}]{TROUPIN16} and are in testing phase at the time of the writing. The QC included tests on $NaN$ values, impossible date or location, valid ranges (depending on depth) for the variables, spikes, gradients and flat lines (constant value over a large range of depths) in profiles. The later check proved useful for conductivity (and hence density and salinity). This new QC step will then be included to the general procedure and new netCDF files will be produced and made available as a new version of the present dataset.
+\item[CTD profiles:] the situation is similar to the gliders: new tests have been recently added to the processing chain at SOCIB, hence the AlborEx CTD profiles will have to be reprocessed in order to assign the quality flags to the measurements. These tests are essentially based on the range of measured values depending on each variable and the presence of strong vertical variations spike within a profile.
+\end{description}
+
+As the new files will not be available before a full reprocessing of all the historical missions, we decided to provide the data files in their current state. A new version will be uploaded as soon as the processing has been performed.
+
 \subsection{In situ data}
 
 Whereas the remote sensing measurements helped in the mission design and the front detection, in situ observation were essential to fulfill the mission objectives. The different platforms deployed for the data collection are presented hereinafter.
@@ -222,6 +272,7 @@ Figure~\ref{fig9b:adcpQC} shows the QF during the whole mission. The 3 main peri
 
 Overall the quality of the data tends to deteriorate when the depth increases, as reflected by the bad and missing values. In the first 200~m, about 95\% of the measurements are considered as good. Below 200~m, the ratio drops to 57\% with more than 21\% of missing values. Note that the flags 5, 7 and 8 were not used in this case but kept in the plot.
 
+
 \section{Description of the database\label{sec:database}}
 
 The AlborEx mission generated a large amount of data in a region sparsely sampled in the past. The synergy between lower-resolution (CTD, drifters, floats) and high-resolution data (ADCP, gliders) makes this dataset unique for the study of submesoscale processes in the Mediterranean Sea. Moreover its multidisciplinary nature makes it suitable to study the interactions between the physical conditions and the biogeochemical variables.
@@ -264,55 +315,6 @@ File name				& Platform 															\\
 \belowtable{\texttt{***} in the file names stands for 3 digits.} 
 \end{table*}
 
-\subsection{Data processing\label{sec:processing}}
-
-For each of the platform described in Sec.~\ref{sec:mission}, different processing are performed with the objective to turn raw data into quality-controlled, standardised data directly usable by scientists and experts. Specific conventions for data managed by SOCIB are explained below.
-
-\subsubsection{Processing levels}
-
-All the data provided by SOCIB are available in different so-called processing levels, ranging from 0 (raw data) to 2 (gridded data). The files are organized by \textit{deployments}, where a deployment is defined as an event initiated when an instrument is put at sea and finished once the instrument is recovered from sea. Table~\ref{tab:deployment} summarizes the deployments performed during the experiment and the available processing levels.
-
-\begin{description}
-\item[Level 0 (L0)]: this is the level closest to the original measurements, as it contains exactly the same data as the raw files provided by the instruments, but in a single file.
-\item[Level 1 (L1)]: in this level, additional variables are derived from the existing ones (e.g., salinity, potential temperature). The attributes corresponding to each variable are stored in the netCDF file, with details of any modifications. Unit conversion are also applied if necessary.
-\item[Level 2 (L2)]: this level consists of regular, homogeneous and instantaneous profiles obtained by interpolating the L1 data. It is only provided for gliders, mostly for visualization and post-processing purposes: specific tools designed to read and display profiler data can then be used the same way for gliders.
-\end{description}
-The glider data require a specific processing to ingest and convert the raw data files produced by the coastal and deep units. This is done within a toolbox designed for this purpose and extensively described in \citet{TROUPIN16}, the capabilities of which includes metadata aggregation, data download, advanced data processing and the generation of data products and figures. Of particular interest is the application of a thermal-lag correction for un-pumped Sea-Bird CTD sensors installed on Slocum gliders \citep{GARAU11}, which improves the quality of the glider data.
-
-\begin{table*}[htpb]
-\caption{Characteristics of the instrument deployments in AlborEx.\label{tab:deployment}}
-\begin{tabular}{lcrrccc}
-\tophline
-Instruments 		& Number of deployments & Initial time	& Final time			& \multicolumn{3}{c}{Processing levels} \\
-					& 						& 				& 						& L0 			& L1 		& L2 \\
-\middlehline
-Weather station on board R/V	& 1			& 2014-05-25	& 2014-05-02			& \checkmark	& \checkmark &  \\ 
-ADCP on board R/V	& 1						& 2014-05-25	& 2014-05-02			& \checkmark	& \checkmark &  \\ 
-CTD					& 1 (66 stations)		& 2014-05-25	& 2014-05-02			& \checkmark	& \checkmark &  \\ 
-Gliders 			& 2						& 2014-05-25	& 2014-05-30 			& \checkmark 	& \checkmark & \checkmark \\
-Surface drifters	& 25					& 2014-05-25	& beyond the experiment & \checkmark 	& \checkmark &  \\
-Profiling floats	& 3						& 2014-05-25	& beyond the experiment & \checkmark 	& \checkmark &  \\
-\bottomhline
-\end{tabular}
-\belowtable{} % Table Footnotes
-\end{table*}
-
-\subsubsection{Quality control}
-
-Automated data QC is part of the processing routine of SOCIB Data Center: most of the datasets provided with this paper come with a set of flags that reflect the quality of the measurements, based on different tests regarded the range of measurements, the presence of spike, the displacement of the platform and the correctness of the metadata. 
-
-\begin{description}
-\item[Drifters:] checks are performed to remove bad positions (i.e. on land) and spikes in the trajectory. For the SVP drifters, the method developed by \citep{RIO12} is used to improve the accuracy of the drogue presence from wind slippage \citep{MENNA18}.
-\item[Profiling floats:] standard tests are performed to check the time and the position accuracy. Variable ranges are checked at each depth.
-\end{description}
-
-For some platforms, the automated QC are not implemented yet:
-\begin{description}
-\item[Gliders:] a set of quality checks have been added to the glider toolbox \citep[][and available at \url{https://github.com/socib/glider_toolbox}]{TROUPIN16} and are in testing phase at the time of the writing. The QC included tests on $NaN$ values, impossible date or location, valid ranges (depending on depth) for the variables, spikes, gradients and flat lines (constant value over a large range of depths) in profiles. The later check proved useful for conductivity (and hence density and salinity). This new QC step will then be included to the general procedure and new netCDF files will be produced and made available as a new version of the present dataset.
-\item[CTD profiles:] the situation is similar to the gliders: new tests have been recently added to the processing chain at SOCIB, hence the AlborEx CTD profiles will have to be reprocessed in order to assign the quality flags to the measurements. These tests are essentially based on the range of measured values depending on each variable and the presence of strong vertical variations spike within a profile.
-\end{description}
-
-As the new files will not be available before a full reprocessing of all the historical missions, we decided to provide the data files in their current state. A new version will be uploaded as soon as the processing has been performed.
 
 
 \conclusions[Conclusions and perspectives]
