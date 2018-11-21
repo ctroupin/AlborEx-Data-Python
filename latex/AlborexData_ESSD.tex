@@ -120,6 +120,8 @@ All the data provided by SOCIB are available in different so-called processing l
 \end{description}
 The glider data require a specific processing to ingest and convert the raw data files produced by the coastal and deep units. This is done within a toolbox designed for this purpose and extensively described in \citet{TROUPIN16}, the capabilities of which includes metadata aggregation, data download, advanced data processing and the generation of data products and figures. Of particular interest is the application of a thermal-lag correction for un-pumped Sea-Bird CTD sensors installed on Slocum gliders \citep{GARAU11}, which improves the quality of the glider data.
 
+In order to go from L1 to L2, a spatial interpolation is performed into vertical depth levels with a resolution of 1~m. 
+
 \begin{table*}[htpb]
 \caption{Characteristics of the instrument deployments in AlborEx.\label{tab:deployment}}
 \begin{tabular}{lcrrccc}
