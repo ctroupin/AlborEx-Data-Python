@@ -120,7 +120,7 @@ All the data provided by SOCIB are available in different so-called processing l
 \end{description}
 The glider data require a specific processing to ingest and convert the raw data files produced by the coastal and deep units. This is done within a toolbox designed for this purpose and extensively described in \citet{TROUPIN16}, the capabilities of which includes metadata aggregation, data download, advanced data processing and the generation of data products and figures. Of particular interest is the application of a thermal-lag correction for un-pumped Sea-Bird CTD sensors installed on Slocum gliders \citep{GARAU11}, which improves the quality of the glider data.
 
-In order to go from L1 to L2, a spatial interpolation is performed into vertical depth levels with a resolution of 1~m. 
+In order to go from L1 to L2, a spatial interpolation is performed into vertical depth levels with a resolution of 1~m.
 
 \begin{table*}[htpb]
 \caption{Characteristics of the instrument deployments in AlborEx.\label{tab:deployment}}
@@ -144,10 +144,7 @@ Profiling floats	& 3						& 2014-05-25	& beyond the experiment & \checkmark 	& \
 
 Automated data QC is part of the processing routine of SOCIB Data Center: most of the datasets provided with this paper come with a set of flags that reflect the quality of the measurements, based on different tests regarded the range of measurements, the presence of spike, the displacement of the platform and the correctness of the metadata. 
 
-\begin{description}
-\item[Drifters:] checks are performed to remove bad positions (i.e. on land) and spikes in the trajectory. For the SVP drifters, the method developed by \citep{RIO12} is used to improve the accuracy of the drogue presence from wind slippage \citep{MENNA18}.
-\item[Profiling floats:] standard tests are performed to check the time and the position accuracy. Variable ranges are checked at each depth.
-\end{description}
+The QC are based on existing standards for most of the platforms. They are extensively described in the Quality Information Document \citep{SOCIBQC2018}. The description platform by platform is provided in the next Section. 
 
 For some platforms, the automated QC are not implemented yet:
 \begin{description}
@@ -155,13 +152,18 @@ For some platforms, the automated QC are not implemented yet:
 \item[CTD profiles:] the situation is similar to the gliders: new tests have been recently added to the processing chain at SOCIB, hence the AlborEx CTD profiles will have to be reprocessed in order to assign the quality flags to the measurements. These tests are essentially based on the range of measured values depending on each variable and the presence of strong vertical variations spike within a profile.
 \end{description}
 
-As the new files will not be available before a full reprocessing of all the historical missions, we decided to provide the data files in their current state. A new version will be uploaded as soon as the processing has been performed.
+As the new files will not be available before a full reprocessing of all the historical missions, the decision was taken to provide the data files in their current state. A new version will be uploaded as soon as the processing has been performed.
 
-\subsection{In situ data}
+\section{In situ observation}
 
 Whereas the remote sensing measurements helped in the mission design and the front detection, in situ observation were essential to fulfill the mission objectives. The different platforms deployed for the data collection are presented hereinafter.
 
-\subsubsection{Research vessel}
+\subsection{Research vessel}
+
+\subsubsection{Configuration}
+
+
+\subsubsection{Quality checks}
 
 The SOCIB coastal research vessel (R/V) was used to sample the area with vertical profiles acquired though the CTD. Two distinct CTD legs were performed on a 10~km $\times$ 5~km resolution grid, as depicted in Fig.~\ref{fig3:CTD}: the first survey was run from May 26 to 27 and consisted of 34 casts along 5 meridional legs. The second survey took place from May 29 to 30 and was made up of 28 casts. The casts from both surveys were performed at almost similar locations in order to allow for detecting changes between the two periods. On average the profiles reached a maximal depth of approximatively 600~m.
 
@@ -184,11 +186,13 @@ In addition to the CTDs, the R/V thermosalinograph continuously acquired tempera
 \caption{The near-surface salinity (colored dots) measured by the thermosalinograph evidences the strong horizontal gradients, in agreement with the front position as obtained using the SST (broad, dashed line). The 5 subplots depict the temperature and salinity along select meridional tracks. \label{fig3:thermosal}}
 \end{figure*}
 
-\subsubsection{Gliders}
+\subsection{Gliders}
 
 To collect measurements addressing the submesoscale, two gliders were deployed on May 25 inside the study area. The coastal glider carried out measurements up to 200~m depth and the deep glider up to 500~m. The horizontal resolution was about 0.5~km for the shallow and 1~km for the deep glider. The initial sampling strategy consisted in two 50-km long, meridional tracks, 10 kilometers away one from the other, and to repeat these tracks up to 4 times during the experiment. However, due to the strong zonal currents in the frontal zone, different tracks (Fig.~\ref{fig6:glidertracks}) crossing the front several times were made instead.
 
 On May 25 at 19:24 (UTC), the deep glider payload suffered an issue with the data logging software, resulting in no data acquisition during a few hours, during which the problem was being fixed. After that the data acquisition could be resumed on May 26 at 08:50 (UTC).
+
+Due to safety concerns, both the deep and coastal gliders had their surfacing limited: the deep glider came to the surface one in every 3 profiles, while the coastal gliders came out one in every 10 profiles. While this strategy might not be considered as optimal in a purely scientific point of view, the priority was set on the glider integrity
 
 \begin{figure}[t]
 \includegraphics[width=.5\textwidth]{fig06.png}
@@ -202,10 +206,10 @@ The total number of valid measurements (i.e., discarding the bad and missing val
 \caption{Temperature (top) and salinity measured by the two gliders. The approximative front position at the surface is shown as a dashed, grey line.\label{fig6:glidersections}}
 \end{figure*}
 
-The gliders follow a 3-dimensional trajectory in the water column but for some specific usages it is sometimes more convenient to have the glider data as if they were a series vertical profiles. To do so, a spatial interpolation is applied on the original data, leading to the so-called Level-2 data, further described in Sec.~\ref{sec:processing}.
+The gliders follow a 3-dimensional trajectory in the water column but for some specific usages it is sometimes more convenient to have the glider data as if they were a series vertical profiles. To do so, a binning is applied on the original data, leading to the so-called Level-2 data, further described in Sec.~\ref{sec:processing}.
 
 
-\subsubsection{Surface drifters}
+\subsection{Surface drifters}
 
 On May 25, 25 Surface Velocity Program (SVP) drifters were deployed in the frontal area in a tight square pattern with a mean distance between neighbor drifters around 3~km. In the Mediterranean Sea, they have been shown to provide information on the surface dynamics, ranging from basin scales to mesoscale features or coastal currents \citep{POULAIN13}. Almost all the drifters were equipped with a thermistor on the lower part of the buoy to measure sea water temperature. 
 
@@ -225,7 +229,7 @@ On average the temporal sampling resolution is close to one hour, except for 2 d
 \end{figure*}
 
 
-\subsubsection{Profiling floats}
+\subsection{Profiling floats}
 
 Three profiling floats were deployed in the same zone as the drifters, on May 25 (see Tab.~\ref{tab:argofloats}). Their configuration depends on the float type: the Arvor-C has higher temporal resolution (hours) and does not go much deeper than 400~m. The A3 and Provor-bio platforms are usually set to have cycle length between 1 and 5 days, with the bio reaching maximal depth on the order of 1000~m. The floats constitute an essential tool in order to monitor the mesoscale \citep{SANCHEZROMAN17}. The trajectories (Fig.~\ref{fig8:argofloats}) clearly show that profiles were acquired in the frontal area, before the floats were eventually captured by the Algerian Current. 
 
@@ -252,7 +256,7 @@ Provor-bio			& 2014-05-25	& 2014-04-24	& 1000		& 1 day until June 7, then 5 days
 \end{tabular}
 \end{table*}
 
-\subsubsection{Current profiler\label{sec:adcp}}
+\subsection{Current profiler\label{sec:adcp}}
 
 The Vessel Mounted-Acoustic Doppler Current Meter Profiler (VM-ADCP) operating at 153 kHz acquired velocity profiles approximatively every 2 minutes during nighttime (22:00--6:00 UTC) at a speed of 10 knots and during the CTD surveys (see Fig.~\ref{fig3:CTD}). The measurement accuracy is on the order of 0.01~m/s. The measurements were vertically averaged over 8~m depth bins.
 
@@ -273,6 +277,10 @@ Figure~\ref{fig9b:adcpQC} shows the QF during the whole mission. The 3 main peri
 \end{figure}
 
 Overall the quality of the data tends to deteriorate when the depth increases, as reflected by the bad and missing values. In the first 200~m, about 95\% of the measurements are considered as good. Below 200~m, the ratio drops to 57\% with more than 21\% of missing values. Note that the flags 5, 7 and 8 were not used in this case but kept in the plot.
+
+\subsection{Nutrients}
+
+Samples for nutrient analysis were collected in triplicate from CTD Niskin bottles and immediately frozen for subsequent analysis at the laboratory. Concentrations of dissolved nutrients (Nitrite: NO$_{2}^{-}$, Nitrate: NO$_{3}^{-}$ and Phosphate: PO$_{4}^{3-}$ were determined with an autoanalyzer (Alliance Futura) using colorimetric techniques \citep{GRASSHOFF1983}. The accuracy of the analysis was established using Coastal Seawater Reference Material for Nutrients (MOOS-1, NRCCNRC), resulting in recoveries of 97\%, 95\% and 100\% for NO$_{2}^{-}$, NO$_{3}^{-}$ and PO$_{4}^{3-}$, respectively. Detection limits were NO$_{2}^{-}$:0.005 µM, NO$_{3}^{-}$: 0.1 µM and PO$_{4}^{3-}$: 0.1 µM.
 
 
 \section{Description of the database\label{sec:database}}
