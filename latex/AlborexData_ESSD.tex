@@ -20,8 +20,10 @@
 \Author[6]{Juan Gabriel}{Fern\'{a}ndez}
 \Author[6]{Miquel \`{A}ngel}{R\'{u}jula}
 \Author[6]{Cristian}{Mu\~{n}oz}
+\Author[6]{Eva}{Alou}
+\Author[7]{Antonio}{Tovar-S\'{a}nchez}
 \Author[6]{John~T.}{Allen}
-\Author[7]{Amala}{Mahadevan}
+\Author[8]{Amala}{Mahadevan}
 \Author[6,2]{Joaqu\'{i}n}{Tintor\'{e}}
 
 % OrcID's	
@@ -32,7 +34,8 @@
 %John: https://orcid.org/0000-0001-7357-6623
 %Giulio https://orcid.org/0000-0002-8532-2097
 %Félix  https://orcid.org/0000-0002-1205-3834
-%Antonio Olita https://orcid.org/0000-0003-1302-8961
+%Antonio Olita: https://orcid.org/0000-0003-1302-8961
+%Antonio Tovar: https://orcid.org/0000-0003-4375-1982
 
 \affil[1]{GeoHydrodynamics and Environment Research (GHER), Freshwater and OCeanic science Unit of reSearch (FOCUS), University of Li\`{e}ge, Li\`{e}ge, Belgium}
 \affil[2]{Instituto Mediterr\'{a}neo de Estudios Avanzados (IMEDEA, CSIC-UIB), Esporles, Spain}
@@ -40,7 +43,8 @@
 \affil[4]{Sorbonne Universit\'{e}s (UPMC, Univ Paris06)-CNRS-IRD-MNHN, Laboratoire LOCEAN, Paris, France}
 \affil[5]{Istituto Nazionale di Oceanografia e di Geofisica Sperimentale (OGS), Trieste, Italy}
 \affil[6]{Balearic Islands Coastal Observing and Forecasting System (SOCIB), Palma de Mallorca, Spain}
-\affil[7]{Woods Hole Oceanographic Institution, Woods Hole, MA, USA}
+\affil[7]{Instituto de Ciencias Marinas de Andalucía, (ICMAN – CSIC), Puerto Real, Spain}
+\affil[8]{Woods Hole Oceanographic Institution, Woods Hole, MA, USA}
 
 \runningtitle{AlborEX database}
 \runningauthor{Troupin et al.}
@@ -79,7 +83,6 @@ The perfect observational system would consist in dense array of sensors present
 
 The western Mediterranean Sea is a particularly relevant region for multi-platform experiments, thanks to the wide range of processes taking place and intensively studied since the work of \cite{WUST61} on the vertical circulation: influence on climate \citep[e.g.,][]{GIORGI06,GIORGI08,ADLOFF15,GUIOT16,RAHMSTORF98} and sea-level change \citep[e.g.,][]{TSIMPLIS02,BONADUCE16,WOLFF18}, thermohaline circulation \citep[e.g.,][]{BERGAMASCO10,MILLOT87,MILLOT91,MILLOT99,SKLIRIS14,ROBINSON01}, water mass formation and convection process \citep[e.g.,][]{MEDOC70,STOMMEL72,SEND1999,MACIAS18}, mesoscale \citep[e.g.,][]{ALVAREZ96,PINOT95,PUJOL05,SANCHEZROMAN17} and submesoscale processes \citep[e.g.,][]{BOSSE15,DAMIEN17,MARGIRIER17,TESTOR03,TESTOR18}. Other recent instances of multi-platform experiments in the Mediterranean Sea were focused on the Northern Current \citep[December 2011,][]{BERTA18}, deep convection in the Northwestern Mediterranean sea \citep[July 2012--October 2013,][]{TESTOR18}, the Balearic Current system \citep[July and November 2007, April and June 2008,][]{BOUFFARD10} and coastal current off west of Ibiza island \citep[August 2013,][]{TROUPIN15}. Similar studies comparing almost synchronous glider and SARAL/AltiKa altimetric data on selected tracks have also been carried between the Balearic Islands and the Algerian coasts \citep{AULICINO18,COTRONEO16}.  
 
-
 Recently, the efforts carried out by data providers and oceanographic data centers through European initiatives such as SeaDataNet (\url{http://seadatanet.org/}) makes possible the creation and publication of aggregated datasets covering different European regional seas, including the Mediterranean Sea \citep{SIMONCELLI14}, upon which hydrographical atlas are build \citep[e.g.][]{SIMONCELLI16,IONA18a}. These atlas are particularly useful for the description of the general circulation, the large-scale oceanographic features or for the assessment of the long-term variability \citep{IONA18b}. However their limitation to temperature and salinity variables (as of July 2018) and their characteristic spatial scale prevent them to be employed for the study of submesoscale features.
 
 The AlborEx multi-platform experiment was performed in the Alboran Sea from from May 25 to 31, 2014, with the objective of capturing meso and submesoscale processes and evaluating the interactions between both scales, with a specific focus on the vertical velocities. The observing system, described in the next section, is made up of the SOCIB coastal R/V, 2 underwater gliders, 3 profiling floats and 25 surface drifters, complemented by remote-sensing data (sea surface temperature and chlorophyll concentration). The resulting data set is particularly rich thanks to the variety of sensors and measured variables concentrated on a relatively small area.
@@ -105,6 +108,16 @@ The pair of images indicates that the front position slightly changed between Ma
 \includegraphics[width=.95\textwidth]{fig02.png}
 \caption{Sea surface temperature in the western Mediterranean Sea from MODIS sensor onboard Aqua satellite corresponding to May 25 and 30, 2014. The dashed black line indicates the approximative position of the front based on the temperature gradient for the period 25--30 May. Level-2, 11 $\mu m$, night-time images were selected. Only pixels with a quality flag equal to 1 (good data) were conserved and represented on the map. Note that the same front position is used in the subsequent figures.\label{fig2:SST}}
 \end{figure}
+
+\subsection{Data Reuse}
+
+Three main types of data reuse are foreseen: 1.~model validation, 2.~data assimilation (DA) and 3.~planning of similar in situ experiments.
+
+With the increase of spatial resolution in operational models, the validation at the smaller scales requires high-resolution observations. Remote-sensing measurements such as SST or chlorophyll-a concentration provides a valuable source of information but are limited to the surface layer. In the case of the present experiment, the position, intensity (gradients) and vertical structure of the front represent challenging features for numerical models, even when data assimilation is applied \citep{HERNANDEZ2018}.
+
+The AlborEx dataset can be used for DA experiments, for example assimilating the CTD measurements in the model and using the glider measurements as an independent observation dataset. The assimilation of glider observations has already been performed in different regions \citep[e.g.][]{MELET2012,MOURRE2014,PAN2014} and has been shown to improve the forecast skills. However the assimilation of high-resolution data is not trivial: the the background error covariances tends to smooth the small scale features present in the observations.
+
+Finally, other observing and modeling programs in the Mediterranean Sea can also benefit from the present dataset, for instance the Coherent Lagrangian Pathways from the Surface Ocean to Interior (CALYPSO) in the Southwest Mediterranean Sea \citep{JOHNSTON2018}. Similarly to AlborEx, CALYPSO strives to study a strong ocean front front and the vertical exchanges taking place in the area of interest (see \url{https://www.onr.navy.mil/Science-Technology/Departments/Code-32/All-Programs/Atmosphere-Research-322/Physical-Oceanography/CALYPSO-DRI} for details).
 
 \subsection{Data processing\label{sec:processing}}
 
