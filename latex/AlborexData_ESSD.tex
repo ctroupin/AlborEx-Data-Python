@@ -70,7 +70,7 @@ Near real-time ADCP velocities were collected nightly and during the CTD section
 
 In the context of mesoscale and submesoscale interactions, the AlborEX dataset constitutes a particularly valuable source of information to infer mechanisms, evaluate vertical transport and establish relationships between the thermal and haline structures and the biogeochemical variable evolution, in a region characterised by strong horizontal gradients provoked by the confluence of Atlantic and Mediterranean Waters, thanks to its multi-platform, multi-disciplinary nature.
 
-The most recent version of the dataset is available at \url{http://doi.org/10.5281/zenodo.1328238}.
+The dataset presented in this paper can be used for the validation of high-resolution numerical models or for data assimilation experiment, thanks to the various scales of processes sampled during the cruise. All the data files that make up the dataset are available in the SOCIB data catalog at \doi{10.25704/z5y2-qpye}.
 
 \end{abstract}
 
@@ -117,7 +117,7 @@ With the increase of spatial resolution in operational models, the validation at
 
 The AlborEx dataset can be used for DA experiments, for example assimilating the CTD measurements in the model and using the glider measurements as an independent observation dataset. The assimilation of glider observations has already been performed in different regions \citep[e.g.][]{MELET2012,MOURRE2014,PAN2014} and has been shown to improve the forecast skills. However the assimilation of high-resolution data is not trivial: the the background error covariances tends to smooth the small scale features present in the observations.
 
-Finally, other observing and modeling programs in the Mediterranean Sea can also benefit from the present dataset, for instance the Coherent Lagrangian Pathways from the Surface Ocean to Interior (CALYPSO) in the Southwest Mediterranean Sea \citep{JOHNSTON2018}. Similarly to AlborEx, CALYPSO strives to study a strong ocean front front and the vertical exchanges taking place in the area of interest (see \url{https://www.onr.navy.mil/Science-Technology/Departments/Code-32/All-Programs/Atmosphere-Research-322/Physical-Oceanography/CALYPSO-DRI} for details).
+Finally, other observing and modeling programs in the Mediterranean Sea can also benefit from the present dataset, for instance the Coherent Lagrangian Pathways from the Surface Ocean to Interior (CALYPSO) in the Southwest Mediterranean Sea \citep{JOHNSTON2018}. Similarly to AlborEx, CALYPSO strives to study a strong ocean front front and the vertical exchanges taking place in the area of interest. For details on the mission objectives, see \url{https://www.onr.navy.mil/Science-Technology/Departments/Code-32/All-Programs/Atmosphere-Research-322/Physical-Oceanography/CALYPSO-DRI}, last accessed December 17, 2018.
 
 \subsection{Data processing\label{sec:processing}}
 
@@ -181,14 +181,14 @@ Whereas the remote sensing measurements helped in the mission design and the fro
 
 The SOCIB coastal research vessel (R/V) was used to sample the area with vertical profiles acquired though the CTD. Two distinct CTD legs were performed on a 10~km $\times$ 5~km resolution grid, as depicted in Fig.~\ref{fig3:CTD}: the first survey was run from May 26 to 27 and consisted of 34 casts along 5 meridional legs. The second survey took place from May 29 to 30 and was made up of 28 casts. The casts from both surveys were performed at almost similar locations in order to allow for detecting changes between the two periods. On average the profiles reached a maximal depth of approximatively 600~m.
 
-\begin{figure}[t]
+\begin{figure}[ht]
 \includegraphics[width=.5\textwidth]{fig03.png}
 \caption{The CTD casts were organised in 5 legs that crossed the front and were repeated over 2 periods, at the beginning and the end of the mission.\label{fig3:CTD}.}
 \end{figure}
 
 The distinct water properties on both sides of the front are evidenced by the T-S diagrams in Fig.~\ref{fig4:TSdiag}, where the colors represent the fluorescence. The salinity range north of the front is roughly between 38 and 38.5, with the exception of a few measurements, and confirms the nature of the Mediterranean Water mass. The fluorescence maximum appears between 14 and 15$^{\circ}$C. South of the front the salinity range is wider while the temperature values are similar to the north.
 
-\begin{figure*}[t]
+\begin{figure*}[ht]
 \includegraphics[width=.9\textwidth]{fig04.png}
 \caption{The T-S diagrams are shown separately for the casts located north and south of the front (broad, dashed line) \label{fig4:TSdiag}.}
 \end{figure*}
@@ -232,12 +232,12 @@ and described cyclonic and anticyclonic trajectories, respectively. All the drif
 
 On average the temporal sampling resolution is close to one hour, except for 2 drifters for which the intervals are 4 and 5 hours. The velocities are directly computed from the successive positions and highlight the strength of the Algerian Current with velocities on the order of 1~m/s (Fig.~\ref{fig7:drifterszoom}).    
 
-\begin{figure}[t]
+\begin{figure}[ht]
 \includegraphics[width=.5\textwidth]{fig08.png}
 \caption{Surface drifter trajectories. For the sake of simplicity and clarity, the temperature, when available, is only shown for the duration of the AlborEx mission.\label{fig3:drifters}}
 \end{figure}
 
-\begin{figure*}[h]
+\begin{figure*}[ht]
 \includegraphics[width=.9\textwidth]{fig09.png}
 \caption{Drifter temperature (left-hand side) and velocity in the area of study.\label{fig7:drifterszoom}}
 \end{figure*}
@@ -251,7 +251,7 @@ The Arvor-C trajectory closely follows the front position until a latitude of 36
 
 The 2 Arvor-type floats provided temperature and salinity profiles. In addition to these variables, the Provor-bio platform measured biochemical and optical properties: colored dissolved organic matter (CDOM), chlorophyll-a concentration, backscattering (650~nm), dissolved oxygen concentration and downwelling  irradiance (380, 410, 490~nm) and photosynthetically active radiation (PAR). The profiles were performed around local noon time and were used in combination with the glider measurements to study the deep chlorophyll maximum (DCM) across the front \citep{OLITA17}.
 
-\begin{figure*}[h]
+\begin{figure*}[ht]
 \includegraphics[width=.9\textwidth]{fig10.png}
 \caption{Profiling floats trajectories (top-left panel) and salinity from May 25 to June 15, 2014. \label{fig8:argofloats}}
 \end{figure*}
@@ -276,7 +276,7 @@ The Vessel Mounted-Acoustic Doppler Current Meter Profiler (VM-ADCP) operating a
 
 The velocities exhibit a dominant eastward current with speed locally larger than 1~m/s and that signal is clearly visible in the first 100~m of the water column. The velocity field is illustrated in Fig.~\ref{fig9a:adcp} where each velocity vector is shown as a bar with a color depending on the intensity. The vertical structure is also displayed along with the front position.
 
-\begin{figure*}[h]
+\begin{figure*}[ht]
 \includegraphics[width=.95\textwidth]{fig11.png}
 \caption{Velocity field obtained with the ADCP at a 40~m depth (left panel) and sections of zonal velocity on May 26 (S1) and 27 (S2). The locations of the sections are indicated by dashed rectangles on the map. Only data with a quality flag equal to 1 (good data) are represented\label{fig9a:adcp}}
 \end{figure*}
@@ -285,7 +285,7 @@ This type of current measurements requires a careful processing in order to get 
 
 Figure~\ref{fig9b:adcpQC} shows the QF during the whole mission. The 3 main periods during which the ADCP was turned off are shown as grey areas. In addition, no measurements are available in the first meters of the water column, due to the position of the ADCP on the ship.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \includegraphics[width=.95\textwidth]{fig12.png}
 \caption{Quality flags for the velocity measurements.\label{fig9b:adcpQC}}
 \end{figure}
@@ -339,6 +339,29 @@ File name				& Platform 															\\
 \belowtable{\texttt{***} in the file names stands for 3 digits.} 
 \end{table*}
 
+\subsection{Data reading and visualisation}
+
+The standard format (netCDF) in which the data files are written makes the reading and visualisation straightforward. A variety of software tools such as ncview, ncBrowse or Panoply are designed to visualised gridded fields. Here the data provided consist of trajectories (surface or 3D), profiles, trajectory-profile, which can be easily read using the netCDF library in different languages (Tab.~\ref{netcdflib}).
+
+Examples of reading and plotting functions, written in Python, are also provided \citep{??????}. They allow the interested readers to get the data from the files and reproduce the same figures as in the paper, constituting a good starting point to carry out further specific analysis. 
+
+\begin{table*}[h]
+\caption{NetCDF libraries for various languages.\label{tab:netcdflib}}
+\begin{tabular}{ll}
+\tophline
+Programming language		& Library 		\\
+\middlehline				 
+Python						& \url{https://github.com/Unidata/netcdf4-python}\\
+Fortran						& \url{https://github.com/Unidata/netcdf-fortran}\\
+C							& \url{https://github.com/Unidata/netcdf-c}\\
+Javascript					& \url{https://www.npmjs.com/package/netcdf4}\\
+Octave 						& \url{https://github.com/Alexander-Barth/octave-netcdf}\\
+Julia						& \url{https://github.com/Alexander-Barth/NCDatasets.jl}\\
+MATLAB						& Native support since version R2010b\\
+\bottomhline
+\end{tabular}
+\end{table*}
+
 
 
 \conclusions[Conclusions and perspectives]
@@ -357,8 +380,8 @@ Updates will be performed when new versions of the files or new files are made a
 
 \codedataavailability{
 Following SOCIB general policy, the data are made available as netCDF files through the SOCIB Thematic Real-time Environmental Distributed Data Services (THREDDS) Data Server, a standard way to distribute metadata and data using a variety of remote data access protocols such as OPeNDAP (\url{https://www.opendap.org}), Web Map Service (WMS) or direct HTTP access. 
-In addition, the whole AlborEx dataset has been uploaded Zenodo (\url{https://zenodo.org/}, last accessed in August 3, 2018), a research platform designed to store any type of research outputs (papers, code, datasets) and assigns a Digital Object Identifier (DOI) to make them easily and uniquely citable.
-The most recent version of the dataset is accessible from \url{http://doi.org/10.5281/zenodo.1328238}.
+In addition, the whole AlborEx dataset has been assigned a Digital Object Identifier (DOI) to make them it and uniquely citable.
+The most recent version of the dataset is accessible from \url{http://doi.org/10.25704/z5y2-qpye}.
 
 Upgrades will be performed periodically with the implementation of fresh or better QCs on sensors such as the ADCP, CTD or gliders. The new releases will be available using the same Zenodo identifier, but with be assigned a different version number, each version having its own DOI. Files not available at the time of the writing will also be appended to the original database. 
 
