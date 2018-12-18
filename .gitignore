@@ -1,16 +1,7 @@
 # Initial ignore
 python/.ipynb_checkpoints/
-latex/AlborexData201703.bbl
-latex/AlborexData201703.blg
-latex/workplan.md
-latex/fig*
-latex/*.bbl
-latex/*.blg
 python/.idea/
 python/logs
 python/__pycache__
 figures/SST
 
-*.sty
-*.cls
-*.bst
