@@ -21,7 +21,7 @@
 \Author[6]{Miquel \`{A}ngel}{R\'{u}jula}
 \Author[6]{Cristian}{Mu\~{n}oz}
 \Author[6]{Eva}{Alou}
-\Author[6]{Inmaculada Ruiz}
+\Author[6]{Inmaculada}{Ruiz}
 \Author[7]{Antonio}{Tovar-S\'{a}nchez}
 \Author[6]{John~T.}{Allen}
 \Author[8]{Amala}{Mahadevan}
@@ -159,7 +159,26 @@ Profiling floats	& 3						& 2014-05-25	& beyond the experiment & \checkmark 	& \
 
 Automated data QC is part of the processing routine of SOCIB Data Center: most of the datasets provided with this paper come with a set of flags that reflect the quality of the measurements, based on different tests regarded the range of measurements, the presence of spike, the displacement of the platform and the correctness of the metadata. 
 
-The QC are based on existing standards for most of the platforms. They are extensively described in the Quality Information Document \citep{SOCIBQC2018}. The description platform by platform is provided in the next Section. 
+The QC are based on existing standards for most of the platforms. They are extensively described in the Quality Information Document \citep{SOCIBQC2018}. The description platform by platform is provided in the next Section. The flags used on the data are described in Tab.~\ref{tab:qc}
+
+\begin{table}[htpb]
+\caption{Quality Control Flags.\label{tab:qc}}
+\begin{tabular}{cl}
+\tophline
+Code		&  Meaning  			\\
+\middlehline
+0			&  No QC was performed	\\
+1			&  Good data 			\\
+2			&  Probably good data	\\
+3			&  Probably bad data	\\
+4			&  Bad data				\\
+6			&  Spike				\\
+8			&  Interpolated data	\\
+9			&  Missing data			\\
+\bottomhline
+\end{tabular}
+\belowtable{} % Table Footnotes
+\end{table}
 
 For some platforms, the automated QC are not implemented yet:
 \begin{description}
@@ -198,14 +217,19 @@ In addition to the CTDs, the R/V thermosalinograph continuously acquired tempera
 
 \subsubsection{Configuration}
 
-Sea­‐Bird SBE 911Plus, 2 conductivity and temperature sensors and 1 pressure sensor units
-SBE     43 oxygen sensor
-Seapoint [FTU]  fluorescence and turbidity sensor
-
-The meteorological variables (air pressure, temperature, humidity, wind speed and direction) are acquired using a 
-Manufacturer: GEÓNICA
+The CTD rosette was equipped with:
+\begin{itemize}
+\item a Sea­‐Bird SBE 911Plus, 2 conductivity and temperature sensors and 1 pressure sensor units,
+\item a SBE 43 oxygen sensor,
+\item a Seapoint [FTU] fluorescence and turbidity sensor.
+\end{itemize}
+The meteorological variables (air pressure, temperature, humidity, wind speed and direction) are acquired using GEONICA METEODATA 2000 weather station.
+The continuous, near-surface measurements of temperature and salinity are provided by a SeaBird SBE21 thermosalinograph.
 
 \subsubsection{Quality checks}
+
+
+
 
 \subsection{Gliders}
 
@@ -231,7 +255,7 @@ The gliders follow a 3-dimensional trajectory in the water column but for some s
 
 \subsubsection{Configuration}
 
-The glider compass was also calibrated following \cite{Merckel08}.
+The glider compass was also calibrated following \cite{MERCKELBACH2008}.
 
 
 \subsection{Surface drifters}
