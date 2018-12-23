@@ -4,4 +4,4 @@ python/.idea/
 python/logs
 python/__pycache__
 figures/SST
-
+*.log
