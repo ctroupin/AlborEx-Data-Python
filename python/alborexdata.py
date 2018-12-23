@@ -318,7 +318,7 @@ class CTD():
 
     def __init__(self, lon=None, lat=None, time=None, depth=None, pressure=None,
                  temperature=None, salinity=None, qclon=None, qclat=None,
-                 qctemp=None, qcsal=None, chloro=None):
+                 qctemp=None, qcsal=None, chloro=None, oxygen=None):
         self.lon = lon
         self.lat = lat
         self.time = time
@@ -333,6 +333,7 @@ class CTD():
         self.timeunits = None
         self.dates = None
         self.chloro = chloro
+        self.oxygen = oxygen
 
     def get_from_netcdf(self, datafile):
         """
@@ -352,6 +353,7 @@ class CTD():
                 self.time = nc.get_variables_by_attributes(standard_name='time')[0][:]
                 self.timeunits = nc.get_variables_by_attributes(standard_name='time')[0].units
                 self.dates = netCDF4.num2date(self.time, self.timeunits)
+                self.oxygen = nc.get_variables_by_attributes(long_name='oxygen concentration')[0][:]
 
                 try:
                     self.chloro = nc.variables["CHLO"][:]
@@ -452,6 +454,16 @@ class Glider(CTD):
         """
         scat3D = ax.scatter(self.lon, self.lat, -self.depth, **kwargs)
         return scat3D
+
+    def get_temperature_all(self, datafile):
+        """
+        Read the temperatures
+        """
+        if os.path.exists(datafile):
+            with netCDF4.Dataset(datafile, 'r') as nc:
+                self.temp_ori = nc.variables["temperature"][:]
+                self.temp_corr = nc.variables["temperature_corrected_thermal"][:]
+                self.temp_oxy = nc.variables["temperature_oxygen"][:]
 
 class Profiler(CTD):
     """

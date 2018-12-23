@@ -3,21 +3,12 @@ import numpy as np
 import netCDF4
 import matplotlib.pyplot as plt
 from mpl_toolkits.basemap import Basemap
-
-import six
-from six.moves import xrange
-
 import matplotlib
-import matplotlib.cm as cm
-import matplotlib.colors as mcolors
 import matplotlib.collections as mcollections
 import matplotlib.patches as patches
 from matplotlib.path import Path
 from matplotlib.offsetbox import AnnotationBbox, OffsetImage
 from matplotlib._png import read_png
-
-
-
 
 
 def add_logo(imagepath, ax, position, zoom, zorder):
