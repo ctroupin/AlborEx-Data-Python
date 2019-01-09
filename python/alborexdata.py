@@ -179,27 +179,27 @@ class Drifter(object):
         """
         Read the coordinates and the temperature from existing data file
         """
-        if os.path.exists(datafile):
-            with netCDF4.Dataset(datafile, 'r') as nc:
-                self.lon = nc.get_variables_by_attributes(standard_name='longitude')[0][:]
-                self.lat = nc.get_variables_by_attributes(standard_name='latitude')[0][:]
-                self.time = nc.get_variables_by_attributes(standard_name='time')[0][:]
-                self.timeunits = nc.get_variables_by_attributes(standard_name='time')[0].units
-                self.dates = netCDF4.num2date(self.time, self.timeunits)
 
-                try:
-                    self.qclat = nc.get_variables_by_attributes(standard_name='latitude status_flag')[0][:]
-                except IndexError:
-                    self.qclat = None
+        with netCDF4.Dataset(datafile, 'r') as nc:
+            self.lon = nc.get_variables_by_attributes(standard_name='longitude')[0][:]
+            self.lat = nc.get_variables_by_attributes(standard_name='latitude')[0][:]
+            self.time = nc.get_variables_by_attributes(standard_name='time')[0][:]
+            self.timeunits = nc.get_variables_by_attributes(standard_name='time')[0].units
+            self.dates = netCDF4.num2date(self.time, self.timeunits)
 
-                try:
-                    self.qclon = nc.get_variables_by_attributes(standard_name='longitude status_flag')[0][:]
-                except IndexError:
-                    self.qclon = None
-                try:
-                    self.temperature = nc.get_variables_by_attributes(standard_name='sea_water_temperature')[0][:]
-                except IndexError:
-                    self.temperature = None
+            try:
+                self.qclat = nc.get_variables_by_attributes(standard_name='latitude status_flag')[0][:]
+            except IndexError:
+                self.qclat = None
+
+            try:
+                self.qclon = nc.get_variables_by_attributes(standard_name='longitude status_flag')[0][:]
+            except IndexError:
+                self.qclon = None
+            try:
+                self.temperature = nc.get_variables_by_attributes(standard_name='sea_water_temperature')[0][:]
+            except IndexError:
+                self.temperature = None
 
     def apply_qc_latlon(self, QC=[1]):
         """
@@ -304,15 +304,14 @@ class Thermosal(object):
         """
         Read the coordinates and the field values from a netCDF file
         """
-        if os.path.exists(datafile):
-            with netCDF4.Dataset(datafile, 'r') as nc:
-                self.lon = nc.get_variables_by_attributes(standard_name='longitude')[0][:]
-                self.lat = nc.get_variables_by_attributes(standard_name='latitude')[0][:]
-                self.time = nc.get_variables_by_attributes(standard_name='time')[0][:]
-                timeunits = nc.get_variables_by_attributes(standard_name='time')[0].units
-                self.dates = netCDF4.num2date(self.time, timeunits)
-                self.salinity = nc.get_variables_by_attributes(standard_name='sea_water_salinity')[0][:]
-                self.temperature = nc.get_variables_by_attributes(standard_name='sea_water_temperature')[0][:]
+        with netCDF4.Dataset(datafile, 'r') as nc:
+            self.lon = nc.get_variables_by_attributes(standard_name='longitude')[0][:]
+            self.lat = nc.get_variables_by_attributes(standard_name='latitude')[0][:]
+            self.time = nc.get_variables_by_attributes(standard_name='time')[0][:]
+            timeunits = nc.get_variables_by_attributes(standard_name='time')[0].units
+            self.dates = netCDF4.num2date(self.time, timeunits)
+            self.salinity = nc.get_variables_by_attributes(standard_name='sea_water_salinity')[0][:]
+            self.temperature = nc.get_variables_by_attributes(standard_name='sea_water_temperature')[0][:]
 
 class CTD():
 
