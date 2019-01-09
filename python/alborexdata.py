@@ -339,79 +339,83 @@ class CTD():
         """
         Read the coordinates and the temperature from existing data file
         """
-        if os.path.exists(datafile):
-            with netCDF4.Dataset(datafile, 'r') as nc:
 
-                try:
-                    self.pressure =  nc.get_variables_by_attributes(standard_name='sea_water_pressure')[0][:]
-                except IndexError:
-                    self.pressure = None
+        with netCDF4.Dataset(datafile, 'r') as nc:
 
-                self.lon = nc.get_variables_by_attributes(standard_name='longitude')[0][:]
-                self.lat = nc.get_variables_by_attributes(standard_name='latitude')[0][:]
-                self.depth = nc.get_variables_by_attributes(standard_name='depth')[0][:]
-                self.time = nc.get_variables_by_attributes(standard_name='time')[0][:]
-                self.timeunits = nc.get_variables_by_attributes(standard_name='time')[0].units
-                self.dates = netCDF4.num2date(self.time, self.timeunits)
+            try:
+                self.pressure =  nc.get_variables_by_attributes(standard_name='sea_water_pressure')[0][:]
+            except IndexError:
+                self.pressure = None
+
+            self.lon = nc.get_variables_by_attributes(standard_name='longitude')[0][:]
+            self.lat = nc.get_variables_by_attributes(standard_name='latitude')[0][:]
+            self.depth = nc.get_variables_by_attributes(standard_name='depth')[0][:]
+            self.time = nc.get_variables_by_attributes(standard_name='time')[0][:]
+            self.timeunits = nc.get_variables_by_attributes(standard_name='time')[0].units
+            self.dates = netCDF4.num2date(self.time, self.timeunits)
+
+            try:
                 self.oxygen = nc.get_variables_by_attributes(long_name='oxygen concentration')[0][:]
+            except IndexError:
+                self.oxygen = None
 
-                try:
-                    self.chloro = nc.variables["CHLO"][:]
-                except KeyError:
-                    self.chloro = None
+            try:
+                self.chloro = nc.variables["CHLO"][:]
+            except KeyError:
+                self.chloro = None
 
-                try:
-                    self.qclat = nc.get_variables_by_attributes(standard_name='latitude status_flag')[0][:]
-                except IndexError:
-                    self.qclat = None
+            try:
+                self.qclat = nc.get_variables_by_attributes(standard_name='latitude status_flag')[0][:]
+            except IndexError:
+                self.qclat = None
 
-                try:
-                    self.qclon = nc.get_variables_by_attributes(standard_name='longitude status_flag')[0][:]
-                except IndexError:
-                    self.qclon = None
+            try:
+                self.qclon = nc.get_variables_by_attributes(standard_name='longitude status_flag')[0][:]
+            except IndexError:
+                self.qclon = None
 
-                # Get salinity
+            # Get salinity
+            try:
+                salinityvar = nc.get_variables_by_attributes(standard_name='sea_water_practical_salinity')[0]
+                salinityqcvar = salinityvar.ancillary_variables
+                self.salinity = salinityvar[:]
+                self.qcsal = nc.variables[salinityqcvar][:]
+            except IndexError:
                 try:
-                    salinityvar = nc.get_variables_by_attributes(standard_name='sea_water_practical_salinity')[0]
-                    salinityqcvar = salinityvar.ancillary_variables
+                    salinityvar = nc.get_variables_by_attributes(standard_name='sea_water_salinity')[0]
                     self.salinity = salinityvar[:]
-                    self.qcsal = nc.variables[salinityqcvar][:]
-                except IndexError:
+                    salinityqcvar = salinityvar.ancillary_variables
                     try:
-                        salinityvar = nc.get_variables_by_attributes(standard_name='sea_water_salinity')[0]
-                        self.salinity = salinityvar[:]
-                        salinityqcvar = salinityvar.ancillary_variables
-                        try:
-                            self.qcsal = nc.variables[salinityqcvar][:]
-                        except KeyError:
-                            self.qcsal = None
-                    except AttributeError:
-                        self.qcsal = None
-
-
-                # Get (potential) temperature and convert if necessary
-                try:
-                    tempvar = nc.get_variables_by_attributes(standard_name='sea_water_temperature')[0]
-                    self.temperature = tempvar[:]
-
-                except IndexError:
-                    try:
-                        tempvar = nc.get_variables_by_attributes(standard_name='sea_water_potential_temperature')[0]
-                        potentialtemp = tempvar[:]
-                        self.temperature = seawater.temp(self.salinity, potentialtemp, self.pressure)
-
-                    except IndexError:
-                        self.temperature = None
-                        self.qctemp = None
-
-                try:
-                    tempqcvar = tempvar.ancillary_variables
-                    try:
-                        self.qctemp = nc.variables[tempqcvar][:]
+                        self.qcsal = nc.variables[salinityqcvar][:]
                     except KeyError:
-                        self.qctemp = None
+                        self.qcsal = None
                 except AttributeError:
+                    self.qcsal = None
+
+
+            # Get (potential) temperature and convert if necessary
+            try:
+                tempvar = nc.get_variables_by_attributes(standard_name='sea_water_temperature')[0]
+                self.temperature = tempvar[:]
+
+            except IndexError:
+                try:
+                    tempvar = nc.get_variables_by_attributes(standard_name='sea_water_potential_temperature')[0]
+                    potentialtemp = tempvar[:]
+                    self.temperature = seawater.temp(self.salinity, potentialtemp, self.pressure)
+
+                except IndexError:
+                    self.temperature = None
                     self.qctemp = None
+
+            try:
+                tempqcvar = tempvar.ancillary_variables
+                try:
+                    self.qctemp = nc.variables[tempqcvar][:]
+                except KeyError:
+                    self.qctemp = None
+            except AttributeError:
+                self.qctemp = None
 
 class Glider(CTD):
 
@@ -1064,3 +1068,50 @@ def change_wall_prop(ax, coordinates, depths, angles):
 
     ax.set_zticks(np.arange(depths[0],depths[1]+10,depths[2]))
     ax.set_zticklabels(range(int(-depths[0]),-int(depths[1])-10,-int(depths[2])))
+
+def create_rect_patch(coordinates, m, **kwargs):
+    """
+    Create a rectangular patch to add on the map
+    :param coordinates:
+    :param m: Basemap object
+    :return: patch
+    """
+    xr1, yr1 = m(coordinates[0], coordinates[2])
+    xr2, yr2 = m(coordinates[0], coordinates[3])
+    xr3, yr3 = m(coordinates[1], coordinates[3])
+    xr4, yr4 = m(coordinates[1], coordinates[2])
+    verts = [(xr1, yr1), (xr2, yr2), (xr3, yr3), (xr4, yr4), (xr1, yr1), ]
+    codes = [Path.MOVETO, Path.LINETO, Path.LINETO,
+             Path.LINETO, Path.CLOSEPOLY, ]
+    path = Path(verts, codes)
+    patch = patches.PathPatch(path, **kwargs)
+    return patch
+
+def load_sst_l2(filename):
+    """
+    Load the SST from netCDF L2 file obtained from
+    https://oceancolor.gsfc.nasa.gov
+    :param filename: name of the netCDF file
+    :return: lon, lat, sst, sstflag, sstyear, sstday
+    """
+    if os.path.exists(filename):
+        with netCDF4.Dataset(filename) as nc:
+            # Read platform
+            sat = nc.platform
+            # Read time information
+            # Assume all the measurements made the same day (and same year)
+            year = nc.groups['scan_line_attributes'].variables['year'][0]
+            day = nc.groups['scan_line_attributes'].variables['day'][0]
+            # Read coordinates
+            lon = nc.groups['navigation_data'].variables['longitude'][:]
+            lat = nc.groups['navigation_data'].variables['latitude'][:]
+            # Read geophysical variables
+            try:
+                sst = nc.groups['geophysical_data'].variables['sst'][:]
+                sstqual = nc.groups['geophysical_data'].variables['qual_sst'][:]
+            except KeyError:
+                sst = nc.groups['geophysical_data'].variables['sst4'][:]
+                sstqual = nc.groups['geophysical_data'].variables['qual_sst4'][:]
+    else:
+        lon, lat, sst, sstqual, year, day, sat = [], [], [], [], [], [], []
+    return lon, lat, sst, sstqual, year, day, sat
