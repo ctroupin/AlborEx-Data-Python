@@ -4,8 +4,8 @@
         "ctd": "/home/ctroupin/Data/Alborex/CTD/dep0007_socib-rv_scb-sbe9002_L1_2014-05-25.nc",
         "ctdlegs": ["/home/ctroupin/Data/Alborex/CTD/ctd_positions_Leg1.txt",
                     "/home/ctroupin/Data/Alborex/CTD/ctd_positions_Leg2.txt"],
-        "gliders": ["/home/ctroupin/Data/Alborex/Gliders/dep0005_icoast00_ime-slcost000_L1_2014-05-25_data_dt.nc",
-                    "/home/ctroupin/Data/Alborex/Gliders/dep0012_ideep00_ime-sldeep000_L1_2014-05-25_data_dt.nc"],
+        "gliders": ["http://thredds.socib.es/thredds/dodsC/auv/glider/icoast00-ime_slcost000/L1/2014/dep0005_icoast00_ime-slcost000_L1_2014-05-25_data_dt.nc",
+                    "http://thredds.socib.es/thredds/dodsC/auv/glider/ideep00-ime_sldeep000/L1/2014/dep0012_ideep00_ime-sldeep000_L1_2014-05-25_data_dt.nc"],
         "profilers": ["/home/ctroupin/Data/Alborex/Profilers/dep0001_profiler-drifter-arvora3001_ogs-arvora3001_L1_2014-05-25.nc",
                       "/home/ctroupin/Data/Alborex/Profilers/dep0001_profiler-drifter-provbioll001_ogs-provbioll001_L1_2014-05-25.nc"],
         "coast": "/home/ctroupin/Data/Alborex/Coastline/coastline_cartex_f3.txt",
@@ -18,7 +18,8 @@
         "sst": "/home/ctroupin/Data/Alborex/SST/",
         "drifters": "/home/ctroupin/Data/Alborex/Drifters",
         "profilers": "/home/ctroupin/Data/Alborex/Profilers",
-        "adcp": "/home/ctroupin/Data/Alborex/ADCP"
+        "adcp": "/home/ctroupin/Data/Alborex/ADCP",
+        "gliders": "/home/ctroupin/Data/Alborex/Gliders"
     },
     "figdir": "/home/ctroupin/Publis/201703_AlborexData/figures",
     "figdirleaflet": "/home/ctroupin/Publis/201703_AlborexData/leaflet/images/",
