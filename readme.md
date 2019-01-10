@@ -21,7 +21,7 @@ and to provide examples of the data from the netCDF files can be read, processed
 
 ### Configuration
 
-The file [`alborexconfig.json`](./python/`alborexconfig.json`) stores the OPEnDAP URLs of all the data files (so they don't have to be downloaded locally), the extension of the domain and the path to the figure directory.
+The file [`alborexconfig.json`](./python/alborexconfig.json) stores the OPEnDAP URLs of all the data files (so they don't have to be downloaded locally), the extension of the domain and the path to the figure directory.
 
 At the beginning of each notebook, the configuration is read:
 ```python
@@ -58,7 +58,7 @@ We also work with the [cmocean](https://matplotlib.org/cmocean/) module in order
 
 This module:
 
-> Charles Troupin. (2018, December 18). ctroupin/AlborEx-Data: v1.0.0 (Version v1.0.0). Zenodo. http://doi.org/10.5281/zenodo.2384855
+> Charles Troupin. (2018, December 18). ctroupin/AlborEx-Data: v1.0.0 (Version v1.0.0). Zenodo. DOI: [10.5281/zenodo.2384855](http://doi.org/10.5281/zenodo.2384855)
 
 The AlborEx paper in [Earth System Science Data](https://www.earth-system-science-data.net/) (the reference will be updated):
 
