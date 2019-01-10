@@ -724,7 +724,7 @@ class SST(object):
         """
         Mask the sst values which don't match the mentioned quality flag
         """
-        self.field = np.ma.masked_where(self.qflag != 1, self.field)
+        self.field = np.ma.masked_where(self.qflag >= 1, self.field)
 
 class Adcp(object):
 
