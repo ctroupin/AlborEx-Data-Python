@@ -1,6 +1,6 @@
 {
     "datafiles":{
-        "coast": "/home/ctroupin/Data/Alborex/Coastline/coastline_f.dat",
+        "coast": "../data/coastline_f.dat",
         "altimetry": "../data/alborex_mean_sla.nc",
         "ctdlegs": ["../data/ctd_positions_Leg1.txt",
                     "../data/ctd_positions_Leg2.txt"],
