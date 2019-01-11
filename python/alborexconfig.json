@@ -46,6 +46,7 @@
     },
     "figdir": "../figures",
     "figdirleaflet": "../leaflet/images/",
+    "datadirleaflet": "../leaflet/data/",
     "domain":{
         "coordinates1": [-6.75, 3.001, 34.75, 40.0],
         "coordinates2": [-1.0, -0.25, 36.65, 37.25],
