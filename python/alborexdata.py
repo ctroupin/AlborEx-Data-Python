@@ -1,4 +1,5 @@
 import os
+import json
 import netCDF4
 import logging
 import datetime
@@ -16,6 +17,9 @@ import scipy.io as sio
 import warnings
 import matplotlib.cbook
 warnings.filterwarnings("ignore",category=matplotlib.cbook.mplDeprecation)
+
+with open('alborexconfig.json') as json_data_file:
+    alborexconfig = json.load(json_data_file)
 
 def prepare_map(coordinates, res='i', proj='merc'):
     """Return a fig, m and ax objects
@@ -57,8 +61,9 @@ def create_rect_patch(coordinates, m, **kwargs):
     patch = patches.PathPatch(path, **kwargs)
     return patch
 
-def configure_logging(logfile="./alborexFig2.log"):
-    """Prepare the logging messages and file
+def configure_logging(logfile="./alborexFig.log"):
+    """
+    repare the logging messages and file
     """
     logger = logging.getLogger("alborex_logger")
     logger.setLevel(logging.DEBUG)
@@ -86,7 +91,7 @@ def add_map_grid(m, coordinates, dlon, dlat, **kwargs):
 
 def load_lonloat_ctdleg(datafile):
     """Return coordinates from the file containing the information
-    on the different legs
+    on the different CTD legs
     """
     lon, lat = [], []
     with open(datafile) as f:
@@ -100,7 +105,8 @@ def load_lonloat_ctdleg(datafile):
 
 
 def read_lonlat_coast(filename, valex=999):
-    """Return the coordinates of the contours
+    """
+    Return the coordinates of the contours
     as a list of lists (one list per contour)
     """
     with open(filename) as f:
@@ -141,7 +147,7 @@ class Front(object):
 
     def smooth(self, n=4, s=0.01, nest=4):
         """
-
+        Applying a smoothing function on the front coordinates
         :param N: subsampling factor
         :param s: smoothness parameter
         :param nest: estimate of number of knots needed (-1 = maximal)
@@ -428,6 +434,21 @@ class Glider(CTD):
         self.lon = self.lon.compressed()
         self.lat = self.lat.compressed()
 
+    def get_coords(self, datafile):
+        """
+        Load the coordinates from a glider file
+        :param datafile: name of the glider netCDF file
+        :return: lon: longitude
+        :return: lat: latitude
+        :return: depth: depth
+        :return: time: time
+        """
+        with netCDF4.Dataset(datafile, 'r') as nc:
+            self.lon = nc.variables['longitude'][:]
+            self.lat = nc.variables['latitude'][:]
+            self.depth = nc.variables['depth'][:]
+            self.time = nc.variables['time'][:]
+
     def get_day_indices(self, ndays=1):
         """
         Get the time indices corresponding to the start of days,
@@ -462,11 +483,34 @@ class Glider(CTD):
         """
         Read the temperatures
         """
-        if os.path.exists(datafile):
-            with netCDF4.Dataset(datafile, 'r') as nc:
-                self.temp_ori = nc.variables["temperature"][:]
-                self.temp_corr = nc.variables["temperature_corrected_thermal"][:]
-                self.temp_oxy = nc.variables["temperature_oxygen"][:]
+        with netCDF4.Dataset(datafile, 'r') as nc:
+            self.temp_ori = nc.variables["temperature"][:]
+            self.temp_corr = nc.variables["temperature_corrected_thermal"][:]
+            self.temp_oxy = nc.variables["temperature_oxygen"][:]
+
+    def to_json(self, filename, varname, NN=100):
+    """
+    Create a geoJSON file containing the glider coordinates as a LineString object
+    :param filename: name of the JSON file
+    :varname: name of the variable in the JSON file
+    :NN: value used for the data subsampling
+    """
+
+    # Remove masked values and apply sub-sampling
+    # (otherwise too many points)
+    lon = np.ma.compressed(self.lon)[::NN]
+    lat = np.ma.compressed(self.lat)[::NN]
+
+    # Create list of tuples
+    gliderlist = [(llon, llat) for llon, llat in zip(lon, lat)]
+
+    # Create LineString object
+    gliderGeoJson = geojson.LineString(Glider1list)
+
+    # Write in new file
+    with open(filename, 'w') as f:
+        f.write("var {0} = ".format(varname))
+        geojson.dump(gliderGeoJson, f)
 
 class Profiler(CTD):
     """
