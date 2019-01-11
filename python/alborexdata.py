@@ -16,7 +16,10 @@ import cmocean
 import scipy.io as sio
 import warnings
 import matplotlib.cbook
+import datafiles
 warnings.filterwarnings("ignore",category=matplotlib.cbook.mplDeprecation)
+
+
 
 with open('alborexconfig.json') as json_data_file:
     alborexconfig = json.load(json_data_file)
@@ -489,28 +492,28 @@ class Glider(CTD):
             self.temp_oxy = nc.variables["temperature_oxygen"][:]
 
     def to_json(self, filename, varname, NN=100):
-    """
-    Create a geoJSON file containing the glider coordinates as a LineString object
-    :param filename: name of the JSON file
-    :varname: name of the variable in the JSON file
-    :NN: value used for the data subsampling
-    """
+        """
+        Create a geoJSON file containing the glider coordinates as a LineString object
+        :param filename: name of the JSON file
+        :varname: name of the variable in the JSON file
+        :NN: value used for the data subsampling
+        """
 
-    # Remove masked values and apply sub-sampling
-    # (otherwise too many points)
-    lon = np.ma.compressed(self.lon)[::NN]
-    lat = np.ma.compressed(self.lat)[::NN]
+        # Remove masked values and apply sub-sampling
+        # (otherwise too many points)
+        lon = np.ma.compressed(self.lon)[::NN]
+        lat = np.ma.compressed(self.lat)[::NN]
 
-    # Create list of tuples
-    gliderlist = [(llon, llat) for llon, llat in zip(lon, lat)]
+        # Create list of tuples
+        gliderlist = [(llon, llat) for llon, llat in zip(lon, lat)]
 
-    # Create LineString object
-    gliderGeoJson = geojson.LineString(Glider1list)
+        # Create LineString object
+        gliderGeoJson = geojson.LineString(Glider1list)
 
-    # Write in new file
-    with open(filename, 'w') as f:
-        f.write("var {0} = ".format(varname))
-        geojson.dump(gliderGeoJson, f)
+        # Write in new file
+        with open(filename, 'w') as f:
+            f.write("var {0} = ".format(varname))
+            geojson.dump(gliderGeoJson, f)
 
 class Profiler(CTD):
     """
