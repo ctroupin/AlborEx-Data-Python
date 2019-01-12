@@ -1157,6 +1157,7 @@ def load_sst_l2(filename):
         lon, lat, sst, sstqual, year, day, sat = [], [], [], [], [], [], []
     return lon, lat, sst, sstqual, year, day, sat
 
+
 class Jet(object):
     """
     Atlantic jet
@@ -1240,6 +1241,7 @@ class Gyre(object):
         xt, yt = m(self.lon, self.lat)
         plt.text(xt, yt, self.name, fontsize=16, ha="center", va="center")
 
+
 def shoot(lon, lat, azimuth, maxdist=None):
     """Shooter Function
     Original javascript on http://williams.best.vwh.net/gccalc.htm
@@ -1305,7 +1307,7 @@ def shoot(lon, lat, azimuth, maxdist=None):
     baz *= 180. / np.pi
 
     return (glon2, glat2, baz)
-    
+
 def equi(m, centerlon, centerlat, radius, *args, **kwargs):
     glon1 = centerlon
     glat1 = centerlat
