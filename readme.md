@@ -4,6 +4,8 @@ This repository contains the python code in the form of [jupyter](https://jupyte
 
 and to provide examples of the data from the netCDF files can be read, processed and displayed.
 
+![](./figures/fig00.png)
+
 ## Directories
 
 * __data__: contains data files used for the plots and not available through [OPeNDAP](https://www.opendap.org/) protocol.
