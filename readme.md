@@ -59,6 +59,15 @@ The AlborEx paper in [Earth System Science Data](https://www.earth-system-scienc
 
 Other related papers:
 
-> Pascual, A.; Ruiz, S.; Olita, A.; Troupin, C.; Claret, M.; Casas, B.; Mourre, B.; Poulain, P.-M.; Tovar-Sanchez, A.; Capet, A.; Mason, E.; Allen, John T..; Mahadevan, A. & Tintoré, J. A multiplatform experiment to unravel meso- and submesoscale processes in an intense front (AlborEx). *Frontiers in Marine *, 2017, **4**, 1-16. DOI: [10.3389/fmars.2017.00039](https://doi.org/10.3389/fmars.2017.00039)
+> Pascual, A.; Ruiz, S.; Olita, A.; Troupin, C.; Claret, M.; Casas, B.; Mourre, B.; Poulain, P.-M.; Tovar-Sanchez, A.; Capet, A.; Mason, E.; Allen, John T..; Mahadevan, A. & Tintoré, J. A multiplatform experiment to unravel meso- and submesoscale processes in an intense front (AlborEx). *Frontiers in Marine Science*, 2017, **4**, 1-16. DOI: [10.3389/fmars.2017.00039](https://doi.org/10.3389/fmars.2017.00039)
 
 > Olita, A.; Capet, A.; Claret, M.; Mahadevan, A.; Poulain, P. M.; Ribotti, A.; Ruiz, S.; Tintoré, J.; Tovar-Sánchez, A. & Pascual, A. Frontal dynamics boost primary production in the summer stratified Mediterranean Sea. *Ocean Dynamics*, 2017, **67**, 767-782. DOI: [10.1007/s10236-017-1058-z](https://doi.org/10.1007/s10236-017-1058-z)
+
+
+## Acknowledgments
+
+The 3 anonymous reviewers made an outstanding work with a lot of comments that helped us improve
+the initial manuscript, and also motivated me to improve and update the present project.
+
+I am also thankful to the SOCIB Data Center for corrections and improvements made on the
+data file. Their [Data API](http://api.socib.es/home/) is very cool and I really invite everybody to try and use it.  
