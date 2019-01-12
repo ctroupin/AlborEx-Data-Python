@@ -53,7 +53,7 @@ We also work with the [cmocean](https://matplotlib.org/cmocean/) module in order
 
 This module:
 
-> Charles Troupin. (2018, December 18). ctroupin/AlborEx-Data: v1.0.0 (Version v1.0.0). Zenodo. DOI: [10.5281/zenodo.2384855](http://doi.org/10.5281/zenodo.2384855)
+> Charles Troupin. (2019, January 12). ctroupin/AlborEx-Data-Python: V1.1.0 (Version V1.1.0). Zenodo. DOI: [10.5281/zenodo.2538348](http://doi.org/10.5281/zenodo.2538348)
 
 The AlborEx paper in [Earth System Science Data](https://www.earth-system-science-data.net/) (the reference will be updated):
 
