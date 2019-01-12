@@ -6,7 +6,7 @@ and to provide examples of the data from the netCDF files can be read, processed
 
 ## Directories
 
-* __data__: contains data files used for the plots and not available through OPeNDAP protocol.
+* __data__: contains data files used for the plots and not available through [OPeNDAP](https://www.opendap.org/) protocol.
 
 * __figures__: default directory where the figures are saved.
 
@@ -15,19 +15,12 @@ and to provide examples of the data from the netCDF files can be read, processed
 * __python__: contains
 1. the main module [`alborexdata.py`](./python/alborexdata.py) that defines the different classes
 2. the jupyter notebooks and
-3. the json file for the configuration.
 
 ## Usage
 
 ### Configuration
 
-The file [`alborexconfig.json`](./python/alborexconfig.json) stores the OPEnDAP URLs of all the data files (so they don't have to be downloaded locally), the extension of the domain and the path to the figure directory.
-
-At the beginning of each notebook, the configuration is read:
-```python
-with open('alborexconfig.json') as json_data_file:
-    config = json.load(json_data_file)
-```
+The file [`alborexpaths.py`](./python/alborexpaths.py) stores the OPEnDAP URLs of all the data files (so they don't have to be downloaded locally), the extension of the domain and the path to the figure directory.
 
 __Note:__ the URLs were hard-coded but can be obtained using the [SOCIB Data API](http://api.socib.es/home/) (see the [API Examples](https://github.com/socib/API_examples)).
 
@@ -42,9 +35,9 @@ For example, for the CTD data:
 ```python
 ctd = alborexdata.CTD()
 ```
-2. We read the data from the correspond files, obtained from the configuration:
+2. We read the data from the correspond files, whose URL comes from `alborexpaths`:
 ```python
-ctd.get_from_netcdf(config["datafiles"]["ctd"])
+ctd.get_from_netcdf(alborexpaths.ctdfile)
 ```
 
 ### Plotting data
