@@ -1,12 +1,14 @@
 {
     "datafiles":{
-        "coast": "/home/ctroupin/Data/Alborex/Coastline/coastline_f.dat",
+        "coast": "../data/coastline_f.dat",
         "altimetry": "../data/alborex_mean_sla.nc",
         "ctdlegs": ["../data/ctd_positions_Leg1.txt",
                     "../data/ctd_positions_Leg2.txt"],
         "sst": ["../data/A2014145125000.L2_LAC_SST.nc",
                 "../data/A2014150020500.L2_LAC_SST.nc"],
         "front": "../data/front_coordinates.dat",
+        "jets": ["../data/AtlanticJet3.dat",
+                 "../data/AtlanticJet4.dat"], 
         "adcp": "http://thredds.socib.es/thredds/dodsC/research_vessel/current_profiler/socib_rv-scb_rdi001/L1/2014/dep0023_socib-rv_scb-rdi001_L1_2014-05.nc",
         "ctd": "http://thredds.socib.es/thredds/dodsC/research_vessel/ctd/socib_rv-scb_sbe9002/L1_corr/2014/dep0007_socib-rv_scb-sbe9002_L1_corr_2014-05-25.nc",
         "gliders": ["http://thredds.socib.es/thredds/dodsC/auv/glider/icoast00-ime_slcost000/L1/2014/dep0005_icoast00_ime-slcost000_L1_2014-05-25_data_dt.nc",
@@ -46,6 +48,7 @@
     },
     "figdir": "../figures",
     "figdirleaflet": "../leaflet/images/",
+    "datadirleaflet": "../leaflet/data/",
     "domain":{
         "coordinates1": [-6.75, 3.001, 34.75, 40.0],
         "coordinates2": [-1.0, -0.25, 36.65, 37.25],

@@ -1,4 +1,5 @@
 import os
+import json
 import netCDF4
 import logging
 import datetime
@@ -15,7 +16,9 @@ import cmocean
 import scipy.io as sio
 import warnings
 import matplotlib.cbook
+from scipy.interpolate import splprep, splev
 warnings.filterwarnings("ignore",category=matplotlib.cbook.mplDeprecation)
+
 
 def prepare_map(coordinates, res='i', proj='merc'):
     """Return a fig, m and ax objects
@@ -57,8 +60,9 @@ def create_rect_patch(coordinates, m, **kwargs):
     patch = patches.PathPatch(path, **kwargs)
     return patch
 
-def configure_logging(logfile="./alborexFig2.log"):
-    """Prepare the logging messages and file
+def configure_logging(logfile="./alborexFig.log"):
+    """
+    repare the logging messages and file
     """
     logger = logging.getLogger("alborex_logger")
     logger.setLevel(logging.DEBUG)
@@ -86,7 +90,7 @@ def add_map_grid(m, coordinates, dlon, dlat, **kwargs):
 
 def load_lonloat_ctdleg(datafile):
     """Return coordinates from the file containing the information
-    on the different legs
+    on the different CTD legs
     """
     lon, lat = [], []
     with open(datafile) as f:
@@ -100,7 +104,8 @@ def load_lonloat_ctdleg(datafile):
 
 
 def read_lonlat_coast(filename, valex=999):
-    """Return the coordinates of the contours
+    """
+    Return the coordinates of the contours
     as a list of lists (one list per contour)
     """
     with open(filename) as f:
@@ -141,7 +146,7 @@ class Front(object):
 
     def smooth(self, n=4, s=0.01, nest=4):
         """
-
+        Applying a smoothing function on the front coordinates
         :param N: subsampling factor
         :param s: smoothness parameter
         :param nest: estimate of number of knots needed (-1 = maximal)
@@ -428,6 +433,21 @@ class Glider(CTD):
         self.lon = self.lon.compressed()
         self.lat = self.lat.compressed()
 
+    def get_coords(self, datafile):
+        """
+        Load the coordinates from a glider file
+        :param datafile: name of the glider netCDF file
+        :return: lon: longitude
+        :return: lat: latitude
+        :return: depth: depth
+        :return: time: time
+        """
+        with netCDF4.Dataset(datafile, 'r') as nc:
+            self.lon = nc.variables['longitude'][:]
+            self.lat = nc.variables['latitude'][:]
+            self.depth = nc.variables['depth'][:]
+            self.time = nc.variables['time'][:]
+
     def get_day_indices(self, ndays=1):
         """
         Get the time indices corresponding to the start of days,
@@ -462,11 +482,34 @@ class Glider(CTD):
         """
         Read the temperatures
         """
-        if os.path.exists(datafile):
-            with netCDF4.Dataset(datafile, 'r') as nc:
-                self.temp_ori = nc.variables["temperature"][:]
-                self.temp_corr = nc.variables["temperature_corrected_thermal"][:]
-                self.temp_oxy = nc.variables["temperature_oxygen"][:]
+        with netCDF4.Dataset(datafile, 'r') as nc:
+            self.temp_ori = nc.variables["temperature"][:]
+            self.temp_corr = nc.variables["temperature_corrected_thermal"][:]
+            self.temp_oxy = nc.variables["temperature_oxygen"][:]
+
+    def to_json(self, filename, varname, NN=100):
+        """
+        Create a geoJSON file containing the glider coordinates as a LineString object
+        :param filename: name of the JSON file
+        :varname: name of the variable in the JSON file
+        :NN: value used for the data subsampling
+        """
+
+        # Remove masked values and apply sub-sampling
+        # (otherwise too many points)
+        lon = np.ma.compressed(self.lon)[::NN]
+        lat = np.ma.compressed(self.lat)[::NN]
+
+        # Create list of tuples
+        gliderlist = [(llon, llat) for llon, llat in zip(lon, lat)]
+
+        # Create LineString object
+        gliderGeoJson = geojson.LineString(Glider1list)
+
+        # Write in new file
+        with open(filename, 'w') as f:
+            f.write("var {0} = ".format(varname))
+            geojson.dump(gliderGeoJson, f)
 
 class Profiler(CTD):
     """
@@ -724,7 +767,7 @@ class SST(object):
         """
         Mask the sst values which don't match the mentioned quality flag
         """
-        self.field = np.ma.masked_where(self.qflag != 1, self.field)
+        self.field = np.ma.masked_where(self.qflag >= 1, self.field)
 
 class Adcp(object):
 
@@ -752,26 +795,25 @@ class Adcp(object):
         Read the coordinates and the velocity components
         from the netCDF file
         """
-        if os.path.exists(filename):
-            with netCDF4.Dataset(filename) as nc:
-                self.lon = nc.get_variables_by_attributes(standard_name='longitude')[0][:]
-                self.lat = nc.get_variables_by_attributes(standard_name='latitude')[0][:]
-                self.depth = nc.get_variables_by_attributes(standard_name='depth')[0][:]
-                self.time = nc.get_variables_by_attributes(standard_name='time')[0][:]
-                self.timeunits = nc.get_variables_by_attributes(standard_name='time')[0].units
-                self.dates = netCDF4.num2date(self.time, self.timeunits)
-                self.qclat = nc.get_variables_by_attributes(standard_name='latitude status_flag')[0][:]
-                self.qclon = nc.get_variables_by_attributes(standard_name='longitude status_flag')[0][:]
-                # Velocity components
-                uvar = nc.get_variables_by_attributes(standard_name='eastward_sea_water_velocity')[0]
-                vvar = nc.get_variables_by_attributes(standard_name='northward_sea_water_velocity')[0]
-                self.u = uvar[:]
-                self.v = vvar[:]
-                # Quality flags for velocity
-                uqcvar = uvar.ancillary_variables
-                vqcvar = vvar.ancillary_variables
-                self.qcu = nc.variables[uqcvar][:]
-                self.qcv = nc.variables[uqcvar][:]
+        with netCDF4.Dataset(filename) as nc:
+            self.lon = nc.get_variables_by_attributes(standard_name='longitude')[0][:]
+            self.lat = nc.get_variables_by_attributes(standard_name='latitude')[0][:]
+            self.depth = nc.get_variables_by_attributes(standard_name='depth')[0][:]
+            self.time = nc.get_variables_by_attributes(standard_name='time')[0][:]
+            self.timeunits = nc.get_variables_by_attributes(standard_name='time')[0].units
+            self.dates = netCDF4.num2date(self.time, self.timeunits)
+            self.qclat = nc.get_variables_by_attributes(standard_name='latitude status_flag')[0][:]
+            self.qclon = nc.get_variables_by_attributes(standard_name='longitude status_flag')[0][:]
+            # Velocity components
+            uvar = nc.get_variables_by_attributes(standard_name='eastward_sea_water_velocity')[0]
+            vvar = nc.get_variables_by_attributes(standard_name='northward_sea_water_velocity')[0]
+            self.u = uvar[:]
+            self.v = vvar[:]
+            # Quality flags for velocity
+            uqcvar = uvar.ancillary_variables
+            vqcvar = vvar.ancillary_variables
+            self.qcu = nc.variables[uqcvar][:]
+            self.qcv = nc.variables[uqcvar][:]
 
     def get_from_matfile(self, filename):
         """
@@ -1114,3 +1156,170 @@ def load_sst_l2(filename):
     else:
         lon, lat, sst, sstqual, year, day, sat = [], [], [], [], [], [], []
     return lon, lat, sst, sstqual, year, day, sat
+
+
+class Jet(object):
+    """
+    Atlantic jet
+    """
+
+    def __init__(self, lon=None, lat=None):
+        self.lon = lon
+        self.lat = lat
+
+    def read_from_file(self, filename):
+        if os.path.exists(filename):
+            lonJet, latJet = np.loadtxt(filename, usecols=(0, 1), unpack=True)
+            self.lon = lonJet
+            self.lat = latJet
+
+    def smooth(self, s = 0.01, k = 3, nest = 4):
+        """
+        Smooth the jet coordinates using a spline
+        Input:
+            s = smoothness parameter
+            k = spline order
+            nest = estimate of number of knots needed (-1 = maximal)
+        """
+        npts = len(self.lon)
+        if npts > 0:
+            t = np.linspace(0, 1, npts)
+            t2 = np.linspace(0, 1, 4 * npts)
+            # find the knot points
+            tckp, u = splprep([t, self.lon, self.lat], s=s, k=k, nest=-1)
+            # evaluate spline, including interpolated points
+            xnew, lonJetsmooth, latJetsmooth = splev(t2, tckp)
+            self.lon = lonJetsmooth
+            self.lat = latJetsmooth
+
+    def add_arrow(self, m, ax, NN, arrowprops=dict(headwidth=7, facecolor="#005DCC", edgecolor="none")):
+        """
+        Add an arrow at the specified position
+        Input:
+            NN = index of the coordinates vector
+        """
+        x1, y1 = m(self.lon[NN-1], self.lat[NN-1])
+        x2, y2 = m(self.lon[NN], self.lat[NN])
+
+        ax.annotate('', xy=(x2, y2), xycoords='data',
+                    xytext=(x1, y1), textcoords='data',
+                    size=22,
+                    arrowprops=arrowprops)
+
+
+class Gyre(object):
+    """
+    Oceanic gyre
+    """
+
+    def __init__(self, lon=None, lat=None, radius=None, name=None):
+        """
+        Define the gyre characteristics
+        """
+        self.lon = lon
+        self.lat = lat
+        self.radius = radius
+        self.name = name
+
+    def add_to_map(self, m, arrowprops, **kwargs):
+        """
+        Add a circular gyre with arrows on the eastern and western sides
+        """
+        equi(m, self.lon, self.lat, self.radius, **kwargs)
+        glon1, glat1, baz = shoot(self.lon, self.lat, -89, self.radius)
+        glon2, glat2, baz = shoot(self.lon, self.lat, -90, self.radius)
+        x, y = m(glon1, glat1)
+        x2, y2 = m(glon2, glat2)
+        plt.annotate('', xy=(x, y), xytext=(x2, y2), arrowprops=arrowprops)
+
+        glon1, glat1, baz = shoot(self.lon, self.lat, 91, self.radius)
+        glon2, glat2, baz = shoot(self.lon, self.lat, 90, self.radius)
+        x, y = m(glon1, glat1)
+        x2, y2 = m(glon2, glat2)
+        plt.annotate('', xy=(x, y), xytext=(x2, y2), arrowprops=arrowprops)
+
+        xt, yt = m(self.lon, self.lat)
+        plt.text(xt, yt, self.name, fontsize=16, ha="center", va="center")
+
+
+def shoot(lon, lat, azimuth, maxdist=None):
+    """Shooter Function
+    Original javascript on http://williams.best.vwh.net/gccalc.htm
+    Translated to python by Thomas Lecocq
+    """
+    glat1 = lat * np.pi / 180.
+    glon1 = lon * np.pi / 180.
+    s = maxdist / 1.852
+    faz = azimuth * np.pi / 180.
+
+    EPS = 0.00000000005
+    if (np.abs(np.cos(glat1)) < EPS) and not (np.abs(np.sin(faz)) < EPS):
+        print("Only N-S courses are meaningful, starting at a pole!")
+
+    a = 6378.13 / 1.852
+    f = 1 / 298.257223563
+    r = 1 - f
+    tu = r * np.tan(glat1)
+    sf = np.sin(faz)
+    cf = np.cos(faz)
+    if cf == 0:
+        b = 0.
+    else:
+        b = 2. * np.arctan2(tu, cf)
+
+    cu = 1. / np.sqrt(1 + tu * tu)
+    su = tu * cu
+    sa = cu * sf
+    c2a = 1 - sa * sa
+    x = 1. + np.sqrt(1. + c2a * (1. / (r * r) - 1.))
+    x = (x - 2.) / x
+    c = 1. - x
+    c = (x * x / 4. + 1.) / c
+    d = (0.375 * x * x - 1.) * x
+    tu = s / (r * a * c)
+    y = tu
+    c = y + 1
+    while np.abs(y - c) > EPS:
+        sy = np.sin(y)
+        cy = np.cos(y)
+        cz = np.cos(b + y)
+        e = 2. * cz * cz - 1.
+        c = y
+        x = e * cy
+        y = e + e - 1.
+        y = (((sy * sy * 4. - 3.) * y * cz * d / 6. + x) *
+             d / 4. - cz) * sy * d + tu
+
+    b = cu * cy * cf - su * sy
+    c = r * np.sqrt(sa * sa + b * b)
+    d = su * cy + cu * sy * cf
+    glat2 = (np.arctan2(d, c) + np.pi) % (2 * np.pi) - np.pi
+    c = cu * cy - su * sy * cf
+    x = np.arctan2(sy * sf, c)
+    c = ((-3. * c2a + 4.) * f + 4.) * c2a * f / 16.
+    d = ((e * cy * c + cz) * sy * c + y) * sa
+    glon2 = ((glon1 + x - (1. - c) * d * f + np.pi) % (2 * np.pi)) - np.pi
+
+    baz = (np.arctan2(sa, b) + np.pi) % (2 * np.pi)
+
+    glon2 *= 180. / np.pi
+    glat2 *= 180. / np.pi
+    baz *= 180. / np.pi
+
+    return (glon2, glat2, baz)
+
+def equi(m, centerlon, centerlat, radius, *args, **kwargs):
+    glon1 = centerlon
+    glat1 = centerlat
+    X = []
+    Y = []
+    for azimuth in range(0, 360):
+        glon2, glat2, baz = shoot(glon1, glat1, azimuth, radius)
+        X.append(glon2)
+        Y.append(glat2)
+    X.append(X[0])
+    Y.append(Y[0])
+
+    # ~ m.plot(X,Y,**kwargs) #Should work, but doesn't...
+    X, Y = m(X, Y)
+    plt.plot(X, Y, **kwargs)
