@@ -1,6 +1,10 @@
-This repository contains the python code in the form of [jupyter](https://jupyter.org/) notebooks to reproduce the figures of the paper:
+![GitHub commit activity](https://img.shields.io/github/commit-activity/t/ctroupin/AlborEx-Data-Python) ![GitHub last commit](https://img.shields.io/github/last-commit/ctroupin/AlborEx-Data-Python)
+![GitHub top language](https://img.shields.io/github/languages/top/ctroupin/AlborEx-Data-Python)        
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2538348.svg)](https://doi.org/10.5281/zenodo.2538348)
 
-> Troupin, C.; Pascual, A.; Ruiz, S.; Olita, A.; Casas, B.; Margirier, F.; Poulain, P.-M.; Notarstefano, G.; Torner, M.; Fernández, J. G.; Rújula, M. Muñoz, C.; Allen, J. T.; Mahadevan, A. & Tintoré, J. The AlborEX dataset: sampling of submesoscale features in the Alboran Sea Earth System Science Data Discussions, 2018, 1-21.
+This repository contains the python code in the form of [Jupyter](https://jupyter.org/) notebooks to reproduce the figures of the paper:
+
+> Troupin, C.; Pascual, A.; Ruiz, S.; Olita, A.; Casas, B.; Margirier, F.; Poulain, P.-M.; Notarstefano, G.; Torner, M.; Fernández, J. G.; Rújula, M. Muñoz, C.; Allen, J. T.; Mahadevan, A. & Tintoré, J. (2019). The AlborEX dataset: sampling of submesoscale features in the Alboran Sea, _Earth System Science Data Discussions_, __11 (1)__: 129–145. DOI: [10.5194/essd-11-129-2019](https://doi.org/10.5194/essd-11-129-2019)
 
 and to provide examples of the data from the netCDF files can be read, processed and displayed.
 
